@@ -1,9 +1,8 @@
 import questionHistory from "../data/questions-history.json";
 import allQuestions from "../data/iq-all-questions.json";
 
-export function gatherQuestionData() {
-  const allQuestionsData = {};
-
+export default async function GatherQuestionData(data) {
+  const allQuestionsData = await data;
   allQuestionsData.allQuestions = allQuestions;
   allQuestionsData.questionHistory = questionHistory[0];
   allQuestionsData.questionMetadata = gatherAllMetadata(allQuestions);

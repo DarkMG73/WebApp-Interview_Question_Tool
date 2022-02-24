@@ -1,33 +1,58 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { gatherQuestionData } from "../hooks/gather-question-data";
-const {
-  allQuestions,
-  questionHistory,
-  questionMetadata,
-} = gatherQuestionData();
-console.log("🔵 | allQuestions", allQuestions);
-console.log("🔵 | questionHistory", questionHistory);
-console.log("🔵 | questionMetadata", questionMetadata);
+import GatherQuestionData from "../hooks/GatherQuestionData";
 
-const initialState = gatherQuestionData();
-initialState.currentQuestionData = null;
+function InitState() {
+  const initialState = {};
+  initialState.allQuestions = null;
+  initialState.questionHistory = null;
+  initialState.questionMetadata = null;
+  initialState.currentQuestionData = null;
+  return initialState;
+}
 
 export const questionDataSlice = createSlice({
   name: "questionData",
-  initialState: initialState,
+  initialState: InitState(),
   reducers: {
+    initState: (state, action) => {
+      const questionData = GatherQuestionData(action.data);
+      state.allQuestions = questionData.allQuestions;
+      state.questionHistory = questionData.questionHistory;
+      state.questionMetadata = questionData.questionMetadata;
+
+      // state.currentQuestionData = questionData.currentQuestionData;
+      console.log("🔵 | initialState", questionData);
+
+      console.log("🔵 | initialState", questionData);
+    },
     generateNewQuestion: (state) => {
-      function randomQuestion() {
+      // console.log("🟠 | state", JSON.stringify(state, undefined, 2));
+      function randomQuestion(state) {
+        // console.log("🟣  | state", JSON.stringify(state, undefined, 2));
         const remainingIds = new Set();
-        remainingIds.add(state.questionHistory.stats.usedIds);
-        remainingIds.add(state.questionMetadata.id);
+        remainingIds.add([
+          // ...state.questionHistory.stats.usedIds,
+          ...[3, 8, 77, 10],
+          // ...state.questionMetadata.id,
+        ]);
+        // remainingIds.add(...state.questionMetadata.id);
         const remainingIdsArray = Array.from(remainingIds);
         const randomNumber = Math.floor(
-          Math.random() * (remainingIdsArray - 1).length
+          Math.random() * remainingIdsArray[0].length
         );
-        return state.allQuestions[remainingIds[randomNumber]];
+        console.log(
+          "🟢 | randomQuestion | remainingIds[randomNumber]",
+          remainingIdsArray
+        );
+        console.log(
+          "🟢 | randomQuestion | remainingIds[randomNumber]",
+          randomNumber
+        );
+        return state.allQuestions[remainingIdsArray[0][randomNumber]];
       }
-      state.currentQuestionData = randomQuestion();
+      const newQuestion = randomQuestion(state);
+      console.log("🟡 | newQuestion", newQuestion);
+      state.currentQuestionData = newQuestion;
     },
     addToHistoryCorrect: (state) => {
       state.addToHistoryCorrect[state.currentQuestionData.id] =
@@ -45,11 +70,6 @@ export const questionDataSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {
-  generateNewQuestion,
-  addToHistoryCorrect,
-  addToHistoryIncorrect,
-  addToHistoryUnmarked,
-} = questionDataSlice.actions;
+export const counterActions = questionDataSlice.actions;
 
 export default questionDataSlice.reducer;

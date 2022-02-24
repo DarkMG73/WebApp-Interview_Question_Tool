@@ -8,7 +8,7 @@ function Question(props) {
   );
 
   let questionText = null;
-  if (currentQuestionData) questionText = questionText.question;
+  if (currentQuestionData) questionText = currentQuestionData.question;
   return (
     <div id="question" className={styles.outerwrap}>
       <h1 className="iq-header">Question</h1>

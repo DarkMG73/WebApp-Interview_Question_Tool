@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { counterActions } from "../../store/questionDataSlice";
 import styles from "./NewQuestionButton.module.css";
 import { numberToText } from "../../hooks/utility";
 
@@ -12,7 +13,7 @@ function NewQuestionButton(props) {
   );
 
   function newQuestionBtnHandler() {
-    dispatch({ type: "generateNewQuestion" });
+    dispatch(counterActions.generateNewQuestion());
     console.log(
       "🔵 | NewQuestionButton | currentQuestionData",
       questionData.currentQuestionData
