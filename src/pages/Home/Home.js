@@ -28,7 +28,9 @@ const Home = () => {
       <CardSecondary>
         <NewQuestionButton />
       </CardSecondary>
-      <CardPrimary></CardPrimary>
+      <CardPrimary>
+        <WorkArea />
+      </CardPrimary>
       <CardSecondary>
         <SessionResults />
       </CardSecondary>

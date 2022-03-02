@@ -1,11 +1,13 @@
 import styles from "./WorkArea.module.css";
 import Iframe from "react-iframe";
-
+import Timer from "../Timer/Timer";
 function WorkArea(props) {
   return (
     <div id="word-area" className={styles.outerwrap}>
       <div id="user-interaction-area" className="outer-wrap">
-        <div id="timer">00:00</div>
+        <div id="timer">
+          Time: <Timer />
+        </div>
         <div id="question-info" className="outer-wrap">
           <Iframe
             height="400px"

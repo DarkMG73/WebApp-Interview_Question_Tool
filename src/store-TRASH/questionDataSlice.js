@@ -21,6 +21,6 @@ const counterSlice = createSlice({
   },
 });
 
-export const counterActions = counterSlice.actions;
+export const questionDataActions = counterSlice.actions;
 
 export default counterSlice.reducer;

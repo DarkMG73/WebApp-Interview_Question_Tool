@@ -1,11 +1,14 @@
 import questionHistory from "../data/questions-history.json";
 import allQuestions from "../data/iq-all-questions.json";
+import { questionData } from "../storage/firebase.config";
 
-export default async function GatherQuestionData(data) {
-  const allQuestionsData = await data;
-  allQuestionsData.allQuestions = allQuestions;
+export default async function GatherQuestionData() {
+  const allQuestionsData = {};
+  allQuestionsData.allQuestions = await questionData;
   allQuestionsData.questionHistory = questionHistory[0];
   allQuestionsData.questionMetadata = gatherAllMetadata(allQuestions);
+  // TODO: need to have read from saved history or be empty array.
+  allQuestionsData.questionHistory.stats.usedIds = [];
 
   console.log(
     "⚪️⚪️ | gatherQuestionData | allQuestionsData",
@@ -16,9 +19,7 @@ export default async function GatherQuestionData(data) {
 
 function gatherAllMetadata(dataObject) {
   const itemsToInclude = ["topic", "level", "id", "tags", "credit"];
-
   const outputSet = objectExtractAllValuesPerKey(dataObject, itemsToInclude);
-
   return outputSet;
 }
 

@@ -4,21 +4,24 @@ import CardPrimary from "./UI/Cards/Card-Primary/Card-Primary";
 import Header from "./Components/Header/Header";
 import Nav from "./Components/Nav/Nav";
 import { useSelector, useDispatch } from "react-redux";
-import { counterActions } from "./store/questionDataSlice";
 import React, { useState, useEffect } from "react";
-import QuestionDataFromDB from "./hooks/QuestionDataFromDB";
+import GatherQuestionData from "./hooks/GatherQuestionData";
+
+import { questionDataActions } from "./store/questionDataSlice";
 
 function App() {
   const dispatch = useDispatch();
-  const allQuestionsData = QuestionDataFromDB();
+  // const allQuestionsData = GatherQuestionData();
   const currentState = useSelector((state) => state.questionData);
   useEffect(() => {
-    dispatch(counterActions.initState(allQuestionsData));
+    GatherQuestionData().then((data) => {
+      console.log("🟣 | getData | questionsFromDB", data);
+      dispatch(questionDataActions.initState(data));
+    });
   }, []);
-  useEffect(() => {
-    const updateState = currentState;
-    console.log("🔵 | App | currentState", updateState);
-  }, []);
+
+  const updateState = currentState;
+  console.log("🔵 | App | currentState", updateState);
 
   return (
     <div className="App">

@@ -9,7 +9,7 @@ function SessionResults(props) {
   const questionHistoryRows = [];
   console.log("🔵 | SessionResults | questionHistory", questionHistory);
   for (const k in questionHistory) {
-    console.log("🔵 | SessionResults | questionHistory", questionHistory);
+    // console.log("🔵 | SessionResults | questionHistory", questionHistory);
     for (const key in questionHistory[k]) {
       for (const itemKey in questionHistory[k][key]) {
         const rowHTML = (

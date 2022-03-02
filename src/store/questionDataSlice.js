@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import GatherQuestionData from "../hooks/GatherQuestionData";
 
 function InitState() {
   const initialState = {};
@@ -15,25 +14,19 @@ export const questionDataSlice = createSlice({
   initialState: InitState(),
   reducers: {
     initState: (state, action) => {
-      const questionData = GatherQuestionData(action.data);
+      const questionData = action.payload;
+      console.log("🟡 | questionData", questionData);
       state.allQuestions = questionData.allQuestions;
       state.questionHistory = questionData.questionHistory;
       state.questionMetadata = questionData.questionMetadata;
-
-      // state.currentQuestionData = questionData.currentQuestionData;
-      console.log("🔵 | initialState", questionData);
-
-      console.log("🔵 | initialState", questionData);
     },
     generateNewQuestion: (state) => {
-      // console.log("🟠 | state", JSON.stringify(state, undefined, 2));
       function randomQuestion(state) {
-        // console.log("🟣  | state", JSON.stringify(state, undefined, 2));
         const remainingIds = new Set();
         remainingIds.add([
-          // ...state.questionHistory.stats.usedIds,
-          ...[3, 8, 77, 10],
-          // ...state.questionMetadata.id,
+          ...state.questionHistory.stats.usedIds,
+
+          ...state.questionMetadata.id,
         ]);
         // remainingIds.add(...state.questionMetadata.id);
         const remainingIdsArray = Array.from(remainingIds);
@@ -48,6 +41,22 @@ export const questionDataSlice = createSlice({
           "🟢 | randomQuestion | remainingIds[randomNumber]",
           randomNumber
         );
+        console.log(
+          "🔵 | randomQuestion | state.allQuestions",
+          state.allQuestions
+        );
+
+        console.log(
+          "🔵 | randomQuestion | remainingIdsArray[0][randomNumber]",
+          remainingIdsArray[0][randomNumber]
+        );
+
+        for (const i in state.allQuestions) {
+          if (state.allQuestions[i].id === remainingIdsArray[0][randomNumber]) {
+            return state.allQuestions[i];
+          }
+        }
+
         return state.allQuestions[remainingIdsArray[0][randomNumber]];
       }
       const newQuestion = randomQuestion(state);
@@ -70,6 +79,6 @@ export const questionDataSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const counterActions = questionDataSlice.actions;
+export const questionDataActions = questionDataSlice.actions;
 
 export default questionDataSlice.reducer;

@@ -1,32 +1,45 @@
 import { useSelector, useDispatch } from "react-redux";
-import { counterActions } from "../../store/questionDataSlice";
+import { questionDataActions } from "../../store/questionDataSlice";
+import { timerActions } from "../../store/timerSlice";
 import styles from "./NewQuestionButton.module.css";
 import { numberToText } from "../../hooks/utility";
 
 function NewQuestionButton(props) {
   const questionData = useSelector((state) => state.questionData);
+  const timerRunning = useSelector((state) => state.timer.timerRunning);
   const dispatch = useDispatch();
 
-  console.log(
-    "🔵 | NewQuestionButton | currentQuestionData",
-    questionData.currentQuestionData
-  );
-
   function newQuestionBtnHandler() {
-    dispatch(counterActions.generateNewQuestion());
-    console.log(
-      "🔵 | NewQuestionButton | currentQuestionData",
-      questionData.currentQuestionData
-    );
+    dispatch(timerActions.clearTimer());
+    dispatch(timerActions.startTimer());
+    dispatch(questionDataActions.generateNewQuestion());
   }
+
+  function finishQuestionBtnHandler() {
+    dispatch(timerActions.stopTimer());
+  }
+
   return (
-    <button
-      id="new-question-button"
-      className={styles.outerwrap}
-      onClick={newQuestionBtnHandler}
-    >
-      <h1 className="iq-header">New Question</h1>
-    </button>
+    <div>
+      {!timerRunning && (
+        <button
+          id="new-question-button"
+          className={styles.outerwrap}
+          onClick={newQuestionBtnHandler}
+        >
+          <h1 className="iq-header">New Question</h1>
+        </button>
+      )}
+      {timerRunning && (
+        <button
+          id="finish-question-button"
+          className={styles.outerwrap}
+          onClick={finishQuestionBtnHandler}
+        >
+          <h1 className="iq-header">Click When Finished</h1>
+        </button>
+      )}
+    </div>
   );
 }
 

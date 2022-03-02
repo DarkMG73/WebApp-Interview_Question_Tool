@@ -1,8 +1,7 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+// Follow this pattern to import other Firebase services
+// import { } from 'firebase/<service>';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -18,7 +17,23 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const db = initializeApp(firebaseConfig);
-const analytics = getAnalytics(db);
+// const app = initializeApp(firebaseConfig);
+// const db = getFirestore(app);
+// console.log("🔵 | db", db);
+// const dbCollection = collection("interview_questions");
+// console.log("🔵 | dbCollection", dbCollection);
 
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Get a list of cities from your database
+async function getDBData(db, name) {
+  const citiesCol = collection(db, name);
+  const citySnapshot = await getDocs(citiesCol);
+  const cityList = citySnapshot.docs.map((doc) => doc.data());
+  console.log("🔵 | getCities | cityList", cityList);
+  return cityList;
+}
+export const questionData = getDBData(db, "interview_questions");
+console.log("🔵 | questionData", questionData);
 export default db;

@@ -1,22 +1,23 @@
 import styles from "./Question.module.css";
-import { useSelector } from "react-redux";
+import { useSelector, useEffect } from "react-redux";
 import { numberToText } from "../../hooks/utility";
 
 function Question(props) {
   const currentQuestionData = useSelector(
     (state) => state.questionData.currentQuestionData
   );
+  console.log("🔵 | Question | currentQuestionData", currentQuestionData);
 
   let questionText = null;
-  if (currentQuestionData) questionText = currentQuestionData.question;
+  if (currentQuestionData) questionText = currentQuestionData.title;
   return (
     <div id="question" className={styles.outerwrap}>
       <h1 className="iq-header">Question</h1>
       {!questionText && (
         <div>
-          <div id="question-wrap" class="inner-wrap">
-            <h2 class="question-title">How to Use this Tool</h2>
-            <div id="help" class="outer-wrap">
+          <div id="question-wrap" className="inner-wrap">
+            <h2 className="question-title">How to Use this Tool</h2>
+            <div id="help" className="outer-wrap">
               Using this is pretty simple. Click the "New Question" button and
               you will begin receiving questions from all difficulty levels and
               topics. If you wish to filter these, select your desired
@@ -58,7 +59,12 @@ function Question(props) {
           </div>
         </div>
       )}
-      {questionText && <p>{questionText}</p>}
+      {questionText && (
+        <div className={styles["question-text-wrap"]}>
+          <h3>{questionText}</h3>
+          <p>{currentQuestionData.question}</p>
+        </div>
+      )}
     </div>
   );
 }

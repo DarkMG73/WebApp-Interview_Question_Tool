@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from "react";
-import db from "../storage/firebase.config";
+import { questionData } from "../storage/firebase.config";
 
 function QuestionDataFromDB() {
   const [blogs, setBlogs] = useState([]);
   const fetchBlogs = async () => {
-    const response = db.collection("interview_questions");
-    console.log("🔵 | fetchBlogs | response", response);
-    const data = await response.get();
-    data.docs.forEach((item) => {
-      setBlogs([...blogs, item.data()]);
-    });
+    const output = await questionData;
+    console.log("🔵 | fetchBlogs | output", output);
+    return output;
   };
   useEffect(() => {
-    fetchBlogs();
+    setBlogs(fetchBlogs());
     console.log("useState", blogs);
   }, []);
-
+  console.log("useState2", blogs);
   return blogs;
 }
 
