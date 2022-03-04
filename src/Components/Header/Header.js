@@ -6,7 +6,7 @@ function Header(props) {
   const questionMetadata = useSelector(
     (state) => state.questionData.questionMetadata
   );
-  console.log("🔵 | Header | questionMetadata", questionMetadata);
+
   return (
     <div id="iq-header" className={styles.outerwrap}>
       <h1 className="iq-header">Interview Question Tool</h1>

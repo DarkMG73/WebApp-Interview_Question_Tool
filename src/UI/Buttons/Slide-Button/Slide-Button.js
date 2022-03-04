@@ -7,8 +7,10 @@ const SlideButton = (props) => {
       <label className={styles.switch}>
         <input
           type="checkbox"
-          name={props.name}
+          name={props.label}
+          onClick={props.onClick}
           className={styles["switch-input"]}
+          value={props.label}
         />
         <span className={styles["slider"]}></span>
       </label>

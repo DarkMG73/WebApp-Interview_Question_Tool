@@ -31,7 +31,6 @@ async function getDBData(db, name) {
   const citiesCol = collection(db, name);
   const citySnapshot = await getDocs(citiesCol);
   const cityList = citySnapshot.docs.map((doc) => doc.data());
-  console.log("🔵 | getCities | cityList", cityList);
   return cityList;
 }
 export const questionData = getDBData(db, "interview_questions");

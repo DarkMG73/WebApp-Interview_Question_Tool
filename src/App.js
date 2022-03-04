@@ -20,8 +20,7 @@ function App() {
     });
   }, []);
 
-  const updateState = currentState;
-  console.log("🔵 | App | currentState", updateState);
+  // const updateState = currentState;
 
   return (
     <div className="App">

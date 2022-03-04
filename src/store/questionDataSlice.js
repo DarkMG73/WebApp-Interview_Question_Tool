@@ -3,9 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 function InitState() {
   const initialState = {};
   initialState.allQuestions = null;
+  initialState.filteredQuestions = null;
   initialState.questionHistory = null;
   initialState.questionMetadata = null;
   initialState.currentQuestionData = null;
+  initialState.currentFilters = null;
   return initialState;
 }
 
@@ -15,10 +17,11 @@ export const questionDataSlice = createSlice({
   reducers: {
     initState: (state, action) => {
       const questionData = action.payload;
-      console.log("🟡 | questionData", questionData);
       state.allQuestions = questionData.allQuestions;
+      state.filteredQuestions = questionData.allQuestions;
       state.questionHistory = questionData.questionHistory;
       state.questionMetadata = questionData.questionMetadata;
+      state.currentFilters = {};
     },
     generateNewQuestion: (state) => {
       function randomQuestion(state) {
@@ -33,23 +36,6 @@ export const questionDataSlice = createSlice({
         const randomNumber = Math.floor(
           Math.random() * remainingIdsArray[0].length
         );
-        console.log(
-          "🟢 | randomQuestion | remainingIds[randomNumber]",
-          remainingIdsArray
-        );
-        console.log(
-          "🟢 | randomQuestion | remainingIds[randomNumber]",
-          randomNumber
-        );
-        console.log(
-          "🔵 | randomQuestion | state.allQuestions",
-          state.allQuestions
-        );
-
-        console.log(
-          "🔵 | randomQuestion | remainingIdsArray[0][randomNumber]",
-          remainingIdsArray[0][randomNumber]
-        );
 
         for (const i in state.allQuestions) {
           if (state.allQuestions[i].id === remainingIdsArray[0][randomNumber]) {
@@ -60,7 +46,7 @@ export const questionDataSlice = createSlice({
         return state.allQuestions[remainingIdsArray[0][randomNumber]];
       }
       const newQuestion = randomQuestion(state);
-      console.log("🟡 | newQuestion", newQuestion);
+
       state.currentQuestionData = newQuestion;
     },
     addToHistoryCorrect: (state) => {

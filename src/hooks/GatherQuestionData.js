@@ -10,10 +10,6 @@ export default async function GatherQuestionData() {
   // TODO: need to have read from saved history or be empty array.
   allQuestionsData.questionHistory.stats.usedIds = [];
 
-  console.log(
-    "⚪️⚪️ | gatherQuestionData | allQuestionsData",
-    allQuestionsData
-  );
   return allQuestionsData;
 }
 
@@ -24,7 +20,6 @@ function gatherAllMetadata(dataObject) {
 }
 
 function objectExtractAllValuesPerKey(objectToLoop, itemsToInclude) {
-  console.log("🔵 | objectExtractAllValuesPerKey | objectToLoop", objectToLoop);
   const outputObject = {};
 
   for (const i in objectToLoop) {

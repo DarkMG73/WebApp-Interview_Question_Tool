@@ -1,7 +1,6 @@
 export function hyphenate(string, indexBreakPoint, separator) {
   const firstHalf = string.substring(0, indexBreakPoint);
   const secondHalf = string.substring(indexBreakPoint, string.length);
-  console.log("🔵 | hyphenate | newString", firstHalf);
   return firstHalf + separator + secondHalf;
 }
 

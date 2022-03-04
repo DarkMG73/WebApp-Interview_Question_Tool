@@ -6,7 +6,6 @@ function Question(props) {
   const currentQuestionData = useSelector(
     (state) => state.questionData.currentQuestionData
   );
-  console.log("🔵 | Question | currentQuestionData", currentQuestionData);
 
   let questionText = null;
   if (currentQuestionData) questionText = currentQuestionData.title;
