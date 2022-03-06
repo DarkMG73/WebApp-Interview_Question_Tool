@@ -4,7 +4,22 @@ import { questionData } from "../storage/firebase.config";
 
 export default async function GatherQuestionData() {
   const allQuestionsData = {};
+  console.log(
+    "%c --> %cline:8%callQuestions",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(229, 187, 129);padding:3px;border-radius:2px",
+    Array.from(allQuestions)
+  );
   allQuestionsData.allQuestions = await questionData;
+  // allQuestionsData.allQuestions = Array.from(allQuestions);
+  console.log(
+    "%c --> %cline:8%callQuestions",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(229, 187, 129);padding:3px;border-radius:2px",
+    allQuestions
+  );
   allQuestionsData.questionHistory = questionHistory[0];
   allQuestionsData.questionMetadata = gatherAllMetadata(allQuestions);
   // TODO: need to have read from saved history or be empty array.

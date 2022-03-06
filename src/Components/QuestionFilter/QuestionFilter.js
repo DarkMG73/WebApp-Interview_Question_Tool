@@ -2,13 +2,22 @@ import styles from "./QuestionFilter.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import SlideButton from "../../UI/Buttons/Slide-Button/Slide-Button";
 import { hyphenate } from "../../hooks/utility";
-import filterQuestions from "../../hooks/filterQuestions";
+import FilterQuestions from "../../hooks/FilterQuestions";
+import SetFilteredQuestionIdList from "../../hooks/SetFilteredQuestionIdList";
+import { questionDataActions } from "../../store/questionDataSlice";
 
 function QuestionFilter(props) {
   const allQuestionsData = useSelector((state) => state.questionData);
 
-  const { questionMetadata } = allQuestionsData;
-  const filteredQuestions = filterQuestions(allQuestionsData);
+  const dispatch = useDispatch();
+  const {
+    filteredQuestionsIds,
+    currentFilters,
+    allQuestions,
+    questionMetadata,
+  } = allQuestionsData;
+
+  const filteredQuestions = FilterQuestions(allQuestionsData);
   console.log(
     "%c --> %cline:14%cfilteredQuestions",
     "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
@@ -17,59 +26,79 @@ function QuestionFilter(props) {
     filteredQuestions
   );
 
-  function topicFilterButtonHandler(e) {
+  function levelFilterButtonHandler(e) {
     console.log(
-      "%c topicFilterButtonHandler %cline:12%cvar",
+      "%c --> %cline:29%ce.target",
       "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
       "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
       "color:#fff;background:rgb(130, 57, 53);padding:3px;border-radius:2px",
-      e.target.value
+      e.target
     );
-    const filteredQuestions = filterQuestions(allQuestionsData);
-    console.log(
-      "%c --> %cline:14%cfilteredQuestions",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(248, 147, 29);padding:3px;border-radius:2px",
-      filteredQuestions
+    if (e.target.checked) {
+      dispatch(
+        questionDataActions.addToQuestionFilters({
+          type: "level",
+          value: e.target.value,
+        })
+      );
+      SetFilteredQuestionIdList();
+    } else {
+      dispatch(
+        questionDataActions.removeFromQuestionFilters({
+          type: "level",
+          value: e.target.value,
+        })
+      );
+    }
+    dispatch(questionDataActions.clearQuestionFilterIds);
+    const filteredQuestionIdList = SetFilteredQuestionIdList(
+      allQuestionsData.allQuestions,
+      allQuestionsData.currentFilters
     );
+    dispatch(questionDataActions.setQuestionFilterIds(filteredQuestionIdList));
+    // FilterQuestions(allQuestionsData);
+  }
+
+  function topicFilterButtonHandler(e) {
+    if (e.target.checked) {
+      dispatch(
+        questionDataActions.addToQuestionFilters({
+          type: "topic",
+          value: e.target.value,
+        })
+      );
+    } else {
+      dispatch(
+        questionDataActions.removeFromQuestionFilters({
+          type: "topic",
+          value: e.target.value,
+        })
+      );
+    }
+    SetFilteredQuestionIdList();
+    // FilterQuestions(allQuestionsData);
   }
 
   function tagsFilterButtonHandler(e) {
-    console.log(
-      "%c tagsFilterButtonHandler %cline:16%ctagsFilterButtonHandler",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(3, 22, 52);padding:3px;border-radius:2px",
-      e.target.value
-    );
-    const filteredQuestions = filterQuestions(allQuestionsData);
-    console.log(
-      "%c --> %cline:14%cfilteredQuestions",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(248, 147, 29);padding:3px;border-radius:2px",
-      filteredQuestions
-    );
+    if (e.target.checked) {
+      dispatch(
+        questionDataActions.addToQuestionFilters({
+          type: "tags",
+          value: e.target.value,
+        })
+      );
+    } else {
+      dispatch(
+        questionDataActions.removeFromQuestionFilters({
+          type: "tags",
+          value: e.target.value,
+        })
+      );
+    }
+    SetFilteredQuestionIdList();
+    // FilterQuestions(allQuestionsData);
   }
 
-  function levelFilterButtonHandler(e) {
-    console.log(
-      "%c levelsFilterButtonHandler %cline:21%ce",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(222, 125, 44);padding:3px;border-radius:2px",
-      e.target.value
-    );
-    const filteredQuestions = filterQuestions(allQuestionsData);
-    console.log(
-      "%c --> %cline:14%cfilteredQuestions",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(248, 147, 29);padding:3px;border-radius:2px",
-      filteredQuestions
-    );
-  }
   return (
     <div id="question-filter" className={styles.outerwrap}>
       Question Filter

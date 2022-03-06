@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 function InitState() {
   const initialState = {};
   initialState.allQuestions = null;
-  initialState.filteredQuestions = null;
+  initialState.filteredQuestionsIds = null;
   initialState.questionHistory = null;
   initialState.questionMetadata = null;
   initialState.currentQuestionData = null;
@@ -18,10 +18,10 @@ export const questionDataSlice = createSlice({
     initState: (state, action) => {
       const questionData = action.payload;
       state.allQuestions = questionData.allQuestions;
-      state.filteredQuestions = questionData.allQuestions;
+      state.filteredQuestionsIds = [];
       state.questionHistory = questionData.questionHistory;
       state.questionMetadata = questionData.questionMetadata;
-      state.currentFilters = {};
+      state.currentFilters = { level: [], topic: [], tags: [] };
     },
     generateNewQuestion: (state) => {
       function randomQuestion(state) {
@@ -60,6 +60,33 @@ export const questionDataSlice = createSlice({
     addToHistoryUnmarked: (state) => {
       state.addToHistoryUnmarked[state.currentQuestionData.id] =
         state.currentQuestionData;
+    },
+    addToQuestionFilters: (state, action) => {
+      state.currentFilters[action.payload.type] = [
+        ...state.currentFilters[action.payload.type],
+        action.payload.value,
+      ];
+    },
+    removeFromQuestionFilters: (state, action) => {
+      let newState = [...state.currentFilters[action.payload.type]];
+
+      newState.splice(newState.indexOf(action.payload.value), 1);
+      state.currentFilters[action.payload.type] = newState;
+    },
+    setQuestionFilterIds: (state, action) => {
+      console.log(
+        "%c --> %cline:77%caction.payload",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(60, 79, 57);padding:3px;border-radius:2px",
+        action.payload
+      );
+      state.filteredQuestionsIds = [...action.payload];
+    },
+    clearQuestionFilterIds: (state, action) => {
+      // let newState = [...state.filteredQuestionsIds];
+      // newState.splice(newState.indexOf(action.payload), 1);
+      state.filteredQuestionsIds = [];
     },
   },
 });

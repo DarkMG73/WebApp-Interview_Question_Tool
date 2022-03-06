@@ -1,61 +1,52 @@
-function filterQuestions(fullQuestionData) {
-  const filteredQuestionIds = [];
-  // const fullQuestionData = fullQuestionData;
-  //   const allFilters = props.filtersObject;
-  const allFilters = {
-    level: ["advanced"],
-    topic: ["html", "javascript"],
-    tags: ["html", "javascript"],
-  };
+function FilterQuestions(questionData) {
+  console.log(
+    "%c --> %cline:1%cprops",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(39, 72, 98);padding:3px;border-radius:2px",
+    questionData
+  );
 
-  console.log(
-    "%c allFilters.level %cline:12%callFilters.level.",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px",
-    allFilters.level
-  );
-  console.log(
-    "%c fullQuestionData.questionMetadata.level %cline:12%callFilters.level.",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px",
-    fullQuestionData.questionMetadata.level
-  );
-  console.log(
-    "%c  allFilters.level.length < fullQuestionData.questionMetadata.level.length %cline:12%callFilters.level.",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px",
-    allFilters.level.length > fullQuestionData.questionMetadata.level.length
-  );
-  let filteredQuestions;
-  if (
-    allFilters.level.length < fullQuestionData.questionMetadata.level.length
-  ) {
-    console.log(
-      "%c IN %cline:12%callFilters.level.",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px"
-    );
+  const {
+    filteredQuestionsIds,
+    currentFilters,
+    allQuestions,
+    questionMetadata,
+  } = questionData;
+
+  const allFilters = currentFilters;
+
+  // console.log(
+  //   "%c allFilters.level %cline:12%callFilters.level.",
+  //   "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+  //   "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+  //   "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px",
+  //   allFilters.level
+  // );
+  // console.log(
+  //   "%c .questionMetadata.level %cline:12%callFilters.level.",
+  //   "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+  //   "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+  //   "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px",
+  //   .questionMetadata.level
+  // );
+  // console.log(
+  //   "%c  allFilters.level.length < fullQustionData.questionMetadata.level.length %cline:12%callFilters.level.",
+  //   "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+  //   "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+  //   "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px",
+  //   allFilters.level.length > .questionMetadata.level.length
+  // );
+  let filteredQuestions = allQuestions;
+  if (allFilters.level.length < questionMetadata.level.length) {
     filteredQuestions = applyFIlter(
-      fullQuestionData.allQuestions,
+      filteredQuestions,
       allFilters.level,
       "level"
     );
   }
 
-  if (
-    allFilters.topic.length < fullQuestionData.questionMetadata.topic.length
-  ) {
-    console.log(
-      "%c IN %cline:12%callFilters.level.",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px"
-    );
-
+  if (allFilters.topic.length < questionMetadata.topic.length) {
     filteredQuestions = applyFIlter(
       filteredQuestions,
       allFilters.topic,
@@ -63,65 +54,59 @@ function filterQuestions(fullQuestionData) {
     );
   }
 
-  if (allFilters.tags.length < fullQuestionData.questionMetadata.tags.length) {
-    console.log(
-      "%c IN %cline:12%callFilters.level.",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px"
-    );
+  if (allFilters.tags.length < questionMetadata.tags.length) {
     applyFIlter(filteredQuestions, allFilters.tags, "tags");
   }
-  const filteredQuestionsIds = [];
+
+  // Set the filter ID Array
+  console.log(
+    "%c --> %cline:63%cfilteredQuestionsIds",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(222, 125, 44);padding:3px;border-radius:2px",
+    filteredQuestionsIds
+  );
+  console.log(
+    "%c --> %cline:64%cfilteredQuestions",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(222, 125, 44);padding:3px;border-radius:2px",
+    filteredQuestions
+  );
+
   for (const key in filteredQuestions) {
+    console.log(
+      "%c --> %cline:66%cfilteredQuestions[key]",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
+      filteredQuestions[key]
+    );
+    console.log(
+      "%c --> %cline:68%ckey",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(248, 214, 110);padding:3px;border-radius:2px",
+      key
+    );
+
     filteredQuestionsIds.push(filteredQuestions[key].id);
   }
-  // filterArray.topic
-  // filterArray.tags
 
-  // fullQuestionList
-
-  function applyFIlter(nestedObjectArray, filterArray, filterName) {
-    console.log(
-      "%c IN APPLY FILTER %cline:21%capplyFIlter",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(248, 147, 29);padding:3px;border-radius:2px"
-    );
-
-    const output = nestedObjectArray.filter((questionData) => {
-      // console.log(
-      //   "%c IN APPLY FILTER %cline:25 questionData %capplyFIlter",
-      //   "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      //   "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      //   "color:#fff;background:rgb(248, 147, 29);padding:3px;border-radius:2px",
-      //   questionData
-      // );
-      for (const k in questionData) {
-        if (filterArray.includes(questionData[filterName])) {
-          console.log(
-            "%c IN APPLY FILTER %cline:25 filterArray.includes(questionData[filterName]) %capplyFIlter",
-            "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-            "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-            "color:#fff;background:rgb(248, 147, 29);padding:3px;border-radius:2px",
-            filterArray.includes(questionData[filterName])
-          );
-          return true;
-        }
-      }
-      return false;
-    });
-    console.log(
-      "%c --> %cline:93%coutput",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(23, 44, 60);padding:3px;border-radius:2px",
-      output
-    );
-    return output;
-  }
-
-  return filteredQuestionIds;
+  return filteredQuestionsIds;
 }
 
-export default filterQuestions;
+export default FilterQuestions;
+
+function applyFIlter(nestedObjectArray, filterArray, filterName) {
+  const output = nestedObjectArray.filter((questionData) => {
+    for (const k in questionData) {
+      if (filterArray.includes(questionData[filterName])) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+  return output;
+}
