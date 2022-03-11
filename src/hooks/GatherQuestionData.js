@@ -1,29 +1,44 @@
 import questionHistory from "../data/questions-history.json";
-import allQuestions from "../data/iq-all-questions.json";
+import DummyQuestionData from "../data/iq-all-questions.json";
 import { questionData } from "../storage/firebase.config";
 
 export default async function GatherQuestionData() {
-  const allQuestionsData = {};
   console.log(
-    "%c --> %cline:8%callQuestions",
+    "%c --> %cline:5%cGatherQuestionData",
     "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
     "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(229, 187, 129);padding:3px;border-radius:2px",
-    Array.from(allQuestions)
+    "color:#fff;background:rgb(161, 23, 21);padding:3px;border-radius:2px",
+    DummyQuestionData
   );
-  allQuestionsData.allQuestions = await questionData;
-  // allQuestionsData.allQuestions = Array.from(allQuestions);
+  const allQuestionsData = {};
+  allQuestionsData.allQuestions = {};
+
+  const allQuestions = [];
+
+  // const allQuestions = await questionData;
+
+  /////// IF USING DUMMY QUERY
+  for (var i in DummyQuestionData) {
+    allQuestions.push({ ...DummyQuestionData[i] });
+  }
+  ////////////
+
   console.log(
     "%c --> %cline:8%callQuestions",
     "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
     "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(229, 187, 129);padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px",
     allQuestions
   );
+
+  allQuestions.forEach((questionData) => {
+    allQuestionsData.allQuestions[questionData.id] = questionData;
+  });
   allQuestionsData.questionHistory = questionHistory[0];
   allQuestionsData.questionMetadata = gatherAllMetadata(allQuestions);
   // TODO: need to have read from saved history or be empty array.
   allQuestionsData.questionHistory.stats.usedIds = [];
+  allQuestionsData.currentQuestionData = {};
 
   return allQuestionsData;
 }

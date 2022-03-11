@@ -12,6 +12,15 @@ function NewQuestionButton(props) {
   function newQuestionBtnHandler() {
     dispatch(timerActions.clearTimer());
     dispatch(timerActions.startTimer());
+
+    console.log(
+      "%c --> %cline:8%cquestionData",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(95, 92, 51);padding:3px;border-radius:2px",
+      questionData.currentQuestionData
+    );
+
     dispatch(questionDataActions.generateNewQuestion());
   }
 

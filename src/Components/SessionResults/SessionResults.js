@@ -7,7 +7,7 @@ function SessionResults(props) {
     (state) => state.questionData.questionHistory
   );
   const questionHistoryRows = [];
-  console.log("🔵 | SessionResults | questionHistory", questionHistory);
+  // console.log("🔵 | SessionResults | questionHistory", questionHistory);
   for (const k in questionHistory) {
     // console.log("🔵 | SessionResults | questionHistory", questionHistory);
     for (const key in questionHistory[k]) {

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styles from "./QuestionFilter.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import SlideButton from "../../UI/Buttons/Slide-Button/Slide-Button";
@@ -17,15 +18,21 @@ function QuestionFilter(props) {
     questionMetadata,
   } = allQuestionsData;
 
-  const filteredQuestions = FilterQuestions(allQuestionsData);
-  console.log(
-    "%c --> %cline:14%cfilteredQuestions",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(248, 147, 29);padding:3px;border-radius:2px",
-    filteredQuestions
-  );
+  // const filteredQuestions = FilterQuestions(allQuestionsData);
 
+  useEffect(() => {
+    console.log("HERE");
+    dispatch(questionDataActions.clearQuestionFilterIds);
+    const filteredQuestionIdList = SetFilteredQuestionIdList(
+      allQuestionsData.allQuestions,
+      allQuestionsData.currentFilters
+    );
+    dispatch(questionDataActions.setQuestionFilterIds(filteredQuestionIdList));
+  }, [
+    allQuestionsData.currentFilters,
+    allQuestionsData.allQuestions,
+    dispatch,
+  ]);
   function levelFilterButtonHandler(e) {
     console.log(
       "%c --> %cline:29%ce.target",
@@ -50,12 +57,7 @@ function QuestionFilter(props) {
         })
       );
     }
-    dispatch(questionDataActions.clearQuestionFilterIds);
-    const filteredQuestionIdList = SetFilteredQuestionIdList(
-      allQuestionsData.allQuestions,
-      allQuestionsData.currentFilters
-    );
-    dispatch(questionDataActions.setQuestionFilterIds(filteredQuestionIdList));
+
     // FilterQuestions(allQuestionsData);
   }
 
@@ -64,7 +66,7 @@ function QuestionFilter(props) {
       dispatch(
         questionDataActions.addToQuestionFilters({
           type: "topic",
-          value: e.target.value,
+          value: e.target.value.replace(/-/g, ""),
         })
       );
     } else {
@@ -75,7 +77,6 @@ function QuestionFilter(props) {
         })
       );
     }
-    SetFilteredQuestionIdList();
     // FilterQuestions(allQuestionsData);
   }
 
@@ -95,7 +96,6 @@ function QuestionFilter(props) {
         })
       );
     }
-    SetFilteredQuestionIdList();
     // FilterQuestions(allQuestionsData);
   }
 
