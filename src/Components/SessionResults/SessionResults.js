@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import styles from "./SessionResults.module.css";
 import { numberToText } from "../../hooks/utility";
+import Score from "../../Components/Score/Score";
 
 function SessionResults(props) {
   const questionHistory = useSelector(
@@ -34,6 +35,14 @@ function SessionResults(props) {
   return (
     <div id="session-results" className={styles.outerwrap}>
       <h1 className="iq-header">Session Results</h1>
+      <Score
+        title={false}
+        showResetBtn={true}
+        showCorrect={true}
+        showIncorrect={true}
+        showUnmarked={true}
+        showCount={true}
+      />
       <ul className={styles["session-results-container"]}>
         {questionHistoryRows.map((item) => item)}
       </ul>

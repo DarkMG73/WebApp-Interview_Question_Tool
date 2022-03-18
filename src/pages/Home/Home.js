@@ -12,6 +12,7 @@ import SessionResults from "../../Components/SessionResults/SessionResults";
 import OutputControls from "../../Components/OutputControls/OutputControls";
 import WorkArea from "../../Components/WorkArea/WorkArea";
 import AddAQuestion from "../../Components/AddAQuestion/AddAQuestion";
+import OptionsPanel from "../../Components/OptionsPanel/OptionsPanel";
 
 const Home = () => {
   const questionData = useSelector((state) => state.questionData);
@@ -45,6 +46,7 @@ const Home = () => {
       </CardSecondary>
       <CardPrimary>
         <Question />
+        <OptionsPanel />
       </CardPrimary>
       <CardSecondary>
         <NewQuestionButton />

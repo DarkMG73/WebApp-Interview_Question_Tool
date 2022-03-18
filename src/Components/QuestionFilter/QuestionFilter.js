@@ -45,7 +45,7 @@ function QuestionFilter(props) {
       dispatch(
         questionDataActions.addToQuestionFilters({
           type: "level",
-          value: e.target.value,
+          value: e.target.value.replace(/-/g, ""),
         })
       );
       SetFilteredQuestionIdList();
@@ -53,7 +53,7 @@ function QuestionFilter(props) {
       dispatch(
         questionDataActions.removeFromQuestionFilters({
           type: "level",
-          value: e.target.value,
+          value: e.target.value.replace(/-/g, ""),
         })
       );
     }
@@ -73,7 +73,7 @@ function QuestionFilter(props) {
       dispatch(
         questionDataActions.removeFromQuestionFilters({
           type: "topic",
-          value: e.target.value,
+          value: e.target.value.replace(/-/g, ""),
         })
       );
     }
@@ -85,18 +85,105 @@ function QuestionFilter(props) {
       dispatch(
         questionDataActions.addToQuestionFilters({
           type: "tags",
-          value: e.target.value,
+          value: e.target.value.replace(/-/g, ""),
         })
       );
     } else {
       dispatch(
         questionDataActions.removeFromQuestionFilters({
           type: "tags",
-          value: e.target.value,
+          value: e.target.value.replace(/-/g, ""),
         })
       );
     }
     // FilterQuestions(allQuestionsData);
+  }
+
+  console.log(
+    "%c ______> %cline:116%ccurrentFilters.topic",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(20, 68, 106);padding:3px;border-radius:2px",
+    currentFilters.topic
+  );
+
+  let selectionsOuput;
+  if (currentFilters.level.length <= 0) {
+    selectionsOuput = "all levels";
+  } else if (currentFilters.level.length >= 1) {
+    selectionsOuput = "the " + currentFilters.level[0] + "level";
+  } else {
+    selectionsOuput =
+      "the " +
+      currentFilters.level[0] +
+      " and " +
+      currentFilters.level[1] +
+      "levels";
+  }
+
+  if (currentFilters.topic.length === 1) {
+    let topic = currentFilters.topic[0];
+    if (topic === "noncoding") {
+      topic = hyphenate(topic, 3, "-");
+    }
+    selectionsOuput = selectionsOuput + " within the  " + topic + " topic";
+  } else if (currentFilters.topic.length >= 1) {
+    let tempArray = [...currentFilters.topic];
+    tempArray = tempArray.map((topic) => {
+      console.log(
+        "%c --> %cline:124%ctopic",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
+        topic
+      );
+      if (topic == "noncoding") {
+        console.log(
+          "%c --> %cline:132%ctopic == noncoding",
+          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+          "color:#fff;background:rgb(229, 187, 129);padding:3px;border-radius:2px",
+          topic === "noncoding"
+        );
+
+        topic = hyphenate(topic, 3, "-");
+      }
+      console.log(
+        "%c --> %cline:141%ctopic",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px",
+        topic
+      );
+      return topic;
+    });
+
+    console.log(
+      "%c --> %cline:123%ctempArray",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px",
+      tempArray
+    );
+
+    const lastTopic = tempArray.pop();
+    selectionsOuput =
+      selectionsOuput +
+      " within the " +
+      tempArray.toString() +
+      " and " +
+      lastTopic +
+      " topics";
+  }
+
+  if (currentFilters.tags.length === 1) {
+    selectionsOuput =
+      selectionsOuput + " with " + currentFilters.tags.toString();
+  } else if (currentFilters.tags.length >= 1) {
+    const tempArray = currentFilters.tags;
+    const lastTag = +currentFilters.tags.pop();
+    selectionsOuput =
+      selectionsOuput + " with the " + tempArray.toString() + "and " + lastTag;
   }
 
   return (
@@ -143,6 +230,10 @@ function QuestionFilter(props) {
             );
           })}
         </div>
+      </div>
+      <div className={styles["output-container"]}>
+        You have {filteredQuestionsIds.length} of {questionMetadata.id.length}{" "}
+        questions in {selectionsOuput}.
       </div>
     </div>
   );

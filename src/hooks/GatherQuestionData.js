@@ -1,6 +1,7 @@
 import questionHistory from "../data/questions-history.json";
 import DummyQuestionData from "../data/iq-all-questions.json";
 import { questionData } from "../storage/firebase.config";
+import storage from "./storage";
 
 export default async function GatherQuestionData() {
   console.log(
@@ -11,6 +12,8 @@ export default async function GatherQuestionData() {
     DummyQuestionData
   );
   const allQuestionsData = {};
+  const historyDataFromStorage = storage("get");
+
   allQuestionsData.allQuestions = {};
 
   const allQuestions = [];
@@ -34,11 +37,24 @@ export default async function GatherQuestionData() {
   allQuestions.forEach((questionData) => {
     allQuestionsData.allQuestions[questionData.id] = questionData;
   });
-  allQuestionsData.questionHistory = questionHistory[0];
+  allQuestionsData.questionHistory = historyDataFromStorage ?? {
+    incorrect: {},
+    correct: {},
+    unmarked: {},
+    stats: {},
+  };
   allQuestionsData.questionMetadata = gatherAllMetadata(allQuestions);
   // TODO: need to have read from saved history or be empty array.
   allQuestionsData.questionHistory.stats.usedIds = [];
   allQuestionsData.currentQuestionData = {};
+
+  console.log(
+    "%c GATHER QUESTIONS OUTPUT %cline:38%callQuestionsData",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(95, 92, 51);padding:3px;border-radius:2px",
+    allQuestionsData
+  );
 
   return allQuestionsData;
 }
