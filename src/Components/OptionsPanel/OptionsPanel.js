@@ -1,32 +1,52 @@
 import styles from "./OptionsPanel.module.css";
+import PushButton from "../../UI/Buttons/PushButton/PushButton";
 
 function OptionsPanel() {
+  function peakAtAnswerBtnHandler(e) {
+    console.log(e.target, " button clicked");
+  }
+  function aboutQuestionBtnHandler(e) {
+    console.log(e.target, " button clicked");
+  }
+  function newSessionRecordBtnHandler(e) {
+    console.log(e.target, " button clicked");
+  }
+
   return (
     <div id="options-panel" className={styles["inner-wrap"]}>
-      <button
+      <PushButton
+        inputOrButton="button"
         id="answer"
-        className="button wide-btn"
-        data-value="answer"
-        data-data=""
+        colorType="secondary"
+        value="answer"
+        data=""
+        size="small"
+        onClick={peakAtAnswerBtnHandler}
       >
         Peek at the Answer
-      </button>
-      <button
+      </PushButton>
+      <PushButton
+        inputOrButton="button"
         id="learn-question"
-        className="button wide-btn"
-        data-value="learn-question"
-        data-data=""
+        colorType="secondary"
+        value="learn-question"
+        data=""
+        size="small"
+        onClick={aboutQuestionBtnHandler}
       >
         About this Question
-      </button>
-      <button
+      </PushButton>
+      <PushButton
+        inputOrButton="button"
         id="session-record-btn"
-        className="button wide-btn"
-        data-value="session-record"
-        data-data=""
+        colorType="secondary"
+        value="session-record"
+        data=""
+        size="small"
+        onClick={newSessionRecordBtnHandler}
       >
         View Session Record
-      </button>
+      </PushButton>
     </div>
   );
 }

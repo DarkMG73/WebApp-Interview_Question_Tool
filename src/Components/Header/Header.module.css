@@ -1,3 +1,15 @@
+.outerwrap {
+  padding: 1em;
+}
+
+.iq-title {
+  margin: 0 auto;
+  font: var(--font-heading);
+  letter-spacing: var(--spacing-heading);
+}
 .iq-subtitle {
+  font: var(--font-subheading);
+  letter-spacing: var(--spacing-subheading);
   text-transform: capitalize;
+  margin: 0 auto;
 }

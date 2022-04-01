@@ -1,0 +1,13 @@
+.card-secondary {
+  display: flex;
+  flex-direction: column;
+  /* border: 3px solid red; */
+  background: var(--color-background-warm);
+  color: var(--color-accent);
+  padding: 2rem;
+  border-radius: 50px;
+}
+
+card-secondary a {
+  color: var(--color-accent);
+}

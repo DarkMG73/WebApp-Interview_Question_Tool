@@ -1,0 +1,134 @@
+.session-results-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* max-height: 10em; */
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 0 2em;
+  flex-direction: column;
+}
+
+.session-results-container > div {
+  min-width: 100%;
+  max-width: 100%;
+  min-height: max-content;
+
+  /* margin: 14rem auto; */
+  flex-basis: 25%;
+  /* max-height: 5em; */
+  max-width: 100%;
+  margin: 1% auto;
+  box-shadow: inset 0px 4px 4px rgba(255, 255, 255, 0.25),
+    inset 0px -4px 4px #d4d4ce;
+  border-radius: 50%;
+}
+
+.session-results-container > div > div {
+  display: grid;
+  grid-template:
+    auto/minmax(min-content, 5%) minmax(min-content, 10%) 70% minmax(
+      min-content,
+      10%
+    )
+    minmax(min-content, 5%);
+  grid-template-areas:
+    "topic level title time edit"
+    "topic tags title time edit"
+    " question question question question question"
+    " answer answer answer answer answer"
+    "link link link link link"
+    "search search search search search"
+    "credit credit credit credit credit";
+  /* border-radius: 50%; */
+  box-shadow: inset 0px -4px 4px rgb(0 0 0 / 38%), inset 0px 4px 4px #e4e4e4;
+  text-align: left;
+  word-break: break-word;
+}
+
+.grid-item {
+  position: relative;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font: var(--font-subheading);
+  font-size: 1rem;
+}
+.grid-item-title {
+  margin-right: 1em;
+  opacity: 0.5;
+  font-size: 1rem;
+}
+
+.grid-item-title::first-letter {
+  text-transform: capitalize;
+}
+
+.grid-item-text {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+.grid-item-child {
+  position: relative;
+}
+.id,
+.title-title {
+  display: none;
+}
+.level {
+  grid-area: level;
+  padding-bottom: 0;
+}
+.topic {
+  grid-area: topic;
+  justify-content: center;
+}
+.tags {
+  grid-area: tags;
+  padding-top: 0;
+}
+.tags,
+.level {
+  flex-direction: row;
+}
+.time {
+  grid-area: time;
+}
+.title {
+  grid-area: title;
+  font: var(--font-subheading);
+}
+.question {
+  grid-area: question;
+}
+.answer {
+  grid-area: answer;
+}
+.answer > .grid-item-text,
+.question > .grid-item-text {
+  font: var(--font-body-text);
+  font-weight: 500;
+  border-radius: 27px;
+  border: 1px solid var(--color-accent);
+  padding: 1em 2em;
+  margin: 1em auto;
+  width: 100%;
+  max-width: 100%;
+}
+.question,
+.answer {
+  background: var(--color-background);
+  color: var(--color-background-contrast);
+}
+.search {
+  grid-area: search;
+}
+.credit {
+  grid-area: credit;
+}
+.link {
+  grid-area: link;
+}
+button.edit {
+  /* Set within prop passed to button component */
+}

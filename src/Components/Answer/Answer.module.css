@@ -1,0 +1,24 @@
+.outer-wrap {
+  padding: 0 5vw;
+  min-height: 15em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.inner-wrap {
+  padding: 0 5vw;
+  min-height: 15em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  font-size: calc(1rem + 0.5vw);
+  margin-top: 0;
+}
+
+.text {
+  font-size: calc(1rem + 0.25vw);
+}

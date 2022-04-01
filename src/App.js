@@ -1,6 +1,6 @@
 import "./App.css";
 import Home from "./pages/Home/Home";
-import CardPrimary from "./UI/Cards/Card-Primary/Card-Primary";
+import CardPrimarySquareTop from "./UI/Cards/CardPrimary/CardPrimarySquareTop";
 import Header from "./Components/Header/Header";
 import Nav from "./Components/Nav/Nav";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,7 +25,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <CardPrimary>{currentState.questionMetadata && <Header />}</CardPrimary>
+        <CardPrimarySquareTop>
+          {currentState.questionMetadata && <Header />}
+        </CardPrimarySquareTop>
       </header>
       {currentState.allQuestions && <Home />}
     </div>

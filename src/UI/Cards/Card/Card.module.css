@@ -1,8 +1,13 @@
+.card {
+  margin: 0.5rem 0;
+}
+
 .header {
   display: flex;
   flex-direction: column;
   /* border: 3px solid red; */
-  background: blue;
+  background: var(--color-background);
+  color: var(--color-background-contrast);
   padding: 2rem;
   border-radius: 50px;
 }

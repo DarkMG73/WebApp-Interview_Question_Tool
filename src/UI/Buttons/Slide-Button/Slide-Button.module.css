@@ -21,7 +21,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--color-background-warm);
+  box-shadow: inset 1px 1px 7px -5px black,
+    inset 30px 30px 30px -15px rgba(0, 0, 0, 0.077), 1px 1px 7px -5px white,
+    inset -1px -1px 7px -5px white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -33,7 +36,10 @@
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: var(--color-background-warm);
+  box-shadow: inset -1px -1px 7px -5px black,
+    inset 30px 30px 30px -15px rgba(255, 255, 255, 0.509),
+    1px 1px 7px -5px white, inset 1px 1px 7px -5px white, 2px 2px 7px -5px black;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -63,16 +69,19 @@ input:checked + .slider:before {
 
 .slide-button-wrap {
   display: flex;
-  margin: 0.25em auto;
+  margin: 0.5em auto;
   min-width: 9em;
   flex-grow: 1;
-  justify-content: right;
-}
-
-.title {
-  margin: 0 1em 0 0;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .title::first-letter {
   text-transform: capitalize;
+}
+
+.title {
+  font: var(--font-body-text);
+  min-width: 100%;
+  margin: 0.5em auto 0.25em;
 }

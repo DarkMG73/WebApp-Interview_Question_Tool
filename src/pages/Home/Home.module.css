@@ -1,8 +1,8 @@
 .page-wrap {
   display: flex;
   flex-direction: column;
-  background-color: #f6f6f6;
-  padding: 2rem;
+  /* background-color: #f6f6f6; */
+  padding: 0.5rem 2rem 2rem;
   width: 100%;
   max-width: 1200px;
 }

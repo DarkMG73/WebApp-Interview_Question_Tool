@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "./Home.module.css";
-import CardPrimary from "../../UI/Cards/Card-Primary/Card-Primary";
-import CardSecondary from "../../UI/Cards/Card-Secondary/Card-Secondary";
-import SlideButton from "../../UI/Buttons/Slide-Button/Slide-Button";
-import { hyphenate, numberToText } from "../../hooks/utility";
+import CardPrimary from "../../UI/Cards/CardPrimary/CardPrimary";
+import CardSecondary from "../../UI/Cards/CardSecondary/CardSecondary";
+import CardTransparent from "../../UI/Cards/CardTransparent/CardTransparent";
 import NewQuestionButton from "../../Components/NewQuestionButton/NewQuestionButton";
 import Question from "../../Components/Question/Question";
 import QuestionFilter from "../../Components/QuestionFilter/QuestionFilter";
@@ -12,12 +11,9 @@ import SessionResults from "../../Components/SessionResults/SessionResults";
 import OutputControls from "../../Components/OutputControls/OutputControls";
 import WorkArea from "../../Components/WorkArea/WorkArea";
 import AddAQuestion from "../../Components/AddAQuestion/AddAQuestion";
-import OptionsPanel from "../../Components/OptionsPanel/OptionsPanel";
 
 const Home = () => {
   const questionData = useSelector((state) => state.questionData);
-  const questionMetadata = questionData.questionMetadata;
-  const questionHistory = questionData.questionHistory;
   const allQuestions = questionData.allQuestions;
   const filteredQuestionsIds = questionData.filteredQuestionsIds;
 
@@ -46,17 +42,16 @@ const Home = () => {
       </CardSecondary>
       <CardPrimary>
         <Question />
-        <OptionsPanel />
       </CardPrimary>
-      <CardSecondary>
+      <CardTransparent>
         <NewQuestionButton />
-      </CardSecondary>
+      </CardTransparent>
       <CardPrimary>
         <WorkArea />
       </CardPrimary>
-      <CardSecondary>
+      <CardPrimary>
         <SessionResults />
-      </CardSecondary>
+      </CardPrimary>
       <CardPrimary>
         <OutputControls />
       </CardPrimary>

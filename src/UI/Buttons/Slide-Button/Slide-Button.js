@@ -6,6 +6,7 @@ const SlideButton = (props) => {
       <span className={styles.title}>{props.label}</span>
       <label className={styles.switch}>
         <input
+          key={props.label}
           type="checkbox"
           name={props.label}
           onClick={props.onClick}

@@ -6,6 +6,7 @@
       "level":"advanced",
       "link":"https://adamsilver.io/articles/in-defence-of-graceful-degradation-and-where-progressive-enhancement-comes-in/",
       "question":"",
+      "tags": "angular, react, three, two,  testing",
       "search":"Graceful degradation JavaScript",
       "title":" What is graceful degradation in JavaScript?",
       "topic":"javascript"
@@ -19,7 +20,8 @@
       "question":"",
       "search":"html css wrap text image best practices",
       "title":" What ways can we align images and wrap text?",
-      "topic":"html"
+      "topic":"html",
+      "tags": "two"
    },
    "2":{
       "answer":"This answer comes from:\n\nhttps://rohan-paul.github.io/javascript/2018/04/29/3-sum-with-JavaScript/.\n\nGreat detail exists there, but the code is:\n\n// Best 2-Pointer solution of 3-Sum I could arrive at\nvar threeSum3 = function (nums) {\n  nums.sort((a, b) => a - b);\n\n  const result = [];\n  for (let indexA = 0; indexA < nums.length - 2; indexA++) {if (window.CP.shouldStopExecution(0)) break;\n    const a = nums[indexA];\n\n    if (a > 0) return result;\n    if (a === nums[indexA - 1]) continue;\n\n    let indexB = indexA + 1;\n    let indexC = nums.length - 1;\n\n    // Now check if sum is zero, and if NOT, then run the next set of 2 if loop to update indexB and indexC\n    while (indexB < indexC) {if (window.CP.shouldStopExecution(1)) break;\n      const b = nums[indexB];\n      const c = nums[indexC];\n\n      if (a + b + c === 0) {\n        result.push([a, b, c]);\n      }\n\n      // Now with the below 2 if functions, I am just implementing how the indexB and indexC will be incremented and decremented with each iteration and gets feeded back to the above while function ( while (indexB < indexC ))\n\n      if (a + b + c >= 0) {\n        while (nums[indexC - 1] === c) {if (window.CP.shouldStopExecution(2)) break;indexC--;} // This is equivalent to continue in my previous implementation\n        window.CP.exitedLoop(2);indexC--;\n      }\n\n      if (a + b + c <= 0) {\n        while (nums[indexB + 1] === b) {if (window.CP.shouldStopExecution(3)) break;indexB++;} // This is equivalent to continue in my previous implementation\n        window.CP.exitedLoop(3);indexB++;\n      }\n    }window.CP.exitedLoop(1);\n  }window.CP.exitedLoop(0);\n  return result;\n};",
@@ -30,7 +32,8 @@
       "question":"Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.\n\nNote:\n\nThe solution set must not contain duplicate triplets.\n\nExample:\n\nGiven array nums = [-1, 0, 1, 2, -1, -4],\n\nA solution set is:\n[\n  [-1, 0, 1],\n  [-1, -1, 2]\n]",
       "search":"3 Sum JavaScript",
       "title":"3Sum",
-      "topic":"algorithms"
+      "topic":"algorithms",
+      "tags": "two"
    },
    "3":{
       "answer":"This solution comes from:\nhttps://leetcode.com/problems/4sum-ii/discuss/421476/JavaScript-Solution\n\n\n/**\n * @param {number[]} A\n * @param {number[]} B\n * @param {number[]} C\n * @param {number[]} D\n * @return {number}\n */\nvar fourSumCount = function(A, B, C, D) {\n    let count = 0;\n    const dict = {};\n    \n    for (const a of A) {\n        for (const b of B) {\n            const currSum = a + b;\n            \n            if (!dict[currSum]) {\n                dict[currSum] = 0;\n            }\n            \n            dict[currSum]++;\n        }\n    }\n    \n    for (const c of C) {\n        for (const d of D) {\n            const currSum = c + d;\n            \n            if (dict[-currSum]) {\n                count += dict[-currSum];\n            }   \n        }\n    }\n    \n    return count;\n};",
@@ -41,7 +44,8 @@
       "question":"Given four lists A, B, C, D of integer values, compute how many tuples (i, j, k, l) there are such that A[i] + B[j] + C[k] + D[l] is zero.\n\nTo make problem a bit easier, all A, B, C, D have same length of N where 0 ≤ N ≤ 500. All integers are in the range of -228 to 228 - 1 and the result is guaranteed to be at most 231 - 1.\n\nExample:\n\nInput:\nA = [ 1, 2]\nB = [-2,-1]\nC = [-1, 2]\nD = [ 0, 2]\n\nOutput:\n2\n\nExplanation:\nThe two tuples are:\n1. (0, 0, 0, 1) -> A[0] + B[0] + C[0] + D[1] = 1 + (-2) + (-1) + 2 = 0\n2. (1, 1, 0, 0) -> A[1] + B[1] + C[0] + D[0] = 2 + (-1) + (-1) + 0 = 0\n",
       "search":"\"javaScript\" \"4Sum II\"",
       "title":"4Sum II",
-      "topic":"algorithms"
+      "topic":"algorithms",
+      "tags": "one"
    },
    "4":{
       "answer":"f = n => n ?\n{\n    value: n % 10,\n    next: f(n / 10 | 0)\n} : null\n\nf = (linkedList1, linkedList2, result = 0) => linkedList1 && linkedList2 &&\n{\n    value: (result += linkedList1.value + linkedList2.value) % 10,\n\n    next: f(linkedList1.next, linkedList2.next, result / 10 | 0)\n} || null\n\nlet linkedList1 = { value: 6, next: { value: 7, next: { value: 3 }}};\n\nlet linkedList2 = { value: 8, next: { value: 9, next: { value: 4 }}};\n\nconsole.log( f(linkedList1, linkedList2));\n\n// Input:  6 -> 7 -> 3 \n//         8 -> 9 -> 4\n\n// Output: 4 -> 7 -> 8\n\n// O(nodesIn1 + nodesIn2);",
@@ -2389,7 +2393,7 @@
       "link":"https://www.edureka.co/blog/interview-questions/react-interview-questions/",
       "question":"",
       "search":"react vd angular",
-      "tags":"react, angular",
+      "tags":"angular, react, test",
       "title":"How is React different from Angular?",
       "topic":"javascript"
    },

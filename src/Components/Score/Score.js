@@ -8,25 +8,10 @@ function Score(props) {
 
   const totalQuestions = filteredQuestionsIds.length;
   const { correct, incorrect, unmarked } = questionHistory;
-  console.log(
-    "%c --> %cline:8%cscoreData",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(38, 157, 128);padding:3px;border-radius:2px",
-    questionHistory
-  );
   const correctAmount = tallyItemsInObject(correct);
   const incorrectAmount = tallyItemsInObject(incorrect);
   const unmarkedAmount = tallyItemsInObject(unmarked);
   const totalCompleted = correctAmount + incorrectAmount + unmarkedAmount;
-
-  console.log(
-    "%c --> %cline:17%cquestionsCompleted",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(56, 13, 49);padding:3px;border-radius:2px",
-    totalCompleted
-  );
 
   function tallyItemsInObject(obj) {
     let output = 0;

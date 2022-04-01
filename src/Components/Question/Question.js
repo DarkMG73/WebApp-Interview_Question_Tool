@@ -1,6 +1,8 @@
 import styles from "./Question.module.css";
 import { useSelector, useEffect } from "react-redux";
 import { numberToText } from "../../hooks/utility";
+import Card from "../../UI/Cards/Card/Card";
+import OptionsPanel from "../../Components/OptionsPanel/OptionsPanel";
 
 function Question(props) {
   const currentQuestionData = useSelector(
@@ -60,10 +62,17 @@ function Question(props) {
       )}
       {questionText && (
         <div className={styles["question-text-wrap"]}>
-          <h3>{questionText}</h3>
-          <p>{currentQuestionData.question}</p>
+          <h3 className={styles["question-title"]}>{questionText}</h3>
+          {currentQuestionData.question && (
+            <pre className={styles["question-text"]}>
+              <code className={styles.code}>
+                {currentQuestionData.question}
+              </code>
+            </pre>
+          )}
         </div>
       )}
+      <OptionsPanel />
     </div>
   );
 }

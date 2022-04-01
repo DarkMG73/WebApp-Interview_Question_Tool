@@ -1,0 +1,13 @@
+.card-primary {
+  display: flex;
+  flex-direction: column;
+  /* border: 3px solid red; */
+  background: var(--color-accent);
+  color: var(--color-background-warm);
+  padding: 2rem;
+  border-radius: 50px;
+}
+
+.card-priimary a {
+  color: var(--color-background-warm);
+}

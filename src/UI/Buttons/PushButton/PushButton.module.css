@@ -1,0 +1,58 @@
+.button {
+  margin: 0 0.5em;
+  box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
+    inset 1px -1px 1px rgb(0 0 0 / 15%), 1px 1px 5px -3px black;
+  border: none;
+  background: inherit;
+  color: inherit;
+  border-radius: 0.25em;
+  padding: 0.5em 1em;
+  margin-top: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s all ease;
+}
+
+.button:hover {
+  text-shadow: 0 0 1px;
+  transform: scale(1.1);
+  transition: 0.1s all ease;
+}
+
+/* Color Control */
+.button.primary {
+  background: var(--color-accent);
+  color: var(--color-background-warm);
+}
+
+.button.secondary {
+  background: var(--color-background-warm);
+  color: var(--color-accent);
+}
+
+.button.basic {
+  background: var(--color-background);
+  color: var(--color-background-contrast);
+}
+
+/* Font Control */
+.button.heading {
+  letter-spacing: var(--spacing-heading);
+}
+.button.heading-2 {
+  font: var(--font-heading-2);
+  letter-spacing: var(--spacing-heading);
+}
+.button.subheading {
+  font: var(-font-subheading);
+  letter-spacing: var(--spacing-subheading);
+}
+.button.body {
+  font: var(--font-body-text);
+  font-weight: 700;
+}
+.button.small {
+  font: var(--font-body-text);
+  font-size: 0.75em;
+  font-weight: 700;
+}
