@@ -147,7 +147,7 @@ function QuestionFilter(props) {
 
   return (
     <div id="question-filter" className={styles.outerwrap}>
-      <h2 className={styles["section-title"]}>Question Filter</h2>
+      <h2 class="section-title">Question Filter</h2>
       <div className={styles["slide-button-wrap"]}>
         <div className={styles["slide-button-inner-wrap"]}>
           <h3 className={styles["slide-button-inner-wrap-title"]}>Levels</h3>

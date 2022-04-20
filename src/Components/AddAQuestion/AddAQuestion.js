@@ -1,11 +1,42 @@
+import { useState } from "react";
 import styles from "./AddAQuestion.module.css";
 import { numberToText } from "../../hooks/utility";
+import PushButton from "../../UI/Buttons/PushButton/PushButton";
+import AddAQuestionForm from "./AddAQuestionForm";
+import LoginHooks from "../../hooks/GoogleAuth/LoginHooks";
+import LogoutHooks from "../../hooks/GoogleAuth/LogoutHooks";
 
 function AddAQuestion(props) {
+  const [showAddQuestionForm, setShowAddQuestionForm] = useState(false);
+
+  function logInButtonHandler() {
+    console.log("click");
+  }
+  function logOutButtonHandler() {
+    console.log("click");
+  }
+  function showNewQuestionFormButtonHandler() {
+    console.log(
+      "%c --> %cline:8%cshowAddQuestionForm",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(251, 178, 23);padding:3px;border-radius:2px",
+      showAddQuestionForm
+    );
+    console.log("click");
+    setShowAddQuestionForm(!showAddQuestionForm);
+    console.log(
+      "%c --> %cline:8%cshowAddQuestionForm",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(251, 178, 23);padding:3px;border-radius:2px",
+      showAddQuestionForm
+    );
+  }
   return (
     <div id="output-controls" className={styles.outerwrap}>
       <div id="add-quest-wrap" className={styles["add-quest-wrap"]}>
-        <h2>Add Questions Here</h2>
+        <h2 class="section-title">Add Questions Here</h2>
         <p>
           To add questions to this tool, simply click the{" "}
           <i>Create an Entry Form</i> button and fill out the small form. Feel
@@ -21,28 +52,49 @@ function AddAQuestion(props) {
         >
           <p>
             Database login status: <span id="db-login-status"></span>
+            <LoginHooks />
+            <LogoutHooks />
           </p>
-          <button id="login-to-db" className={styles["button"]}>
+          <PushButton
+            inputOrButton="button"
+            id="login-to-db"
+            colorType="primary"
+            value="login to db"
+            data=""
+            size="small"
+            onClick={logInButtonHandler}
+          >
             Log In
-          </button>
-          <button id="logout-from-db" className={styles["button"]}>
-            Log Out
-          </button>
+          </PushButton>
+          <PushButton
+            inputOrButton="button"
+            id="logout-from-db"
+            colorType="primary"
+            value="logout from db"
+            data=""
+            size="small"
+            onClick={logOutButtonHandler}
+          >
+            LogOut
+          </PushButton>
+          <PushButton
+            inputOrButton="button"
+            id="create-entry-btn"
+            colorType="primary"
+            value="Add a Question"
+            data=""
+            size="small"
+            onClick={showNewQuestionFormButtonHandler}
+          >
+            {showAddQuestionForm && (
+              <span>
+                <b>Cancel</b> the Question Entry Form
+              </span>
+            )}
+            {!showAddQuestionForm && <span>Show the Question Entry Form</span>}
+          </PushButton>
+          {showAddQuestionForm && <AddAQuestionForm />}
         </div>
-        <button id="create-entry-btn" className={styles["button"]}>
-          Create an Entry Form
-        </button>
-        <form
-          action=""
-          id="add-quest-form"
-          className={styles["inner-wrap form"]}
-        >
-          <input
-            type="submit"
-            id="quest-submit-btn"
-            className={styles["button"]}
-          />
-        </form>
       </div>
     </div>
   );

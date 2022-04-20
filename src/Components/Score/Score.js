@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import styles from "./Score.module.css";
+import storage from "../../hooks/storage";
 
 function Score(props) {
   const { questionHistory, filteredQuestionsIds } = useSelector(
@@ -12,6 +13,11 @@ function Score(props) {
   const incorrectAmount = tallyItemsInObject(incorrect);
   const unmarkedAmount = tallyItemsInObject(unmarked);
   const totalCompleted = correctAmount + incorrectAmount + unmarkedAmount;
+
+  const resetSessionButtonHandler = (e) => {
+    console.log("Edit Clicked", e.target);
+    storage("delete");
+  };
 
   function tallyItemsInObject(obj) {
     let output = 0;
@@ -53,7 +59,11 @@ function Score(props) {
           </div>
         )}
         {props.showResetBtn && (
-          <button id="reset-btn" className={styles["inner-wrap button"]}>
+          <button
+            id="reset-btn"
+            className={styles["inner-wrap button"]}
+            onClick={resetSessionButtonHandler}
+          >
             Reset Session
           </button>
         )}

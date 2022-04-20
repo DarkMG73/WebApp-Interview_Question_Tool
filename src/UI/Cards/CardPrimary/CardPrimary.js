@@ -7,6 +7,7 @@ const CardPrimary = (props) => {
       className={
         styles.header + " " + cardStyles.card + " " + styles["card-primary"]
       }
+      style={props.styles}
     >
       {props.children}
     </div>

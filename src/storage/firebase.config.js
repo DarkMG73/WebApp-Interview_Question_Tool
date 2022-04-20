@@ -1,5 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
 // Follow this pattern to import other Firebase services
 // import { } from 'firebase/<service>';
 
@@ -33,6 +40,42 @@ async function getDBData(db, name) {
   const cityList = citySnapshot.docs.map((doc) => doc.data());
   return cityList;
 }
+
+async function addDocument(dbName, id, dataObject, refresh) {
+  try {
+    const docRef = await setDoc(doc(db, dbName, id), dataObject);
+    console.log("Document written with ID: ", id, docRef);
+    alert("Document written with ID: " + id);
+    if (refresh) {
+      window.location.href = window.location.href;
+    }
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+async function removeDocument(dbName, id) {
+  try {
+    const docRef = await deleteDoc(doc(db, dbName, id));
+    console.log("Document deleted with an ID of: ", id, docRef);
+    alert("Document deleted with an ID of: " + id);
+  } catch (e) {
+    console.error("Error removing document: ", e);
+  }
+}
+
+// Get DB Data
 export const questionData = getDBData(db, "interview_questions");
+
+// Add a document to the database
+export const addDocToDB = function (id, dataObject) {
+  addDocument("interview_questions", id, dataObject);
+};
+
+// Delete a document to the database
+export const deleteDocFromDb = function (id) {
+  removeDocument("interview_questions", id);
+};
+
 console.log("🔵 | questionData", questionData);
 export default db;

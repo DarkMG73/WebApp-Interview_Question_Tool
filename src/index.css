@@ -34,3 +34,8 @@ code {
     monospace; */
   white-space: pre-wrap;
 }
+
+.section-title {
+  font: var(--font-heading-2);
+  letter-spacing: var(--spacing-heading);
+}

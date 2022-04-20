@@ -1,7 +1,3 @@
-.section-title {
-  font: var(--font-heading-2);
-  letter-spacing: var(--spacing-heading);
-}
 .slide-button-wrap {
   display: flex;
   flex-direction: column;

@@ -32,7 +32,7 @@ function Answer() {
   return (
     <CardPrimary>
       <div className={styles["outer-wrap"]}>
-        <h3 className={styles.title}>The Answer</h3>
+        <h2 class="section-title">The Answer</h2>
         <div className={styles["inner-wrap"]}>
           <Card>
             <p className={styles.text}>{answerText}</p>

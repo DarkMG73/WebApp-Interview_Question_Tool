@@ -13,7 +13,7 @@ function Question(props) {
   if (currentQuestionData) questionText = currentQuestionData.title;
   return (
     <div id="question" className={styles.outerwrap}>
-      <h1 className="iq-header">Question</h1>
+      <h2 class="section-title">Question</h2>
       {!questionText && (
         <div>
           <div id="question-wrap" className="inner-wrap">
