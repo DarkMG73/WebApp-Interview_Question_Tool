@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/WebApp-Interview_Question_Tool/static/css/main.7e77507f.css",
+    "main.js": "/WebApp-Interview_Question_Tool/static/js/main.3794033d.js",
+    "static/js/787.6f86f6e2.chunk.js": "/WebApp-Interview_Question_Tool/static/js/787.6f86f6e2.chunk.js",
+    "index.html": "/WebApp-Interview_Question_Tool/index.html",
+    "main.7e77507f.css.map": "/WebApp-Interview_Question_Tool/static/css/main.7e77507f.css.map",
+    "main.3794033d.js.map": "/WebApp-Interview_Question_Tool/static/js/main.3794033d.js.map",
+    "787.6f86f6e2.chunk.js.map": "/WebApp-Interview_Question_Tool/static/js/787.6f86f6e2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7e77507f.css",
+    "static/js/main.3794033d.js"
+  ]
+}
