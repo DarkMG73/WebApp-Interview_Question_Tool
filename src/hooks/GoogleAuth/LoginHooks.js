@@ -3,7 +3,7 @@ import { useGoogleLogin } from "react-google-login";
 import { refreshTokenSetup } from "../utility";
 
 const clientId =
-  "707788443358-u05p46nssla3l8tmn58tpo9r5sommgks.apps.googleusercontent.com";
+  "103146158602-rpj49og34f5fufu488pk8prb12j8bb9a.apps.googleusercontent.com";
 
 function LoginHooks() {
   const onSuccess = (res) => {

@@ -1,4 +1,5 @@
 import "./App.css";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import CardPrimarySquareTop from "./UI/Cards/CardPrimary/CardPrimarySquareTop";
 import Header from "./Components/Header/Header";
@@ -6,7 +7,6 @@ import Nav from "./Components/Nav/Nav";
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import GatherQuestionData from "./hooks/GatherQuestionData";
-
 import { questionDataActions } from "./store/questionDataSlice";
 
 function App() {

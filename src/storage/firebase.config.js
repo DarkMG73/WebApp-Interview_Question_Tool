@@ -7,6 +7,7 @@ import {
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 // Follow this pattern to import other Firebase services
 // import { } from 'firebase/<service>';
 
@@ -32,6 +33,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+export const auth = getAuth(app);
 
 // Get a list of cities from your database
 async function getDBData(db, name) {

@@ -1,7 +1,7 @@
 {
   "name": "interview-questions-tool",
   "version": "0.1.0",
-   "homepage": "https://darkmg73.github.io/WebApp-Interview_Question_Tool",
+  "homepage": "http://interview-questions.glassinteractive.com/",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.2",
@@ -15,6 +15,7 @@
     "react-google-login": "^5.2.2",
     "react-iframe": "^1.8.0",
     "react-redux": "^7.2.6",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
     "redux": "^4.1.2",
     "web-vitals": "^2.1.4"
@@ -24,8 +25,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-"predeploy": "npm run build",
-"deploy": "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

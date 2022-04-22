@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -7,13 +8,15 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 // import store from "./store-TRASH/index";
 
-ReactDOM.render(
+ReactDOM.render(<Router basename={process.env.PUBLIC_URL}>
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+  
+        <App />
+  
     </Provider>
     ,
-  </React.StrictMode>,
+  </React.StrictMode></Router>,
   document.getElementById("root")
 );
 
