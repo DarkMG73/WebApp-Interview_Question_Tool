@@ -75,7 +75,7 @@ function AddAQuestion(props) {
       setLoginError(false);
     } catch (error) {
       setLoginError(
-        "Unfortunately, we could not log you in. Here is the error we received: " +
+        "Unfortunately, we could not log you out. Please contact general@glassinteractive.com if the problem continues. Error received: " +
           error.message.replace("Firebase", "")
       );
       console.log(
@@ -123,85 +123,100 @@ function AddAQuestion(props) {
           id="db-login-wrap"
           className={`${styles["inner-wrap "]}  ${styles["db-login"]}`}
         >
+          <p>Database login status:</p>
           <p>
-            Database login status:
-            <span id="db-login-status">
+            <span id="db-login-status" className={styles["db-login-status"]}>
               {user ? (
-                <span> {user.email} is logged in. </span>
+                <span className={styles["login-text"]}>
+                  {" "}
+                  {user.email} is logged in.{" "}
+                </span>
               ) : (
-                <span> No one is currently logged in.</span>
+                <span
+                  className={
+                    styles["login-text"] + " " + styles["not-logged-in-text"]
+                  }
+                >
+                  {" "}
+                  No one is currently logged in.
+                </span>
               )}
             </span>
           </p>
-          {!user && (
-            <PushButton
-              inputOrButton="button"
-              id="login-to-db"
-              colorType="primary"
-              value="login to db"
-              data=""
-              size="small"
-              onClick={logInButtonHandler}
-            >
-              Log In
-            </PushButton>
-          )}
-          {showLoginForm && !user ? (
-            <form name="login-form" onSubmit={logInSubmitHandler}>
-              <label for="login-email">Email Address</label>
-              <input
-                type="text"
-                name="login-email"
-                onChange={(e) => {
-                  setLoginEmail(e.target.value);
-                }}
-              />
-
-              <label for="login-password">Email Address</label>
-              <input
-                type="text"
-                name="login-password"
-                onChange={(e) => {
-                  setLoginPassword(e.target.value);
-                }}
-              />
-
-              <input type="submit" value="Submit" />
-            </form>
-          ) : (
-            ""
-          )}
-
-          {user && (
-            <PushButton
-              inputOrButton="button"
-              id="logout-from-db"
-              colorType="primary"
-              value="logout from db"
-              data=""
-              size="small"
-              onClick={logOutButtonHandler}
-            >
-              LogOut
-            </PushButton>
-          )}
-          {loginError && <p>{loginError}</p>}
-          <PushButton
-            inputOrButton="button"
-            id="create-entry-btn"
-            colorType="primary"
-            value="Add a Question"
-            data=""
-            size="small"
-            onClick={showNewQuestionFormButtonHandler}
-          >
-            {showAddQuestionForm && (
-              <span>
-                <b>Cancel</b> the Question Entry Form
-              </span>
+          <div className={styles["button-container"]}>
+            {!user && (
+              <PushButton
+                inputOrButton="button"
+                id="login-to-db"
+                colorType="primary"
+                value="login to db"
+                data=""
+                size="small"
+                onClick={logInButtonHandler}
+              >
+                Log In
+              </PushButton>
             )}
-            {!showAddQuestionForm && <span>Show the Question Entry Form</span>}
-          </PushButton>
+
+            {showLoginForm && !user ? (
+              <form name="login-form" onSubmit={logInSubmitHandler}>
+                <label for="login-email">Email Address</label>
+                <input
+                  type="text"
+                  name="login-email"
+                  onChange={(e) => {
+                    setLoginEmail(e.target.value);
+                  }}
+                />
+
+                <label for="login-password">Email Address</label>
+                <input
+                  type="text"
+                  name="login-password"
+                  onChange={(e) => {
+                    setLoginPassword(e.target.value);
+                  }}
+                />
+
+                <input type="submit" value="Submit" />
+              </form>
+            ) : (
+              ""
+            )}
+
+            {user && (
+              <PushButton
+                inputOrButton="button"
+                id="logout-from-db"
+                colorType="primary"
+                value="logout from db"
+                data=""
+                size="small"
+                onClick={logOutButtonHandler}
+              >
+                LogOut
+              </PushButton>
+            )}
+            {loginError && <p>{loginError}</p>}
+            <PushButton
+              inputOrButton="button"
+              id="create-entry-btn"
+              colorType="primary"
+              value="Add a Question"
+              data=""
+              size="small"
+              onClick={showNewQuestionFormButtonHandler}
+            >
+              {showAddQuestionForm && (
+                <span>
+                  <b>Cancel</b> the Question Entry Form
+                </span>
+              )}
+              {!showAddQuestionForm && (
+                <span>Show the Question Entry Form</span>
+              )}
+            </PushButton>
+          </div>
           {showAddQuestionForm && <AddAQuestionForm />}
         </div>
       </div>

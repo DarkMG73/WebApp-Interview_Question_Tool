@@ -1,7 +1,33 @@
-.db-login {
-  color: red;
+.db-login-status {
+  margin: 1em;
+}
+
+.login-text {
+  padding: 0.5em;
+  margin: 2em auto;
+  background-color: var(--color-accent);
+  color: var(--color-background);
+}
+
+.not-logged-in-text {
+  background-color: var(--color-accent);
+  color: var(--color-background);
+  font-weight: 700;
 }
 
 .inner-wrap {
   background: green;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container > * {
+  max-width: 18rem;
+  width: 200px;
+  flex-grow: 1;
 }
