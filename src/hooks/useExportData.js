@@ -4,6 +4,7 @@ const useExportData = (props) => {
   const { questionHistory, filteredQuestionsIds } = useSelector(
     (state) => state.questionData
   );
+  if (!filteredQuestionsIds) return null;
   const totalQuestions = filteredQuestionsIds.length;
   const { correct, incorrect, unmarked } = questionHistory;
   const correctAmount = tallyItemsInObject(correct);
@@ -21,20 +22,6 @@ const useExportData = (props) => {
   }
 
   const generateExport = function (props) {
-    console.log(
-      "%c --> %cline:94%ctype",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(39, 72, 98);padding:3px;border-radius:2px",
-      props.type
-    );
-    console.log(
-      "%c --> %cline:31%ctype === json",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
-      props.type === "json"
-    );
     if (props.type === "json") {
       exportJSON(questionHistory, score, totalQuestions);
     } else {
@@ -51,30 +38,8 @@ const useExportData = (props) => {
       };
 
       const itemsReadyForCVS = formatAnObject(questionHistory["incorrect"]);
-      console.log(
-        "%c --> %cline:34%cquestionHistory",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(229, 187, 129);padding:3px;border-radius:2px",
-        questionHistory
-      );
-      console.log(
-        "%c --> %cline:34%citemsReadyForCVS",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(95, 92, 51);padding:3px;border-radius:2px",
-        itemsReadyForCVS
-      );
-
       // format the data
       function formatAnObject(obj) {
-        console.log(
-          "%c --> %cline:44%cobj",
-          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-          "color:#fff;background:rgb(248, 214, 110);padding:3px;border-radius:2px",
-          obj
-        );
         var itemsFormatted = [];
         let count = 1;
         for (const key in obj) {
@@ -97,13 +62,6 @@ const useExportData = (props) => {
 
       const fileName = prompt("What would you like to name the file?");
       let exportFileName = fileName || "interview_questions_list.json";
-      console.log(
-        "%c --> %cline:64%cexportFileName",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(248, 147, 29);padding:3px;border-radius:2px",
-        exportFileName
-      );
       exportCSVFile(headers, itemsReadyForCVS, exportFileName); // call the exportCSVFile() function to process the JSON and trigger the download
     }
   };

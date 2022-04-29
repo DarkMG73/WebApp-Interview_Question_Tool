@@ -63,6 +63,7 @@
   grid-area: levelAndTags;
   align-self: center;
   flex-direction: row;
+  min-width: fit-content;
 }
 .time {
   grid-area: time;
@@ -115,4 +116,12 @@ button.edit {
 .button-container {
   display: flex;
   flex-direction: column;
+}
+
+.deleted {
+  border-radius: 3px !important;
+  font-size: 1.5em !important;
+  box-shadow: inset 1px 1px 7px -5px black, inset -4px -4px 7px -5px white !important;
+  padding: 1em !important;
+  opacity: 0.7 !important;
 }

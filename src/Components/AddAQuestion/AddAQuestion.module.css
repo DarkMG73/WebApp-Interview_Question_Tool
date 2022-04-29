@@ -5,8 +5,10 @@
 .login-text {
   padding: 0.5em;
   margin: 2em auto;
-  background-color: var(--color-accent);
-  color: var(--color-background);
+  border: 1px solid;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background-color: var(--color-background-warm);
 }
 
 .not-logged-in-text {

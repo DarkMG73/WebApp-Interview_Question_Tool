@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "./Home.module.css";
 import CardPrimary from "../../UI/Cards/CardPrimary/CardPrimary";
@@ -16,16 +16,11 @@ const Home = () => {
   const questionData = useSelector((state) => state.questionData);
   const allQuestions = questionData.allQuestions;
   const filteredQuestionsIds = questionData.filteredQuestionsIds;
+  const [scrollToElm, setScrollToElm] = useState(false);
+  const [scrollToSessionResults, setScrollToSessionResults] = useState(false);
+  const [scrollToAnswer, setScrollToAnswer] = useState(false);
 
-  useEffect(() => {
-    console.log(
-      "%c HOME PAGE| STATE %cline:20%cfilteredQuestionsIds",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(237, 222, 139);padding:3px;border-radius:2px",
-      filteredQuestionsIds
-    );
-  }, [filteredQuestionsIds]);
+  useEffect(() => {}, [filteredQuestionsIds]);
   useEffect(() => {
     console.log(
       "%c HOME PAGE| STATE %cline:20%allQuestions",
@@ -41,16 +36,31 @@ const Home = () => {
         <QuestionFilter />
       </CardSecondary>
       <CardPrimary>
-        <Question />
+        <Question
+          setScrollToElm={setScrollToElm}
+          scrollToSessionResults={scrollToSessionResults}
+          scrollToAnswer={scrollToAnswer}
+        />
       </CardPrimary>
-      <CardTransparent>
-        <NewQuestionButton />
+      <CardTransparent
+        styles={{
+          top: "0",
+          position: "sticky",
+          zIndex: "90",
+          boxShadow:
+            "20px 20px 40px -30px rgb(0 0 0 / 50%), 10px 10px 30px -20px black ",
+        }}
+      >
+        <NewQuestionButton
+          scrollToElm={scrollToElm}
+          scrollToAnswer={scrollToAnswer}
+        />
       </CardTransparent>
       <CardPrimary>
-        <WorkArea />
+        <WorkArea setScrollToAnswer={setScrollToAnswer} />
       </CardPrimary>
       <CardPrimary>
-        <SessionResults />
+        <SessionResults setScrollToSessionResults={setScrollToSessionResults} />
       </CardPrimary>
       <CardPrimary>
         <OutputControls />

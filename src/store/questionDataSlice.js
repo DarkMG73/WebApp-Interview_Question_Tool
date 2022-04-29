@@ -21,7 +21,7 @@ export const questionDataSlice = createSlice({
       state.filteredQuestionsIds = [];
       state.questionHistory = questionData.questionHistory;
       state.questionMetadata = questionData.questionMetadata;
-      state.currentFilters = { level: [], topic: [], tags: [] };
+      state.currentFilters = questionData.currentFilters;
       state.currentQuestionData = {};
     },
     generateNewQuestion: (state) => {

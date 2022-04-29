@@ -22,9 +22,19 @@ function Timer() {
     return () => clearInterval(timer);
   }, [timerRunning, time]);
 
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    const timeDisplay =
+      minutes.toString().padStart(2, "0") +
+      ":" +
+      seconds.toString().padStart(2, "0");
+    return timeDisplay;
+  };
+  const formattedTime = formatTime(time);
   return (
     <div id="timer-wrap" className={styles["timer-wrap"]}>
-      {time}
+      <span id="timer">{formattedTime}</span>
     </div>
   );
 }

@@ -8,14 +8,8 @@ import { addDocToDB, deleteDocFromDb } from "../../storage/firebase.config";
 
 function SessionResultsRow(props) {
   const [inEditMode, setInEditMode] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const editedQuestions = useRef({ edits: {} });
-  console.log(
-    "%c --> %cline:10%ceditedQuestions",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px",
-    editedQuestions
-  );
   const questionHistory = props.questionHistory;
   const key = props.keyTwo;
   const k = props.keyOne;
@@ -24,23 +18,25 @@ function SessionResultsRow(props) {
   const editButtonWidth = inEditMode ? "max-content" : "5em";
 
   const rowEditButtonHandler = (e, setElmOpen) => {
-    console.log("Edit Clicked", e.target);
     setInEditMode(!inEditMode);
   };
 
   const rowSaveButtonHandler = (e) => {
-    //TODO: CHANGE TO key WHEN MOVING TO PRODUCTION
-    const tempKey = "TESTTEST";
-    addDocToDB(tempKey, editedQuestions.current.edits);
+    // Use tempKey instead of key when in dev
+    // const tempKey = "TESTTEST";
+    addDocToDB(key, editedQuestions.current.edits);
   };
 
   const deleteQuestionButtonHandler = (e) => {
-    //TODO: CHANGE TO key WHEN MOVING TO PRODUCTION
-    const tempKey = "TESTTEST";
+    // Use tempKey instead of key when in dev
+    // const tempKey = "TESTTEST";
     const shouldDelete = window.confirm(
       "Are you sure you want to delete this question (ID: " + key + ")"
     );
-    if (shouldDelete) deleteDocFromDb(tempKey);
+    if (shouldDelete) {
+      deleteDocFromDb(key);
+      setDeleted(true);
+    }
   };
 
   function AssembleInnerRow(questionHistory, k, key, elmOpen, setElmOpen) {
@@ -123,13 +119,6 @@ function SessionResultsRow(props) {
               //  Moving this out of processing to handle after elements added.
               setTimeout(() => {
                 editedQuestions.current.edits[itemKey] = elm.innerText;
-                console.log(
-                  "%c --> %cline:160%celm.innerText",
-                  "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-                  "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-                  "color:#fff;background:rgb(3, 38, 58);padding:3px;border-radius:2px",
-                  elm.innerText
-                );
               }, 0);
             }}
             onBlur={(e) => {
@@ -264,7 +253,15 @@ function SessionResultsRow(props) {
     </div>
   );
 
-  return output;
+  if (!deleted) {
+    return output;
+  } else {
+    return (
+      <div className={styles.deleted}>
+        <h3>This question was deleted (ID: {key})</h3>
+      </div>
+    );
+  }
 }
 
 export default SessionResultsRow;

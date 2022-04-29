@@ -9,12 +9,11 @@ import PushButton from "../../UI/Buttons/PushButton/PushButton";
 
 function NewQuestionButton(props) {
   const [questionComplete, setQuestionComplete] = useState(false);
-  const questionData = useSelector((state) => state.questionData);
-  const timerRunning = useSelector((state) => state.timer.timerRunning);
-  const dispatch = useDispatch();
-  const { questionHistory, currentQuestionData } = useSelector(
+  const { questionHistory, currentFilters } = useSelector(
     (state) => state.questionData
   );
+  const timerRunning = useSelector((state) => state.timer.timerRunning);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (questionComplete) {
@@ -24,8 +23,8 @@ function NewQuestionButton(props) {
   }, [questionComplete, setQuestionComplete]);
 
   useEffect(() => {
-    storage("add", questionHistory);
-  }, [questionHistory]);
+    storage("add", { questionHistory, currentFilters });
+  }, [questionHistory, currentFilters]);
 
   function newQuestionBtnHandler() {
     dispatch(timerActions.clearTimer());
@@ -33,11 +32,14 @@ function NewQuestionButton(props) {
     dispatch(timerActions.initiateQuiz());
 
     dispatch(questionDataActions.generateNewQuestion());
+    if (props.scrollToElm)
+      props.scrollToElm.current.scrollIntoView({ behavior: "smooth" });
   }
 
   function finishQuestionBtnHandler() {
     dispatch(timerActions.stopTimer());
     setQuestionComplete(true);
+    props.scrollToAnswer.current.scrollIntoView({ behavior: "smooth" });
   }
 
   return (
@@ -51,8 +53,12 @@ function NewQuestionButton(props) {
           data=""
           size="heading"
           onClick={newQuestionBtnHandler}
+          styles={{
+            boxShadow:
+              "inset 7px 7px 14px -7px rgb(255 255 255),  inset -7px -7px 14px -7px rgb(0 0 0 / 50%)",
+          }}
         >
-          <h1 className="iq-header">New Question</h1>
+          <h1 className="iq-header">Grab a New Question</h1>
         </PushButton>
       )}
       {timerRunning && (
@@ -64,6 +70,10 @@ function NewQuestionButton(props) {
           data=""
           size="heading"
           onClick={finishQuestionBtnHandler}
+          styles={{
+            boxShadow:
+              "inset 7px 7px 14px -7px rgb(255 255 255),  inset -7px -7px 14px -7px rgb(0 0 0 / 50%)",
+          }}
         >
           <h1 className="iq-header">Click When Finished</h1>
         </PushButton>

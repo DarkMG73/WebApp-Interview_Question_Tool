@@ -1,5 +1,5 @@
 import styles from "./WorkArea.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import Iframe from "react-iframe";
 import Timer from "../Timer/Timer";
@@ -8,8 +8,12 @@ import CardPrimary from "../../UI/Cards/CardPrimary/CardPrimary";
 
 function WorkArea(props) {
   const [questionCompleted, setQuestionCompleted] = useState(false);
-
   const { timerRunning, quizInitiated } = useSelector((state) => state.timer);
+  const answerElm = useRef();
+
+  useEffect(() => {
+    props.setScrollToAnswer(answerElm);
+  }, []);
 
   useEffect(() => {
     if (!timerRunning && quizInitiated) {
@@ -20,16 +24,21 @@ function WorkArea(props) {
   }, [timerRunning]);
 
   return (
-    <div id="work-area" className={styles["outerwrap"]}>
-      <div id="user-interaction-area" className="outer-wrap">
-        {questionCompleted && (
-          <CardPrimary>
-            <Answer />
-          </CardPrimary>
-        )}
-        <div id="timer">
-          Time: <Timer />
-        </div>
+    <div id="work-area" className={styles["outerwrap"]} ref={answerElm}>
+      <h2 class="section-title">Answer Workspace</h2>
+      <p>
+        Use this console area as a scratchpad for working if you need. Many
+        code-based question, especially the algorithm questions, will require
+        detailed and working code examples. The console below allows for running
+        that code to make sure it is a workable solution before ending the
+        question and viewing the given answer.
+      </p>
+      <div
+        id="user-interaction-area"
+        className={styles["user-interaction-area"]}
+      >
+        {questionCompleted && <Answer />}
+        <Timer />
         <div id="question-info" className="outer-wrap">
           <Iframe
             height="400px"

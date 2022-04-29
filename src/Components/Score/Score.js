@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import styles from "./Score.module.css";
 import storage from "../../hooks/storage";
+import PushButton from "../../UI/Buttons/PushButton/PushButton";
 
 function Score(props) {
   const { questionHistory, filteredQuestionsIds } = useSelector(
@@ -15,8 +16,8 @@ function Score(props) {
   const totalCompleted = correctAmount + incorrectAmount + unmarkedAmount;
 
   const resetSessionButtonHandler = (e) => {
-    console.log("Edit Clicked", e.target);
     storage("delete");
+    window.location.reload();
   };
 
   function tallyItemsInObject(obj) {
@@ -27,45 +28,51 @@ function Score(props) {
     return output;
   }
   return (
-    <div id="iq-session-results" className={styles["outer-wrap"]}>
+    <div id="iq-session-results" className={styles["iq-session-results"]}>
       {props.title && <h1 className={styles["subtitle"]}>props.title</h1>}
 
       <div id="results-controls" className={styles["inner-wrap"]}>
-        <div id="correct-incorrect-unmarked" className={styles["inner-wrap"]}>
+        <div
+          id="correct-incorrect-unmarked"
+          className={styles["correct-incorrect-unmarked"]}
+        >
           {props.showCorrect && (
-            <div id="correct" className={styles["inner-wrap"]}>
+            <p id="correct" className={styles["score-item"]}>
               {correctAmount}
               <span> Correct </span>
-            </div>
+            </p>
           )}
           {props.showIncorrect && (
-            <div id="correct" className={styles["inner-wrap"]}>
+            <p id="correct" className={styles["score-item"]}>
               {incorrectAmount}
               <span> Incorrect </span>
-            </div>
+            </p>
           )}
           {props.showUnmarked && (
-            <div id="correct" className={styles["inner-wrap"]}>
+            <p id="correct" className={styles["score-item"]}>
               {unmarkedAmount}
               <span> Unmarked </span>
-            </div>
+            </p>
           )}
         </div>
         {props.showCount && (
-          <div id="count" className={styles["inner-wrap"]}>
+          <div id="count" className={styles["score-item"]}>
             {totalCompleted}
             <span> questions completed of </span>
             {totalQuestions}
           </div>
         )}
         {props.showResetBtn && (
-          <button
-            id="reset-btn"
-            className={styles["inner-wrap button"]}
+          <PushButton
+            label={false}
+            colorType="secondary"
+            size="small"
+            InputOrButton="input"
+            type="button"
+            name="reset-btn"
+            value="Reset Question History"
             onClick={resetSessionButtonHandler}
-          >
-            Reset Session
-          </button>
+          />
         )}
       </div>
     </div>

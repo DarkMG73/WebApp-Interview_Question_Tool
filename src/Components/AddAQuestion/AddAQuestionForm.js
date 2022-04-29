@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import styles from "./AddAQuestionForm.module.css";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import AddAQuestionFormElms from "./AddAQuestionFormElms";
@@ -6,47 +7,20 @@ import { sha256 } from "js-sha256";
 import { addDocToDB } from "../../storage/firebase.config";
 
 function AddAQuestionForm(props) {
+  const userLoggedIn = useSelector((state) => state.loginStatus.userLoggedIn);
   const [formJSX, setFormJSX] = useState([<AddAQuestionFormElms />]);
-  console.log(
-    "%c *****--> %cline:7%cformJSX",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px",
-    formJSX
-  );
 
   function addAnotherQuestionFormButtonHandler(e) {
     e.preventDefault();
-    console.log("Clicked");
     setFormJSX([...formJSX, <AddAQuestionFormElms />]);
-    console.log(
-      "%c --> %cline:11%cformJSX",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(248, 147, 29);padding:3px;border-radius:2px",
-      formJSX
-    );
   }
 
   function submitButtonHandler(e) {
-    console.log("clicked");
     e.preventDefault();
-    console.log(
-      "%c --> %cline:33%ce.target",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(222, 125, 44);padding:3px;border-radius:2px",
-      e.target.parentNode
-    );
+
     const data = new FormData(e.target.parentNode);
     const numberOfFieldsPerQuestion = 9;
-    console.log(
-      "%c --> %cline:49%c[...data.entries()]",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
-      [...data.entries()]
-    );
+
     const dataEntries = [...data.entries()];
     const questions = [];
 
@@ -65,16 +39,13 @@ function AddAQuestionForm(props) {
     // Replace the temp ID's with a hash based on the question title
     const questionsGroomed = {};
     for (const i in questions) {
+      const d = new Date();
+      let year = d.getFullYear();
       const hasId = sha256(JSON.stringify(questions[i]));
-      questionsGroomed[hasId] = questions[i];
+      const newId = year + "-" + hasId;
+      questionsGroomed[newId] = questions[i];
+      questionsGroomed[newId].id = newId;
     }
-    console.log(
-      "%c --> %cline:87%cquestionsGroomed",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
-      questionsGroomed
-    );
 
     // Access FormData fields with `data.get(fieldName)`
     // For example, converting to upper case
@@ -82,22 +53,21 @@ function AddAQuestionForm(props) {
 
     // Do your Axios stuff here
     for (const key in questionsGroomed) {
-      console.log(
-        "%c --> %cline:84%ckey",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(3, 22, 52);padding:3px;border-radius:2px",
-        key
-      );
-      console.log(
-        "%c --> %cline:92%cquestionsGroomed[key]",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(3, 22, 52);padding:3px;border-radius:2px",
-        questionsGroomed[key]
-      );
       const theData = questionsGroomed[key];
-      addDocToDB(key, theData);
+
+      if (userLoggedIn) {
+        addDocToDB(key, theData);
+      } else {
+        const questionAdminEmail = "general@glassinteractive.com";
+        const subject = "A New Question for the Interview Questions Tool";
+        const body = `A new question is being offered: ${JSON.stringify(
+          theData
+        )}`;
+        window.open(
+          `mailto:${questionAdminEmail}?subject=${subject}l&body=${body}`
+        );
+      }
+
       //  TODO: Clear the form
       // const formEntries = document.querySelectorAll('.form-group-wrap');
       // formEntries.forEach(item => {
@@ -105,13 +75,7 @@ function AddAQuestionForm(props) {
       // })
     }
   }
-  console.log(
-    "%c --> %cline:11%cformJSX",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(248, 147, 29);padding:3px;border-radius:2px",
-    formJSX
-  );
+
   return (
     <form action="" id="add-quest-form" className={styles["inner-wrap form"]}>
       <div className={styles["inner-wrap"]}>

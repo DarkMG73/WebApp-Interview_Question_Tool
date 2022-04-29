@@ -24,13 +24,6 @@ const firebaseConfig = {
   measurementId: "G-YXCVF55B0G",
 };
 
-// Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const db = getFirestore(app);
-// console.log("🔵 | db", db);
-// const dbCollection = collection("interview_questions");
-// console.log("🔵 | dbCollection", dbCollection);
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export const auth = getAuth(app);
@@ -40,6 +33,13 @@ async function getDBData(db, name) {
   const citiesCol = collection(db, name);
   const citySnapshot = await getDocs(citiesCol);
   const cityList = citySnapshot.docs.map((doc) => doc.data());
+  console.log(
+    "%c --> %cline:35%ccityList",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(3, 22, 52);padding:3px;border-radius:2px",
+    cityList
+  );
   return cityList;
 }
 

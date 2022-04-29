@@ -4,6 +4,7 @@ const initState = {
   time: 0,
   timerRunning: false,
   quizInitiated: false,
+  peekTimer: 20,
 };
 
 export const timerSlice = createSlice({
@@ -24,6 +25,12 @@ export const timerSlice = createSlice({
     },
     initiateQuiz: (state) => {
       state.quizInitiated = true;
+    },
+    peekTimerDecrease: (state) => {
+      state.peekTimer = state.peekTimer - 1;
+    },
+    clearPeekTimer: (state) => {
+      return initState;
     },
   },
 });

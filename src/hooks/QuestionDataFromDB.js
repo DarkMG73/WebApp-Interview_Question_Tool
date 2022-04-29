@@ -10,9 +10,7 @@ function QuestionDataFromDB() {
   };
   useEffect(() => {
     setBlogs(fetchBlogs());
-    console.log("useState", blogs);
   }, []);
-  console.log("useState2", blogs);
   return blogs;
 }
 

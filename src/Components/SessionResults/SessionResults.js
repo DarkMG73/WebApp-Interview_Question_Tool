@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "./SessionResults.module.css";
 import Score from "../../Components/Score/Score";
@@ -8,9 +9,18 @@ function SessionResults(props) {
   const questionHistory = useSelector(
     (state) => state.questionData.questionHistory
   );
+  const sessionResultsBox = useRef();
+
+  useEffect(() => {
+    props.setScrollToSessionResults(sessionResultsBox);
+  }, []);
 
   return (
-    <div id="session-results" className={styles.outerwrap}>
+    <div
+      id="session-results"
+      className={styles.outerwrap}
+      ref={sessionResultsBox}
+    >
       <h2 class="section-title">Session Results</h2>
       <Score
         title={false}

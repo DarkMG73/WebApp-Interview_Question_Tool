@@ -5,13 +5,6 @@ function SetFilteredQuestionList(
   setQuestionFilterIds,
   filteredQuestionsIds
 ) {
-  console.log(
-    "%c --> %cline:5%ccurrentFilters",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(3, 22, 52);padding:3px;border-radius:2px",
-    currentFilters
-  );
   let filteredQuestionIdList = [];
 
   if (!currentFilters) return [];

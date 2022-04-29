@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import GatherQuestionData from "./hooks/GatherQuestionData";
 import { questionDataActions } from "./store/questionDataSlice";
+import AllQuestions from "./Components/AllQuestions/AllQuestions";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,7 +30,10 @@ function App() {
           {currentState.questionMetadata && <Header />}
         </CardPrimarySquareTop>
       </header>
-      {currentState.allQuestions && <Home />}
+      <Routes>
+        {currentState.allQuestions && <Route path="/" element={<Home />} />}
+        <Route path="/list-of-all-questions" element={<AllQuestions />} />)
+      </Routes>
     </div>
   );
 }

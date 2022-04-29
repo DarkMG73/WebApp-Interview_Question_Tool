@@ -25,9 +25,20 @@
   color: var(--color-background-warm);
 }
 
+.button.primary.selected {
+  box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
+    inset 1px -1px 1px rgb(0 0 0 / 15%), 1px 1px 5px -3px black, 0 0 10px white,
+    inset 0 0 10px white;
+}
+
 .button.secondary {
   background: var(--color-background-warm);
   color: var(--color-accent);
+}
+.button.secondary.selected {
+  box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
+    inset 1px -1px 1px rgb(0 0 0 / 15%), 1px 1px 5px -3px black, 0 0 10px white,
+    inset 0 0 10px white;
 }
 
 .button.basic {
@@ -54,5 +65,11 @@
 .button.small {
   font: var(--font-body-text);
   font-size: 0.75em;
+  font-weight: 700;
+}
+
+.button.large {
+  font: var(--font-body-text);
+  font-size: 1.5em;
   font-weight: 700;
 }

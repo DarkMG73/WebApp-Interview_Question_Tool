@@ -12,7 +12,11 @@ function PushButton(props) {
             " " +
             syles[props.colorType] +
             " " +
-            syles[props.size]
+            syles[props.size] +
+            " " +
+            syles[props.active] +
+            " " +
+            syles[props.selected]
           }
           style={props.styles}
           id={props.id}
@@ -35,7 +39,11 @@ function PushButton(props) {
             " " +
             syles[props.colorType] +
             " " +
-            syles[props.size]
+            syles[props.size] +
+            " " +
+            syles[props.active] +
+            " " +
+            syles[props.selected]
           }
           style={props.styles}
           type={props.type}

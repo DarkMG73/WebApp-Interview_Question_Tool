@@ -4,42 +4,45 @@ import Card from "../../UI/Cards/Card/Card";
 
 function SessionResultsRows(props) {
   const questionHistory = props.questionHistory;
-  console.log(
-    "%c --> %cline:5%cquestionHistory",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(56, 13, 49);padding:3px;border-radius:2px",
-    questionHistory
-  );
-  const questionHistoryRows = [];
-
-  const rowEditButtonHandler = (e) => {
-    console.log("Edit Clicked", e.target);
-  };
+  const questionHistoryCategories = [];
+  const questionHistoryRows = {};
+  let questionHistoryCount = 0;
 
   for (const k in questionHistory) {
     if (k !== "stats") {
+      questionHistoryCategories.push(k);
+      questionHistoryRows[k] = [];
       for (const key in questionHistory[k]) {
         // Add the row
-        questionHistoryRows.push([k, key]);
+        questionHistoryRows[k].push(key);
+        questionHistoryCount++;
       }
     }
   }
 
   return (
     <div className={styles["session-results-container"]}>
-      {questionHistoryRows.length > 0 ? (
-        questionHistoryRows.map((array) => {
-          const k = array[0];
-          const key = array[1];
-
-          return (
-            <SessionResultsRow
-              questionHistory={questionHistory}
-              keyOne={k}
-              keyTwo={key}
-            />
-          );
+      {questionHistoryCount > 0 ? (
+        questionHistoryCategories.map((cat) => {
+          if (questionHistoryRows[cat].length > 0) {
+            const output = (
+              <div className={styles[cat]}>
+                {!props.hideSectionTitles && (
+                  <h3 className={styles["history-section-title"]}>{cat}</h3>
+                )}
+                {questionHistoryRows[cat].map((key) => {
+                  return (
+                    <SessionResultsRow
+                      questionHistory={questionHistory}
+                      keyOne={cat}
+                      keyTwo={key}
+                    />
+                  );
+                })}
+              </div>
+            );
+            return output;
+          }
         })
       ) : (
         <Card styles={{ borderRadius: "30px", padding: "3em" }}>

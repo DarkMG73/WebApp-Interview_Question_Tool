@@ -1,0 +1,7 @@
+.user-interaction-area {
+  margin-bottom: 4em;
+}
+
+.user-interaction-area iframe {
+  min-height: 100vh;
+}

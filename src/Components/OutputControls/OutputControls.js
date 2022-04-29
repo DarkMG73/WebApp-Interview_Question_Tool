@@ -1,21 +1,21 @@
 import { useSelector } from "react-redux";
 import styles from "./OutputControls.module.css";
-import SlideButton from "../../UI/Buttons/Slide-Button/Slide-Button";
+import { useNavigate } from "react-router-dom";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
-import { hyphenate } from "../../hooks/utility";
 import useExportData from "../../hooks/useExportData";
 
 function OutputControls(props) {
-  const currentQuestionData = useSelector((state) => state.questionData);
+  let navigate = useNavigate();
   const exportData = useExportData({ type: "" });
 
   function exportCVSButtonHandler() {
-    console.log("clicked");
     exportData({ type: "cvs" });
   }
   function exportJSONButtonHandler() {
-    console.log("clicked");
     exportData({ type: "json" });
+  }
+  function listOfAllQuestionsButtonHandler() {
+    navigate("../list-of-all-questions", { replace: false });
   }
 
   return (
@@ -48,18 +48,20 @@ function OutputControls(props) {
           Export JSON
         </PushButton>
 
-        <PushButton
-          inputOrButton="button"
-          id="all-quest-link"
-          colorType="secondary"
-          value="session-record"
-          href="https://www.glassinteractive.com/interview-questions-list/"
-          data-value="link-all-quests-page"
-          size="medium"
-          onClick={exportCVSButtonHandler}
-        >
-          All Questions List
-        </PushButton>
+        {!props.hideAllQuestionsListButton && (
+          <PushButton
+            inputOrButton="button"
+            id="all-quest-link"
+            colorType="secondary"
+            value="session-record"
+            href="./list-of-all-questions"
+            data-value="link-all-quests-page"
+            size="medium"
+            onClick={listOfAllQuestionsButtonHandler}
+          >
+            All Questions List
+          </PushButton>
+        )}
       </div>
     </div>
   );

@@ -1,17 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOn,
   signOut,
 } from "firebase/auth";
+import { loginStatusActions } from "../../store/loginStatusSlice";
 import styles from "./AddAQuestion.module.css";
 import { numberToText } from "../../hooks/utility";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import AddAQuestionForm from "./AddAQuestionForm";
-// import LoginHooks from "../../hooks/GoogleAuth/LoginHooks";
-// import dbLogInHandler from "../../hooks/GoogleAuth/GoogleLogin";
-// import LogoutHooks from "../../hooks/GoogleAuth/LogoutHooks";
 import { auth } from "../../storage/firebase.config.js";
 
 function AddAQuestion(props) {
@@ -20,18 +19,33 @@ function AddAQuestion(props) {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
-  const [user, setUser] = useState();
+  const userData = useSelector((state) => state.loginStatus);
+  const user = userData.user;
+  const isLoggedIn = userData.userLoggedIn;
+  const dispatch = useDispatch();
 
+  useEffect(() => {}, [dispatch]);
   onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
+    if (currentUser) {
+      if (!isLoggedIn || currentUser.email !== userData.user.email) {
+        const userObj = {};
+        const desiredKeys = ["displayName", "email", "photoURL", "uid"];
+
+        for (const key in currentUser) {
+          if (desiredKeys.includes(key)) userObj[key] = currentUser[key];
+        }
+        dispatch(loginStatusActions.logIn(userObj));
+      }
+    } else {
+      dispatch(loginStatusActions.logOut());
+    }
   });
   const logInButtonHandler = () => {
-    console.log("click");
     setShowLoginForm(!showLoginForm);
   };
   const logInSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log("click");
+
     try {
       const user = await signInWithEmailAndPassword(
         auth,
@@ -87,24 +101,11 @@ function AddAQuestion(props) {
       );
     }
   };
+
   function showNewQuestionFormButtonHandler() {
-    console.log(
-      "%c --> %cline:8%cshowAddQuestionForm",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(251, 178, 23);padding:3px;border-radius:2px",
-      showAddQuestionForm
-    );
-    console.log("click");
     setShowAddQuestionForm(!showAddQuestionForm);
-    console.log(
-      "%c --> %cline:8%cshowAddQuestionForm",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(251, 178, 23);padding:3px;border-radius:2px",
-      showAddQuestionForm
-    );
   }
+
   return (
     <div id="output-controls" className={styles.outerwrap}>
       <div id="add-quest-wrap" className={styles["add-quest-wrap"]}>

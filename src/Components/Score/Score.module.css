@@ -1,0 +1,14 @@
+.iq-session-results {
+  font-weight: 700;
+}
+
+.correct-incorrect-unmarked {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.score-item {
+  margin: 0 0.5em;
+}

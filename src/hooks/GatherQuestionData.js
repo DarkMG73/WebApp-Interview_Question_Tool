@@ -5,21 +5,40 @@ import storage from "./storage";
 
 export default async function GatherQuestionData() {
   const allQuestionsData = {};
-  const historyDataFromStorage = storage("get");
+  const dataFromStorage = storage("get");
+  let historyDataFromStorage = null;
+  let currentFilters = null;
+  if (dataFromStorage) {
+    historyDataFromStorage = dataFromStorage.questionHistory;
+    currentFilters = dataFromStorage.currentFilters;
+  }
 
   allQuestionsData.allQuestions = {};
 
-  const allQuestions = [];
-
-  // const allQuestions = await questionData;
+  const allQuestions = await questionData;
+  console.log(
+    "%c --> %cline:18%callQuestions",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(95, 92, 51);padding:3px;border-radius:2px",
+    allQuestions
+  );
 
   /////// IF USING DUMMY QUERY
-  for (var i in DummyQuestionData) {
-    allQuestions.push({ ...DummyQuestionData[i] });
-  }
+  // const allQuestions = [];
+  // for (var i in DummyQuestionData) {
+  //   allQuestions.push({ ...DummyQuestionData[i] });
+  // }
   ////////////
 
   allQuestions.forEach((questionData) => {
+    console.log(
+      "%c --> %cline:27%cquestionData",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
+      questionData
+    );
     const tags = [];
     if (questionData.hasOwnProperty("tags")) {
       if (questionData.tags.constructor === String) {
@@ -37,16 +56,31 @@ export default async function GatherQuestionData() {
     }
     allQuestionsData.allQuestions[questionData.id] = questionData;
   });
+
   allQuestionsData.questionHistory = historyDataFromStorage ?? {
     incorrect: {},
     correct: {},
     unmarked: {},
     stats: {},
   };
+  allQuestionsData.currentFilters = currentFilters ?? {
+    level: [],
+    topic: [],
+    tags: [],
+  };
+
   allQuestionsData.questionMetadata = gatherAllMetadata(allQuestions);
-  // TODO: need to have read from saved history or be empty array.
+
   allQuestionsData.questionHistory.stats.usedIds = [];
+
   allQuestionsData.currentQuestionData = {};
+  console.log(
+    "%c --> %cline:62%callQuestionsData",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
+    allQuestionsData
+  );
 
   return allQuestionsData;
 }

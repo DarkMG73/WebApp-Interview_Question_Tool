@@ -18,8 +18,6 @@ function QuestionFilter(props) {
     questionMetadata,
   } = allQuestionsData;
 
-  // const filteredQuestions = FilterQuestions(allQuestionsData);
-
   useEffect(() => {
     dispatch(questionDataActions.clearQuestionFilterIds);
     const filteredQuestionIdList = SetFilteredQuestionIdList(
@@ -157,6 +155,7 @@ function QuestionFilter(props) {
                 key={level}
                 label={level}
                 onClick={levelFilterButtonHandler}
+                checked={currentFilters.level.includes(level)}
               />
             );
           })}
@@ -164,6 +163,7 @@ function QuestionFilter(props) {
         <div className={styles["slide-button-inner-wrap"]}>
           <h3 className={styles["slide-button-inner-wrap-title"]}>Topics</h3>
           {questionMetadata.topic.map((topic) => {
+            const topicNonHyphen = topic;
             if (topic === "noncoding") {
               topic = hyphenate(topic, 3, "-");
             }
@@ -173,6 +173,7 @@ function QuestionFilter(props) {
                 key={topic}
                 label={topic}
                 onClick={topicFilterButtonHandler}
+                checked={currentFilters.topic.includes(topicNonHyphen)}
               />
             );
           })}
@@ -185,6 +186,7 @@ function QuestionFilter(props) {
                 key={tag}
                 label={tag}
                 onClick={tagsFilterButtonHandler}
+                checked={currentFilters.tags.includes(tag)}
               />
             );
           })}

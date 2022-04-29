@@ -23,24 +23,36 @@ function Answer() {
     }
   }, [isAnswerCorrect]);
 
+  let correctSelected = "";
+  let incorrectSelected = "";
+
   function answerCorrectBtnHandler() {
     seIsAnswerCorrect(true);
   }
   function answerNotCorrectBtnHandler() {
     seIsAnswerCorrect(false);
   }
+
+  if (isAnswerCorrect) {
+    correctSelected = "selected";
+    incorrectSelected = "";
+  }
+
+  if (isAnswerCorrect === false) {
+    correctSelected = "";
+    incorrectSelected = "selected";
+  }
+
   return (
     <CardPrimary>
       <div className={styles["outer-wrap"]}>
         <h2 class="section-title">The Answer</h2>
         <div className={styles["inner-wrap"]}>
-          <Card>
-            <p className={styles.text}>{answerText}</p>
-          </Card>
-        </div>
-        <div className={styles["inner-wrap"]}>
-          <form name="is-answer-correct">
-            <h3 className={styles.subtitle}>Did you get it right?</h3>
+          <form
+            name="is-answer-correct"
+            className={styles["answer-button-container"]}
+          >
+            <p className={styles.subtitle}>Did you get it right?</p>
             <PushButton
               label={false}
               colorType="secondary"
@@ -50,6 +62,8 @@ function Answer() {
               name="answer-correct"
               value="Yes"
               onClick={answerCorrectBtnHandler}
+              styles={{ margin: "0 0.5em 0 0" }}
+              selected={correctSelected}
             />
             <PushButton
               label={false}
@@ -60,8 +74,17 @@ function Answer() {
               name="answer-not-correct"
               value="No"
               onClick={answerNotCorrectBtnHandler}
+              styles={{ margin: "0 0.5em 0 0" }}
+              selected={incorrectSelected}
             />
           </form>
+        </div>
+        <div className={styles["inner-wrap"]}>
+          <Card>
+            <pre>
+              <code className={styles.text}> {answerText}</code>
+            </pre>
+          </Card>
         </div>
       </div>
     </CardPrimary>
