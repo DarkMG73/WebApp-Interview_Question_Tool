@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { questionDataActions } from "../../store/questionDataSlice";
 import { timerActions } from "../../store/timerSlice";
 import styles from "./NewQuestionButton.module.css";
-import { numberToText } from "../../hooks/utility";
 import storage from "../../hooks/storage";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 
@@ -48,14 +47,14 @@ function NewQuestionButton(props) {
         <PushButton
           inputOrButton="button"
           id="new-question-button"
-          colorType="secondary"
+          colorType="primary"
           dataValue="New Question"
           data=""
           size="heading"
           onClick={newQuestionBtnHandler}
           styles={{
             boxShadow:
-              "inset 7px 7px 14px -7px rgb(255 255 255),  inset -7px -7px 14px -7px rgb(0 0 0 / 50%)",
+              "inset 4px 4px 14px -7px rgb(255 255 255),  inset -4px -4px 14px -7px rgb(0 0 0 / 50%)",
           }}
         >
           <h1 className="iq-header">Grab a New Question</h1>
@@ -65,14 +64,14 @@ function NewQuestionButton(props) {
         <PushButton
           inputOrButton="button"
           id="finish-question-button"
-          colorType="primary"
+          colorType="secondary"
           dataValue="New Question"
           data=""
           size="heading"
           onClick={finishQuestionBtnHandler}
           styles={{
             boxShadow:
-              "inset 7px 7px 14px -7px rgb(255 255 255),  inset -7px -7px 14px -7px rgb(0 0 0 / 50%)",
+              "inset 4px 4px 14px -7px rgb(255 255 255),  inset -4px -4px 14px -7px rgb(0 0 0 / 50%)",
           }}
         >
           <h1 className="iq-header">Click When Finished</h1>

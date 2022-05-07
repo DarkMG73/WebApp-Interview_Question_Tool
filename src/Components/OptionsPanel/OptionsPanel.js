@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./OptionsPanel.module.css";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
@@ -124,7 +124,7 @@ function OptionsPanel(props) {
             </p>
 
             <p>
-              <span>Peek time left</span>
+              <span>Peek time left: </span>
               {peekTimer}
             </p>
 

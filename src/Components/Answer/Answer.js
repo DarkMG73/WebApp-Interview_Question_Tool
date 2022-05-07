@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Answer.module.css";
 import { questionDataActions } from "../../store/questionDataSlice";
-import CardPrimary from "../../UI/Cards/CardPrimary/CardPrimary";
+import CardTransparent from "../../UI/Cards/CardTransparent/CardTransparent";
 import Card from "../../UI/Cards/Card/Card";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 
@@ -18,6 +18,7 @@ function Answer() {
     if (isAnswerCorrect) {
       dispatch(questionDataActions.addToHistoryCorrect());
     }
+
     if (isAnswerCorrect === false) {
       dispatch(questionDataActions.addToHistoryIncorrect());
     }
@@ -44,7 +45,14 @@ function Answer() {
   }
 
   return (
-    <CardPrimary>
+    <CardTransparent
+      styles={{
+        boxShadow:
+          "inset 0 8px 15px -13px rgb(0 0 0 / 30%), 0 -8px 15px -16px white",
+        paddingBottom: "2em",
+        margin: "4em 0 1em",
+      }}
+    >
       <div className={styles["outer-wrap"]}>
         <h2 class="section-title">The Answer</h2>
         <div className={styles["inner-wrap"]}>
@@ -87,7 +95,7 @@ function Answer() {
           </Card>
         </div>
       </div>
-    </CardPrimary>
+    </CardTransparent>
   );
 }
 

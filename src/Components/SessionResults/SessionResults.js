@@ -53,7 +53,10 @@ function SessionResults(props) {
         data=""
         size="large"
       >
-        <SessionResultsRows questionHistory={questionHistory} />
+        <SessionResultsRows
+          questionHistory={questionHistory}
+          showLoader={props.showLoader}
+        />
       </CollapsibleElm>
     </div>
   );

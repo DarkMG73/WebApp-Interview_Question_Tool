@@ -123,7 +123,6 @@ function convertToCSV(objArray) {
 
 const exportJSON = function (questionHistory, score, totalQuestions) {
   const fileName = prompt("What would you like to name the file?");
-  const jsonData = questionHistory;
   const newQuestRecord = {
     ...questionHistory,
   };

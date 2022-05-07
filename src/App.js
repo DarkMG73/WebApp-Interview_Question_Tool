@@ -8,7 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import GatherQuestionData from "./hooks/GatherQuestionData";
 import { questionDataActions } from "./store/questionDataSlice";
-import AllQuestions from "./Components/AllQuestions/AllQuestions";
+import AllQuestions from "./pages/AllQuestions/AllQuestions";
+import BarLoader from "./UI/Loaders/BarLoader/BarLoader";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,17 +23,28 @@ function App() {
   }, []);
 
   // const updateState = currentState;
-
+  console.log(
+    "%c --> %cline:38%ccurrentState.allQuestions",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(20, 68, 106);padding:3px;border-radius:2px",
+    currentState.allQuestions
+  );
   return (
     <div className="App">
+      {!currentState.allQuestions && <BarLoader />}
       <header className="App-header">
         <CardPrimarySquareTop>
+          {" "}
           {currentState.questionMetadata && <Header />}
         </CardPrimarySquareTop>
       </header>
+
       <Routes>
+        {currentState.allQuestions && (
+          <Route path="/list-of-all-questions" element={<AllQuestions />} />
+        )}
         {currentState.allQuestions && <Route path="/" element={<Home />} />}
-        <Route path="/list-of-all-questions" element={<AllQuestions />} />)
       </Routes>
     </div>
   );

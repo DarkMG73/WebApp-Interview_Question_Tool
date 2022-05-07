@@ -6,8 +6,8 @@
   display: flex;
   flex-direction: column;
   /* border: 3px solid red; */
-  background: var(--color-background);
-  color: var(--color-background-contrast);
+  background: var(--iq-color-background);
+  color: var(--iq-color-background-contrast);
   padding: 2rem;
   border-radius: 50px;
 }

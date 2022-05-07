@@ -74,13 +74,24 @@ export const questionDataSlice = createSlice({
       if (newQuestion) {
         state.currentQuestionData = newQuestion;
       } else {
-        state.currentQuestionData = newQuestion;
+        const refreshIds = window.confirm(
+          'Congratulations! You have completed all of the questions in your chosen levels, topics and tags. To keep answering new questions, click "CANCEL" here and use the "Question Filter" to increase your selected questions. Or, click "OK" here to cycle back through the same questions and get another shot at 100% correct! Clicking "OK" will not erase your session history.'
+        );
         console.log(
-          "%c *** NO QUESTIONS LEFT *** %cline:133%cvar",
+          "%c --> %cline:80%crefreshIds",
           "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
           "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-          "color:#fff;background:rgb(217, 104, 49);padding:3px;border-radius:2px"
+          "color:#fff;background:rgb(3, 22, 52);padding:3px;border-radius:2px",
+          refreshIds
         );
+
+        if (refreshIds) {
+          state.questionHistory.stats.usedIds = [];
+          const newQuestion = randomQuestion(state, []);
+          state.currentQuestionData = newQuestion;
+        } else {
+          state.currentQuestionData = "no questions";
+        }
       }
     },
     addToHistoryCorrect: (state) => {

@@ -4,12 +4,12 @@
 
 .iq-title {
   margin: 0 auto;
-  font: var(--font-heading);
-  letter-spacing: var(--spacing-heading);
+  font: var(--iq--font-heading);
+  letter-spacing: var(--iq-spacing-heading);
 }
 .iq-subtitle {
-  font: var(--font-subheading);
-  letter-spacing: var(--spacing-subheading);
+  font: var(--iq-font-subheading);
+  letter-spacing: var(--iq-spacing-subheading);
   text-transform: capitalize;
   margin: 0 auto;
 }

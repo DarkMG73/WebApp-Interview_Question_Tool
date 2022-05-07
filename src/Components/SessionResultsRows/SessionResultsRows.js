@@ -1,6 +1,7 @@
 import styles from "./SessionResultsRows.module.css";
 import SessionResultsRow from "../SessionResultsRow/SessionResultsRow";
 import Card from "../../UI/Cards/Card/Card";
+import BarLoader from "../../UI/Loaders/BarLoader/BarLoader";
 
 function SessionResultsRows(props) {
   const questionHistory = props.questionHistory;
@@ -19,6 +20,21 @@ function SessionResultsRows(props) {
       }
     }
   }
+
+  console.log(
+    "%c --> %cline:12%cquestionHistory",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(34, 8, 7);padding:3px;border-radius:2px",
+    questionHistory
+  );
+  console.log(
+    "%c --> %cline:36%cquestionHistoryRows",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
+    questionHistoryRows
+  );
 
   return (
     <div className={styles["session-results-container"]}>
@@ -46,11 +62,14 @@ function SessionResultsRows(props) {
         })
       ) : (
         <Card styles={{ borderRadius: "30px", padding: "3em" }}>
-          <p>
-            You do not have a history yet on this browser. Answer a few
-            questions and they will be saved tot his browser's memory. This
-            history will remain available until you decide to erase it."
-          </p>
+          {!props.showLoader && (
+            <p>
+              You do not have a history yet on this browser. Answer a few
+              questions and they will be saved tot his browser's memory. This
+              history will remain available until you decide to erase it."
+            </p>
+          )}
+          {props.showLoader && <BarLoader />}
         </Card>
       )}
     </div>

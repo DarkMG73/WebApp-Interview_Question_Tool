@@ -21,8 +21,8 @@
 
 /* Color Control */
 .button.primary {
-  background: var(--color-accent);
-  color: var(--color-background-warm);
+  background: var(--iq-color-accent);
+  color: var(--iq-color-background-warm);
 }
 
 .button.primary.selected {
@@ -32,8 +32,8 @@
 }
 
 .button.secondary {
-  background: var(--color-background-warm);
-  color: var(--color-accent);
+  background: var(--iq-color-background-warm);
+  color: var(--iq-color-accent);
 }
 .button.secondary.selected {
   box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
@@ -42,34 +42,34 @@
 }
 
 .button.basic {
-  background: var(--color-background);
-  color: var(--color-background-contrast);
+  background: var(--iq-color-background);
+  color: var(--iq-color-background-contrast);
 }
 
 /* Font Control */
 .button.heading {
-  letter-spacing: var(--spacing-heading);
+  letter-spacing: var(--iq-spacing-heading);
 }
 .button.heading-2 {
-  font: var(--font-heading-2);
-  letter-spacing: var(--spacing-heading);
+  font: var(--iq--font-heading-2);
+  letter-spacing: var(--iq-spacing-heading);
 }
 .button.subheading {
   font: var(-font-subheading);
-  letter-spacing: var(--spacing-subheading);
+  letter-spacing: var(--iq-spacing-subheading);
 }
 .button.body {
-  font: var(--font-body-text);
+  font: var(--iq-font-body-text);
   font-weight: 700;
 }
 .button.small {
-  font: var(--font-body-text);
+  font: var(--iq-font-body-text);
   font-size: 0.75em;
   font-weight: 700;
 }
 
 .button.large {
-  font: var(--font-body-text);
+  font: var(--iq-font-body-text);
   font-size: 1.5em;
   font-weight: 700;
 }

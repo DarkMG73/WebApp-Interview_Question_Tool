@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  font: var(--font-body-text);
+  font: var(--iq-font-body-text);
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -8,7 +8,6 @@ import {
 } from "firebase/auth";
 import { loginStatusActions } from "../../store/loginStatusSlice";
 import styles from "./AddAQuestion.module.css";
-import { numberToText } from "../../hooks/utility";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import AddAQuestionForm from "./AddAQuestionForm";
 import { auth } from "../../storage/firebase.config.js";

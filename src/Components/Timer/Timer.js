@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Timer.module.css";
 import { timerActions } from "../../store/timerSlice";
@@ -34,7 +34,9 @@ function Timer() {
   const formattedTime = formatTime(time);
   return (
     <div id="timer-wrap" className={styles["timer-wrap"]}>
-      <span id="timer">{formattedTime}</span>
+      <span id="timer" className={styles.timer}>
+        {formattedTime}
+      </span>
     </div>
   );
 }

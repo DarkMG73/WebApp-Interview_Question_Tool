@@ -3,7 +3,6 @@ import styles from "./QuestionFilter.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import SlideButton from "../../UI/Buttons/Slide-Button/Slide-Button";
 import { hyphenate } from "../../hooks/utility";
-import FilterQuestions from "../../hooks/FilterQuestions";
 import SetFilteredQuestionIdList from "../../hooks/SetFilteredQuestionIdList";
 import { questionDataActions } from "../../store/questionDataSlice";
 
@@ -21,15 +20,11 @@ function QuestionFilter(props) {
   useEffect(() => {
     dispatch(questionDataActions.clearQuestionFilterIds);
     const filteredQuestionIdList = SetFilteredQuestionIdList(
-      allQuestionsData.allQuestions,
-      allQuestionsData.currentFilters
+      allQuestions,
+      currentFilters
     );
     dispatch(questionDataActions.setQuestionFilterIds(filteredQuestionIdList));
-  }, [
-    allQuestionsData.currentFilters,
-    allQuestionsData.allQuestions,
-    dispatch,
-  ]);
+  }, [currentFilters, allQuestions, dispatch]);
   function levelFilterButtonHandler(e) {
     if (e.target.checked) {
       dispatch(

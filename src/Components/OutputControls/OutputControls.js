@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import styles from "./OutputControls.module.css";
 import { useNavigate } from "react-router-dom";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";

@@ -30,28 +30,26 @@ export const auth = getAuth(app);
 
 // Get a list of cities from your database
 async function getDBData(db, name) {
-  const citiesCol = collection(db, name);
-  const citySnapshot = await getDocs(citiesCol);
-  const cityList = citySnapshot.docs.map((doc) => doc.data());
-  console.log(
-    "%c --> %cline:35%ccityList",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(3, 22, 52);padding:3px;border-radius:2px",
-    cityList
-  );
-  return cityList;
+  const questionsCol = collection(db, name);
+  const questionsSnapshot = await getDocs(questionsCol);
+  const dbData = questionsSnapshot.docs.map((doc) => doc.data());
+  return dbData;
 }
 
 async function addDocument(dbName, id, dataObject, refresh) {
   try {
     const docRef = await setDoc(doc(db, dbName, id), dataObject);
-    console.log("Document written with ID: ", id, docRef);
+    console.log(
+      "The question was saved to the database. The question ID: ",
+      id,
+      docRef
+    );
     alert("Document written with ID: " + id);
     if (refresh) {
       window.location.href = window.location.href;
     }
   } catch (e) {
+    alert("There was an error adding the question: ", e);
     console.error("Error adding document: ", e);
   }
 }
@@ -59,9 +57,14 @@ async function addDocument(dbName, id, dataObject, refresh) {
 async function removeDocument(dbName, id) {
   try {
     const docRef = await deleteDoc(doc(db, dbName, id));
-    console.log("Document deleted with an ID of: ", id, docRef);
+    console.log(
+      "The question was  deleted from the database. The question ID: ",
+      id,
+      docRef
+    );
     alert("Document deleted with an ID of: " + id);
   } catch (e) {
+    alert("There was an error deleting the question: ", e);
     console.error("Error removing document: ", e);
   }
 }

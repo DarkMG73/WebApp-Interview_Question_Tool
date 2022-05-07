@@ -34,12 +34,12 @@
 } */
 .slide-button-inner-wrap-title {
   min-width: max-content;
-  font: var(--font-subheading);
-  letter-spacing: var(--spacing-subheading);
+  font: var(--iq-font-subheading);
+  letter-spacing: var(--iq-spacing-subheading);
 }
 
 .output-container {
-  font: var(--font-subheading);
+  font: var(--iq-font-subheading);
   font-weight: 700;
   letter-spacing: 0.125em;
 }

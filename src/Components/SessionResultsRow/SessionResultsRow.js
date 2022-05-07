@@ -1,5 +1,5 @@
 import styles from "./SessionResultsRow.module.css";
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useRef, Fragment } from "react";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import { isValidHttpUrl } from "../../hooks/utility";
 import Card from "../../UI/Cards/Card/Card";

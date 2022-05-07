@@ -1,5 +1,3 @@
-import questionHistory from "../data/questions-history.json";
-import DummyQuestionData from "../data/iq-all-questions.json";
 import { questionData } from "../storage/firebase.config";
 import storage from "./storage";
 
@@ -15,7 +13,24 @@ export default async function GatherQuestionData() {
 
   allQuestionsData.allQuestions = {};
 
-  const allQuestions = await questionData;
+  let allQuestions = await questionData;
+  if (allQuestions.length <= 0)
+    allQuestions = [
+      {
+        title: "*** Error getting questions from the database. ***",
+        question:
+          "***Error getting questions from the database. Make sure you are connected to the internet and refresh the page. If the problem continues, please contact the site administrator. ***",
+        link: "*** Error getting data ***",
+        answer:
+          "***Error getting questions from the database. Make sure you are connected to the internet and refresh the page. If the problem continues, please contact the site administrator. ***",
+        level: "*** Error Getting Levels Data ***",
+        topic: "*** Error Getting Topics Data ***",
+        tags: ["*** Error Getting Tags Data ***"],
+        credit: "***",
+        id: "errorGettingDataFromDatabase",
+        search: "***",
+      },
+    ];
   console.log(
     "%c --> %cline:18%callQuestions",
     "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
@@ -44,7 +59,7 @@ export default async function GatherQuestionData() {
       if (questionData.tags.constructor === String) {
         questionData.tags = stringToArray(questionData.tags);
       } else if (!questionData.tags.constructor === Array) {
-        console.log("ERROR: Question tags in an incorrect format");
+        console.log("ERROR: The question tags are an incorrect format");
         questionData.tags = [];
       } else {
         questionData.tags = questionData.tags.map((tag) =>
@@ -105,7 +120,7 @@ function objectExtractAllValuesPerKey(
 
   // Grab each question
   for (const i in objectToLoop) {
-    // Get each item withing that questoin (ID, topic, answer, etc)
+    // Get each item withing that question (ID, topic, answer, etc)
     for (let key in objectToLoop[i]) {
       key = key.trim();
 
@@ -130,7 +145,7 @@ function objectExtractAllValuesPerKey(
               outputObject[key].add(value);
             }
           });
-        } // Since teh value is not a string list, if the value is not an array, just add it as-is to the key Set
+        } // Since the value is not a string list, if the value is not an array, just add it as-is to the key Set
         else if (objectToLoop[i][key].constructor !== Array) {
           const value = objectToLoop[i][key].trim().toString();
 
@@ -141,19 +156,24 @@ function objectExtractAllValuesPerKey(
             outputObject[key].add(value);
           }
         } // Since the value is an array, loop to add it
-        else if (objectToLoop[i][key].constructor == Array) {
-          objectToLoop[i][key].forEach((rawValue) => {
-            const value = rawValue.replaceAll(" ", "").toString();
-            // Check if  the value is valid
-            if (!valuesToExclude.includes(value)) {
-              if (outputObject.hasOwnProperty(key)) {
-                outputObject[key].add(value);
-              } else {
-                outputObject[key] = new Set();
-                outputObject[key].add(value);
+        else if (objectToLoop[i][key].constructor === Array) {
+          if (objectToLoop[i][key].length > 0) {
+            objectToLoop[i][key].forEach((rawValue) => {
+              const value = rawValue.replaceAll(" ", "").toString();
+              // Check if  the value is valid
+              if (!valuesToExclude.includes(value)) {
+                if (outputObject.hasOwnProperty(key)) {
+                  outputObject[key].add(value);
+                } else {
+                  outputObject[key] = new Set();
+                  outputObject[key].add(value);
+                }
               }
-            }
-          });
+            });
+          } else {
+            // Given this is an empty array, just return an empty Setup
+            outputObject[key] = new Set();
+          }
         }
       }
     }

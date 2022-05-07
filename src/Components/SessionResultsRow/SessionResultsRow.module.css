@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  font: var(--font-subheading);
+  font: var(--iq-font-subheading);
   font-size: 1rem;
 }
 .grid-item-title {
@@ -32,7 +32,7 @@
 
 .grid-item-text {
   font-weight: 700;
-  color: var(--color-accent);
+  color: var(--iq-color-accent);
 }
 .grid-item-child {
   position: relative;
@@ -70,11 +70,11 @@
 }
 .title {
   grid-area: title;
-  font: var(--font-subheading);
+  font: var(--iq-font-subheading);
   min-height: 100%;
 }
 .title-text {
-  font: var(--font-subheading);
+  font: var(--iq-font-subheading);
   min-height: 100%;
 }
 .question {
@@ -86,10 +86,10 @@
 
 .answer > .grid-item-text,
 .question > .grid-item-text {
-  font: var(--font-body-text);
+  font: var(--iq-font-body-text);
   font-weight: 500;
   border-radius: 27px;
-  border: 1px solid var(--color-accent);
+  border: 1px solid var(--iq-color-accent);
   padding: 1em 2em;
   margin: 1em auto;
   width: 100%;
@@ -97,8 +97,8 @@
 }
 .question,
 .answer {
-  background: var(--color-background);
-  color: var(--color-background-contrast);
+  background: var(--iq-color-background);
+  color: var(--iq-color-background-contrast);
 }
 .search {
   grid-area: search;

@@ -6,6 +6,9 @@
   justify-content: center;
 }
 
+.question-section-title {
+  margin-bottom: 2em;
+}
 .question-title {
   font-size: calc(1rem + 0.5vw);
   margin-top: 0;
@@ -19,4 +22,10 @@
   max-width: 100%;
   overflow: hidden;
   white-space: break-spaces;
+}
+
+.help,
+.question-text {
+  max-width: 800px;
+  margin: 0 auto;
 }

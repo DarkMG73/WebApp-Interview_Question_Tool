@@ -2,9 +2,7 @@ import styles from "./WorkArea.module.css";
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import Iframe from "react-iframe";
-import Timer from "../Timer/Timer";
 import Answer from "../Answer/Answer";
-import CardPrimary from "../../UI/Cards/CardPrimary/CardPrimary";
 
 function WorkArea(props) {
   const [questionCompleted, setQuestionCompleted] = useState(false);
@@ -38,7 +36,7 @@ function WorkArea(props) {
         className={styles["user-interaction-area"]}
       >
         {questionCompleted && <Answer />}
-        <Timer />
+
         <div id="question-info" className="outer-wrap">
           <Iframe
             height="400px"
