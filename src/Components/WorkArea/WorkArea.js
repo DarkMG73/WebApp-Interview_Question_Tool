@@ -23,7 +23,7 @@ function WorkArea(props) {
 
   return (
     <div id="work-area" className={styles["outerwrap"]} ref={answerElm}>
-      <h2 class="section-title">Answer Workspace</h2>
+      <h2 className="section-title">Answer Workspace</h2>
       <p>
         Use this console area as a scratchpad for working if you need. Many
         code-based question, especially the algorithm questions, will require

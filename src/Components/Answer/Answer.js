@@ -54,7 +54,7 @@ function Answer() {
       }}
     >
       <div className={styles["outer-wrap"]}>
-        <h2 class="section-title">The Answer</h2>
+        <h2 className="section-title">The Answer</h2>
         <div className={styles["inner-wrap"]}>
           <form
             name="is-answer-correct"

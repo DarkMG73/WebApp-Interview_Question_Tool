@@ -21,7 +21,7 @@ function SessionResults(props) {
       className={styles.outerwrap}
       ref={sessionResultsBox}
     >
-      <h2 class="section-title">Session Results</h2>
+      <h2 className="section-title">Session Results</h2>
       <Score
         title={false}
         showResetBtn={true}

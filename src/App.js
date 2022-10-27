@@ -16,23 +16,33 @@ function App() {
   // const allQuestionsData = GatherQuestionData();
   const currentState = useSelector((state) => state.questionData);
   useEffect(() => {
-    GatherQuestionData().then((data) => {
-      console.log("🟣 | getData | questionsFromDB", data);
-      dispatch(questionDataActions.initState(data));
-    });
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      console.log(
+        "%c Running in: ",
+        "color:#fff;background:#58585b;padding:14px;border-radius:0 25px 25px 0",
+        process.env.NODE_ENV
+      );
+    }
+      GatherQuestionData().then((data) => {
+        dispatch(questionDataActions.initState(data));
+      });
+  
   }, []);
 
-  // const updateState = currentState;
-  console.log(
-    "%c --> %cline:38%ccurrentState.allQuestions",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(20, 68, 106);padding:3px;border-radius:2px",
-    currentState.allQuestions
-  );
+  if (
+    currentState.allQuestions &&
+    (!process.env.NODE_ENV || process.env.NODE_ENV === "development")
+  ) {
+    // const updateState = currentState;
+    console.log(
+      "%ccurrentState.allQuestions: ",
+      "color:#fff;background:#64bbe3;padding:14px;border-radius:0 25px 25px 0",
+      currentState.allQuestions
+    );
+  }
+
   return (
     <div className="App">
-      {!currentState.allQuestions && <BarLoader />}
       <header className="App-header">
         <CardPrimarySquareTop>
           {" "}
@@ -45,6 +55,9 @@ function App() {
           <Route path="/list-of-all-questions" element={<AllQuestions />} />
         )}
         {currentState.allQuestions && <Route path="/" element={<Home />} />}
+        {!currentState.allQuestions && (
+          <Route path="/" element={<BarLoader />} />
+        )}
       </Routes>
     </div>
   );

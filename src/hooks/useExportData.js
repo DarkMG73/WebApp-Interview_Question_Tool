@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 const useExportData = (props) => {
-  const { questionHistory, filteredQuestionsIds } = useSelector(
+  const { allQuestions, questionHistory, filteredQuestionsIds } = useSelector(
     (state) => state.questionData
   );
   if (!filteredQuestionsIds) return null;
@@ -23,7 +23,11 @@ const useExportData = (props) => {
 
   const generateExport = function (props) {
     if (props.type === "json") {
-      exportJSON(questionHistory, score, totalQuestions);
+      if (props.exportAll) {
+        exportAllQuestionsJSON(allQuestions);
+      } else {
+        exportSessionHistoryJSON(questionHistory, score, totalQuestions);
+      }
     } else {
       var headers = {
         score: score,
@@ -121,7 +125,11 @@ function convertToCSV(objArray) {
   return str;
 }
 
-const exportJSON = function (questionHistory, score, totalQuestions) {
+const exportSessionHistoryJSON = function (
+  questionHistory,
+  score,
+  totalQuestions
+) {
   const fileName = prompt("What would you like to name the file?");
   const newQuestRecord = {
     ...questionHistory,
@@ -130,6 +138,23 @@ const exportJSON = function (questionHistory, score, totalQuestions) {
     score: score,
     totalQuestions: totalQuestions,
   };
+  let dataStr = JSON.stringify(newQuestRecord);
+  let dataUri =
+    "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+
+  let exportFileName = fileName || "interview_questions_list.json";
+
+  let linkElement = document.createElement("a");
+  linkElement.setAttribute("href", dataUri);
+  linkElement.setAttribute("download", exportFileName);
+  linkElement.click();
+};
+
+const exportAllQuestionsJSON = function (questionSet) {
+  const newQuestRecord = {
+    ...questionSet,
+  };
+  const fileName = prompt("What would you like to name the file?");
   let dataStr = JSON.stringify(newQuestRecord);
   let dataUri =
     "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);

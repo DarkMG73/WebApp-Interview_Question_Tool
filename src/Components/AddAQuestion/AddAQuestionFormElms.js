@@ -16,7 +16,7 @@ function AddAQuestionFormElms() {
         <CardPrimary styles={{ position: "relative" }}>
           <div id="question-89702" className={styles["form-group-wrap"]}>
             <div id="topic-wrap-89702">
-              <label id="label-topic-89702" class="input topic-label">
+              <label id="label-topic-89702" className="input topic-label">
                 Topic
               </label>
               <select
@@ -26,7 +26,7 @@ function AddAQuestionFormElms() {
                 data-group-id="question-89702"
                 type="select"
                 name="topic"
-                class="input topic"
+                className="input topic"
                 selectoptions="[object Object]"
               >
                 <option id="optionOne-opt-topic-89702" value="html">
@@ -47,7 +47,7 @@ function AddAQuestionFormElms() {
               </select>
             </div>
             <div id="level-wrap-89702">
-              <label id="label-level-89702" class="input level-label">
+              <label id="label-level-89702" className="input level-label">
                 Level
               </label>
               <select
@@ -57,7 +57,7 @@ function AddAQuestionFormElms() {
                 data-group-id="question-89702"
                 type="select"
                 name="level"
-                class="input level"
+                className="input level"
                 selectoptions="[object Object]"
               >
                 <option id="optionOne-opt-level-89702" value="basic">
@@ -71,7 +71,7 @@ function AddAQuestionFormElms() {
             <div id="title-wrap-89702">
               <label
                 id="label-title-89702"
-                class="input form-quest-title-label"
+                className="input form-quest-title-label"
               >
                 Title
               </label>
@@ -83,7 +83,7 @@ function AddAQuestionFormElms() {
                 type="text"
                 name="title"
                 placeholder="...a one-sentence question..."
-                class="input form-quest-title"
+                className="input form-quest-title"
                 required="true"
               />
             </div>
@@ -93,7 +93,7 @@ function AddAQuestionFormElms() {
             >
               <label
                 id="label-question-89702"
-                class="input form-quest-title-label"
+                className="input form-quest-title-label"
               >
                 question
               </label>
@@ -103,7 +103,7 @@ function AddAQuestionFormElms() {
                 data-key="question"
                 data-group-id="question-89702"
                 name="question"
-                class="input form-quest-title"
+                className="input form-quest-title"
                 placeholder="...the question detail..."
               ></textarea>
             </div>
@@ -111,7 +111,7 @@ function AddAQuestionFormElms() {
               id="answer-wrap-89702"
               className={styles["form-answer-container"]}
             >
-              <label id="label-answer-89702" class="input form-answer-label">
+              <label id="label-answer-89702" className="input form-answer-label">
                 Answer
               </label>
               <textarea
@@ -120,13 +120,13 @@ function AddAQuestionFormElms() {
                 data-key="answer"
                 data-group-id="question-89702"
                 name="answer"
-                class="input form-answer"
+                className="input form-answer"
                 placeholder="...the answer..."
                 required="true"
               ></textarea>
             </div>
             <div id="search-wrap-89702">
-              <label id="label-search-89702" class="input form-search-label">
+              <label id="label-search-89702" className="input form-search-label">
                 Search Terms
               </label>
               <input
@@ -136,12 +136,12 @@ function AddAQuestionFormElms() {
                 data-group-id="question-89702"
                 type="text"
                 name="search"
-                class="input form-searchterms"
+                className="input form-searchterms"
                 placeholder="...seperate each with a comma..."
               />
             </div>
             <div id="link-wrap-89702">
-              <label id="label-link-89702" class="input form-link-label">
+              <label id="label-link-89702" className="input form-link-label">
                 Link
               </label>
               <input
@@ -151,12 +151,12 @@ function AddAQuestionFormElms() {
                 data-group-id="question-89702"
                 type="url"
                 name="link"
-                class="input form-link"
+                className="input form-link"
                 placeholder="...url..."
               />
             </div>
             <div id="credit-wrap-89702">
-              <label id="label-credit-89702" class="input form-credit-label">
+              <label id="label-credit-89702" className="input form-credit-label">
                 Credit
               </label>
               <textarea
@@ -165,12 +165,12 @@ function AddAQuestionFormElms() {
                 data-key="credit"
                 data-group-id="question-89702"
                 name="credit"
-                class="input form-credit"
+                className="input form-credit"
                 placeholder="...url..."
               ></textarea>
             </div>
             <div id="tags-wrap-89702">
-              <label id="label-tags-89702" class="input form-tags-label">
+              <label id="label-tags-89702" className="input form-tags-label">
                 Tags
               </label>
               <input
@@ -180,7 +180,7 @@ function AddAQuestionFormElms() {
                 data-group-id="question-89702"
                 type="text"
                 name="tags"
-                class="input form-tags"
+                className="input form-tags"
                 placeholder="...separate each with a comma..."
               />
             </div>

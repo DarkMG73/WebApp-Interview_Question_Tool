@@ -5,7 +5,10 @@ function QuestionDataFromDB() {
   const [blogs, setBlogs] = useState([]);
   const fetchBlogs = async () => {
     const output = await questionData;
-    console.log("🔵 | fetchBlogs | output", output);
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    console.log("🔵 | Fetch | output", output);
+  } 
+   
     return output;
   };
   useEffect(() => {

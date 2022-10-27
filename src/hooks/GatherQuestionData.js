@@ -14,6 +14,7 @@ export default async function GatherQuestionData() {
   allQuestionsData.allQuestions = {};
 
   let allQuestions = await questionData;
+
   if (allQuestions.length <= 0)
     allQuestions = [
       {
@@ -31,13 +32,14 @@ export default async function GatherQuestionData() {
         search: "***",
       },
     ];
-  console.log(
-    "%c --> %cline:18%callQuestions",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(95, 92, 51);padding:3px;border-radius:2px",
-    allQuestions
-  );
+
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+    console.log(
+      "%callQuestions (unfiltered): ",
+      "color:#fff;background:#6CC04A;padding:14px;border-radius:0 25px 25px 0",
+      allQuestions
+    );
+  }
 
   /////// IF USING DUMMY QUERY
   // const allQuestions = [];
@@ -47,13 +49,6 @@ export default async function GatherQuestionData() {
   ////////////
 
   allQuestions.forEach((questionData) => {
-    console.log(
-      "%c --> %cline:27%cquestionData",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
-      questionData
-    );
     const tags = [];
     if (questionData.hasOwnProperty("tags")) {
       if (questionData.tags.constructor === String) {
@@ -89,13 +84,14 @@ export default async function GatherQuestionData() {
   allQuestionsData.questionHistory.stats.usedIds = [];
 
   allQuestionsData.currentQuestionData = {};
-  console.log(
-    "%c --> %cline:62%callQuestionsData",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
-    allQuestionsData
-  );
+
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+    console.log(
+      "%callQuestionsData (compiled and sorted): ",
+      "color:#fff;background:#6CC04A;padding:14px;border-radius:0 25px 25px 0",
+      allQuestionsData
+    );
+  }
 
   return allQuestionsData;
 }

@@ -1,5 +1,6 @@
 import styles from "./SessionResultsRow.module.css";
 import { useState, useRef, Fragment } from "react";
+import { useSelector } from "react-redux";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import { isValidHttpUrl } from "../../hooks/utility";
 import Card from "../../UI/Cards/Card/Card";
@@ -16,6 +17,7 @@ function SessionResultsRow(props) {
   // editButtonDirection to be used with future edit mode visual manipulations
   const editButtonDirection = inEditMode ? "" : "";
   const editButtonWidth = inEditMode ? "max-content" : "5em";
+  const userLoggedIn = useSelector((state) => state.loginStatus.userLoggedIn);
 
   const rowEditButtonHandler = (e, setElmOpen) => {
     setInEditMode(!inEditMode);
@@ -24,18 +26,57 @@ function SessionResultsRow(props) {
   const rowSaveButtonHandler = (e) => {
     // Use tempKey instead of key when in dev
     // const tempKey = "TESTTEST";
-    addDocToDB(key, editedQuestions.current.edits);
+
+    if (userLoggedIn) {
+      addDocToDB(key, editedQuestions.current.edits);
+    } else {
+      const sendEmail = window.confirm(
+        'Thank you for contributing. All contributions must be reviewed before becoming public. Click "OK" to send this via email for review and, if approved, to be included. Click "Cancel" to cancel this and not send an email.'
+      );
+      if (sendEmail) {
+        const questionAdminEmail = "general@glassinteractive.com";
+        const subject =
+          "A Question Edit Request for the Interview Questions Tool";
+        const body = `A question edit is being recommended: ${JSON.stringify(
+          editedQuestions.current.edits
+        )}`;
+        window.open(
+          `mailto:${questionAdminEmail}?subject=${subject}l&body=${encodeURIComponent(
+            body
+          )}`
+        );
+      }
+    }
   };
 
   const deleteQuestionButtonHandler = (e) => {
     // Use tempKey instead of key when in dev
     // const tempKey = "TESTTEST";
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this question (ID: " + key + ")"
-    );
-    if (shouldDelete) {
-      deleteDocFromDb(key);
-      setDeleted(true);
+    if (userLoggedIn) {
+      const shouldDelete = window.confirm(
+        "Are you sure you want to delete this question (ID: " + key + ")"
+      );
+      if (shouldDelete) {
+        deleteDocFromDb(key);
+        setDeleted(true);
+      }
+    } else {
+      const sendEmail = window.confirm(
+        'Thank you for your suggestion to remove this question. All contributions must be reviewed before becoming public. Click "OK" to send this via email for review and, if approved, to be deleted. Click "Cancel" to cancel this and not send an email.'
+      );
+      if (sendEmail) {
+        const questionAdminEmail = "general@glassinteractive.com";
+        const subject =
+          "A Recommendation to Remove a Question from the Interview Questions Tool";
+        const body = `It is recommended that this question be removed: ${JSON.stringify(
+          editedQuestions.current.edits
+        )}`;
+        window.open(
+          `mailto:${questionAdminEmail}?subject=${subject}l&body=${encodeURIComponent(
+            body
+          )}`
+        );
+      }
     }
   };
 
@@ -118,7 +159,8 @@ function SessionResultsRow(props) {
             ref={(elm) => {
               //  Moving this out of processing to handle after elements added.
               setTimeout(() => {
-                editedQuestions.current.edits[itemKey] = elm.innerText;
+                if (editedQuestions.current.edits[itemKey])
+                  editedQuestions.current.edits[itemKey] = elm.innerText;
               }, 0);
             }}
             onBlur={(e) => {
@@ -136,7 +178,7 @@ function SessionResultsRow(props) {
 
   // Add the edit button
   const output = (
-    <div key={key} id={key} class="question-result-container">
+    <div key={key} id={key} className="question-result-container">
       <Card>
         <CollapsibleElm
           id={key + "-collapsible-elm"}

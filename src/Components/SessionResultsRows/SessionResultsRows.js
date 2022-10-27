@@ -21,34 +21,23 @@ function SessionResultsRows(props) {
     }
   }
 
-  console.log(
-    "%c --> %cline:12%cquestionHistory",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(34, 8, 7);padding:3px;border-radius:2px",
-    questionHistory
-  );
-  console.log(
-    "%c --> %cline:36%cquestionHistoryRows",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
-    questionHistoryRows
-  );
-
   return (
-    <div className={styles["session-results-container"]}>
+    <div
+      key="session-results-container"
+      className={styles["session-results-container"]}
+    >
       {questionHistoryCount > 0 ? (
-        questionHistoryCategories.map((cat) => {
+        questionHistoryCategories.map((cat, i) => {
           if (questionHistoryRows[cat].length > 0) {
             const output = (
-              <div className={styles[cat]}>
+              <div key={"session-results-" + i} className={styles[cat]}>
                 {!props.hideSectionTitles && (
                   <h3 className={styles["history-section-title"]}>{cat}</h3>
                 )}
                 {questionHistoryRows[cat].map((key) => {
                   return (
                     <SessionResultsRow
+                      key={"session-results-row" + cat + key + i}
                       questionHistory={questionHistory}
                       keyOne={cat}
                       keyTwo={key}

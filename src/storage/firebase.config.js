@@ -39,11 +39,15 @@ async function getDBData(db, name) {
 async function addDocument(dbName, id, dataObject, refresh) {
   try {
     const docRef = await setDoc(doc(db, dbName, id), dataObject);
-    console.log(
-      "The question was saved to the database. The question ID: ",
-      id,
-      docRef
-    );
+
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      console.log(
+        "The question was saved to the database. The question ID: ",
+        id,
+        docRef
+      );
+    }
+
     alert("Document written with ID: " + id);
     if (refresh) {
       window.location.href = window.location.href;
@@ -57,11 +61,14 @@ async function addDocument(dbName, id, dataObject, refresh) {
 async function removeDocument(dbName, id) {
   try {
     const docRef = await deleteDoc(doc(db, dbName, id));
-    console.log(
-      "The question was  deleted from the database. The question ID: ",
-      id,
-      docRef
-    );
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      console.log(
+        "The question was  deleted from the database. The question ID: ",
+        id,
+        docRef
+      );
+    }
+
     alert("Document deleted with an ID of: " + id);
   } catch (e) {
     alert("There was an error deleting the question: ", e);
@@ -82,5 +89,4 @@ export const deleteDocFromDb = function (id) {
   removeDocument("interview_questions", id);
 };
 
-console.log("🔵 | questionData", questionData);
 export default db;

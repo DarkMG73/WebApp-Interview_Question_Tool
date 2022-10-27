@@ -52,14 +52,23 @@ function AddAQuestion(props) {
         loginPassword
       );
       setLoginError(false);
+      if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+        console.log(
+          "%c --> %cline:16%cuser",
+          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+          "color:#fff;background:rgb(3, 38, 58);padding:3px;border-radius:2px",
+          user
+        );
+      }
+    } catch (error) {
       console.log(
-        "%c --> %cline:16%cuser",
+        "%c --> %cline:63%cerror",
         "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
         "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(3, 38, 58);padding:3px;border-radius:2px",
-        user
+        "color:#fff;background:rgb(130, 57, 53);padding:3px;border-radius:2px",
+        error
       );
-    } catch (error) {
       setLoginError(
         "Unfortunately, we could not log you in. Here is the error we received: " +
           error.message.replace("Firebase", "")
@@ -75,16 +84,18 @@ function AddAQuestion(props) {
   };
 
   const logOutButtonHandler = async () => {
-    console.log("click");
     try {
       const user = await signOut(auth);
-      console.log(
-        "%c --> %cline:67%cuser",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
-        user
-      );
+      if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+        console.log(
+          "%c --> %cline:67%cuser",
+          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+          "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
+          user
+        );
+      }
+
       setLoginError(false);
     } catch (error) {
       setLoginError(
@@ -108,7 +119,7 @@ function AddAQuestion(props) {
   return (
     <div id="output-controls" className={styles.outerwrap}>
       <div id="add-quest-wrap" className={styles["add-quest-wrap"]}>
-        <h2 class="section-title">Add Questions Here</h2>
+        <h2 className="section-title">Add Questions Here</h2>
         <p>
           To add questions to this tool, simply click the{" "}
           <i>Create an Entry Form</i> button and fill out the small form. Feel
@@ -162,16 +173,16 @@ function AddAQuestion(props) {
               <form name="login-form" onSubmit={logInSubmitHandler}>
                 <label for="login-email">Email Address</label>
                 <input
-                  type="text"
+                  type="email"
                   name="login-email"
                   onChange={(e) => {
                     setLoginEmail(e.target.value);
                   }}
                 />
 
-                <label for="login-password">Email Address</label>
+                <label for="login-password">Password</label>
                 <input
-                  type="text"
+                  type="password"
                   name="login-password"
                   onChange={(e) => {
                     setLoginPassword(e.target.value);

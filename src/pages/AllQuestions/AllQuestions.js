@@ -59,7 +59,7 @@ function AllQuestions() {
         {noDBErrors && (
           <Fragment>
             <AddAQuestion />
-            <h2 class="section-title">List of All of the Questions</h2>
+            <h2 className="section-title">List of All of the Questions</h2>
             <CollapsibleElm
               id={"session-results-see-more-btn"}
               maxHeight="27em"
@@ -96,7 +96,12 @@ function AllQuestions() {
       </div>
       {noDBErrors && (
         <Fragment>
-          <OutputControls hideAllQuestionsListButton="true" />
+          <OutputControls
+            hideExportIncorrectToCVSButton={true}
+            hideExportSessionHistoryToJSONButton={true}
+            hideAllQuestionsListButton={true}
+            showExportAllQuestions={true}
+          />
         </Fragment>
       )}
     </CardSecondary>

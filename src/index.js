@@ -6,17 +6,16 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./store/store";
-// import store from "./store-TRASH/index";
 
-ReactDOM.render(<Router basename={process.env.PUBLIC_URL}>
-  <React.StrictMode>
-    <Provider store={store}>
-  
+ReactDOM.render(
+  <Router basename={process.env.PUBLIC_URL}>
+    <React.StrictMode>
+      <Provider store={store}>
         <App />
-  
-    </Provider>
-    ,
-  </React.StrictMode></Router>,
+      </Provider>
+      ,
+    </React.StrictMode>
+  </Router>,
   document.getElementById("root")
 );
 
