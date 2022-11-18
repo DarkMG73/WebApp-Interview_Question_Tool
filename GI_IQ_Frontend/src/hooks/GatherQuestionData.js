@@ -104,6 +104,7 @@ function gatherAllMetadata(dataObject) {
     itemsToInclude,
     valuesToExclude
   );
+
   return outputSet;
 }
 
@@ -130,6 +131,7 @@ function objectExtractAllValuesPerKey(
           const termArray = objectToLoop[i][key].split(",");
 
           // For each list item, put is in the Set (removes duplicates)
+
           termArray.forEach((term) => {
             const value = term.trim().toString();
 
@@ -153,9 +155,13 @@ function objectExtractAllValuesPerKey(
           }
         } // Since the value is an array, loop to add it
         else if (objectToLoop[i][key].constructor === Array) {
-          if (objectToLoop[i][key].length > 0) {
+          if (
+            objectToLoop[i][key].length > 0 ||
+            objectToLoop[i][key].size > 0
+          ) {
             objectToLoop[i][key].forEach((rawValue) => {
               const value = rawValue.replaceAll(" ", "").toString();
+
               // Check if  the value is valid
               if (!valuesToExclude.includes(value)) {
                 if (outputObject.hasOwnProperty(key)) {
@@ -167,8 +173,9 @@ function objectExtractAllValuesPerKey(
               }
             });
           } else {
-            // Given this is an empty array, just return an empty Setup
-            outputObject[key] = new Set();
+            // If the above does not app;y, return a Set() if it si not already there.
+            if (!outputObject.hasOwnProperty(key))
+              outputObject[key] = new Set();
           }
         }
       }
@@ -181,6 +188,7 @@ function objectExtractAllValuesPerKey(
 
   for (const i in outputObject) {
   }
+
   return outputObject;
 }
 
