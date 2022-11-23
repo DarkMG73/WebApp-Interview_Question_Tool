@@ -32,8 +32,8 @@ export const questionDataSlice = createSlice({
           const newUsedIdsData = new Set([
             ...state.questionHistory.stats.usedIds,
           ]);
-          if (state.currentQuestionData.id)
-            newUsedIdsData.add(state.currentQuestionData.id);
+          if (state.currentQuestionData.identifier)
+            newUsedIdsData.add(state.currentQuestionData.identifier);
 
           output = Array.from(newUsedIdsData);
         }
@@ -52,7 +52,7 @@ export const questionDataSlice = createSlice({
           }
         });
 
-        // remainingIds.add(...state.questionMetadata.id);
+        // remainingIds.add(...state.questionMetadata.identifier);
         const randomNumber = Math.floor(Math.random() * remainingIds.length);
 
         for (const id in remainingIds) {
@@ -88,7 +88,7 @@ export const questionDataSlice = createSlice({
       }
     },
     addToHistoryCorrect: (state) => {
-      const currentQuestionId = state.currentQuestionData.id;
+      const currentQuestionId = state.currentQuestionData.identifier;
 
       // Clear question from history
       const {
@@ -109,7 +109,7 @@ export const questionDataSlice = createSlice({
       };
     },
     addToHistoryIncorrect: (state) => {
-      const currentQuestionId = state.currentQuestionData.id;
+      const currentQuestionId = state.currentQuestionData.identifier;
 
       // Clear question from history
       const {
@@ -130,7 +130,7 @@ export const questionDataSlice = createSlice({
       };
     },
     addToHistoryUnmarked: (state) => {
-      const currentQuestionId = state.currentQuestionData.id;
+      const currentQuestionId = state.currentQuestionData.identifier;
 
       // Clear question from history
       const {

@@ -13,7 +13,7 @@ function SetFilteredQuestionList(
   if (currentFilters.level.length > 0) {
     for (const k in allQuestions) {
       if (currentFilters.level.includes(allQuestions[k].level.trim())) {
-        filteredQuestionIdList.push(allQuestions[k].id);
+        filteredQuestionIdList.push(allQuestions[k].identifier);
       }
     }
   }
@@ -25,7 +25,7 @@ function SetFilteredQuestionList(
     const questIdsToRemove = [];
     filteredQuestionIdList.forEach((id) => {
       if (!currentFilters.topic.includes(allQuestions[id].topic.trim())) {
-        questIdsToRemove.push(allQuestions[id].id);
+        questIdsToRemove.push(allQuestions[id].identifier);
       }
     });
     questIdsToRemove.forEach((id) => {
@@ -43,11 +43,11 @@ function SetFilteredQuestionList(
       if (allQuestions[id].tags.length !== 0) {
         currentFilters.tags.forEach((tag) => {
           if (!allQuestions[id].tags.includes(tag.trim())) {
-            questIdsToRemove.push(allQuestions[id].id);
+            questIdsToRemove.push(allQuestions[id].identifier);
           }
         });
       } else {
-        questIdsToRemove.push(allQuestions[id].id);
+        questIdsToRemove.push(allQuestions[id].identifier);
       }
     });
 

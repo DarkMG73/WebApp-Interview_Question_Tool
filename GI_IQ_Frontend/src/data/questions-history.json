@@ -290,7 +290,7 @@
           "time":"00:57"
        },
        "112":{
-          "answer":"State of a component can be updated using this.setState().\n\n\nclass MyComponent extends React.Component {\n    constructor() {\n        super();\n        this.state = {\n            name: 'Maxx',\n            id: '101'\n        }\n    }\n    render()\n        {\n            setTimeout(()=>{this.setState({name:'Jaeha', id:'222'})},2000)\n            return (                                 \n \n<div>\n                   \n<h1>Hello {this.state.name}</h1>\n     \n<h2>Your Id is {this.state.id}</h2>\n \n                   </div>\n \n            );\n        }\n    }\nReactDOM.render(\n    <MyComponent/>, document.getElementById('content')\n);",
+          "answer":"State of a component can be updated using this.setState().\n\n\nclass MyComponent extends React.Component {\n    constructor() {\n        super();\n        this.state = {\n            name: 'Maxx',\n            id: '101'\n        }\n    }\n    render()\n        {\n            setTimeout(()=>{this.setState({name:'Jaeha', id:'222'})},2000)\n            return (                                 \n \n<div>\n                   \n<h1>Hello {this.state.name}</h1>\n     \n<h2>Your Id is {this.state.identifier}</h2>\n \n                   </div>\n \n            );\n        }\n    }\nReactDOM.render(\n    <MyComponent/>, document.getElementById('content')\n);",
           "credit":"https://www.edureka.co/blog/interview-questions/react-interview-questions/",
           "id":"question12697563",
           "level":"advanced",

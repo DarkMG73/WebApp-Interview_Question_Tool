@@ -32,7 +32,7 @@ function FilterQuestions(questionData) {
   // Set the filter ID Array
 
   for (const key in filteredQuestions) {
-    filteredQuestionsIds.push(filteredQuestions[key].id);
+    filteredQuestionsIds.push(filteredQuestions[key].identifier);
   }
 
   return filteredQuestionsIds;

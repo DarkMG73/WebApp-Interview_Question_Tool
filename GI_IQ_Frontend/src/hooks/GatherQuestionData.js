@@ -1,4 +1,5 @@
-import { questionData } from "../storage/firebase.config";
+// import { questionData } from "../storage/firebase.config";
+import { questionData } from "../storage/interviewQuestionsDB.js";
 import storage from "./storage";
 
 export default async function GatherQuestionData() {
@@ -13,7 +14,7 @@ export default async function GatherQuestionData() {
 
   allQuestionsData.allQuestions = {};
 
-  let allQuestions = await questionData;
+  let allQuestions = await questionData();
 
   if (allQuestions.length <= 0)
     allQuestions = [
@@ -49,6 +50,13 @@ export default async function GatherQuestionData() {
   ////////////
 
   allQuestions.forEach((questionData) => {
+    console.log(
+      "%c --> %cline:52%cquestionData",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(60, 79, 57);padding:3px;border-radius:2px",
+      questionData
+    );
     const tags = [];
     if (questionData.hasOwnProperty("tags")) {
       if (questionData.tags.constructor === String) {
@@ -64,7 +72,15 @@ export default async function GatherQuestionData() {
     } else {
       questionData.tags = [];
     }
-    allQuestionsData.allQuestions[questionData.id] = questionData;
+
+    console.log(
+      "%c --> %cline:53%cquestionData",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(60, 79, 57);padding:3px;border-radius:2px",
+      questionData
+    );
+    allQuestionsData.allQuestions[questionData.identifier] = questionData;
   });
 
   allQuestionsData.questionHistory = historyDataFromStorage ?? {
@@ -97,7 +113,14 @@ export default async function GatherQuestionData() {
 }
 
 function gatherAllMetadata(dataObject) {
-  const itemsToInclude = ["topic", "level", "id", "tags", "credit"];
+  const itemsToInclude = [
+    "topic",
+    "level",
+    "identifier",
+    "tags",
+    "credit",
+    "_id",
+  ];
   const valuesToExclude = ["undefined", "", " "];
   const outputSet = objectExtractAllValuesPerKey(
     dataObject,

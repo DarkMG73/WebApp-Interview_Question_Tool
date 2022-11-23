@@ -44,7 +44,7 @@ function AddAQuestionForm(props) {
       const hasId = sha256(JSON.stringify(questions[i]));
       const newId = year + "-" + hasId;
       questionsGroomed[newId] = questions[i];
-      questionsGroomed[newId].id = newId;
+      questionsGroomed[newId].identifierentifier = newId;
     }
 
     // Access FormData fields with `data.get(fieldName)`

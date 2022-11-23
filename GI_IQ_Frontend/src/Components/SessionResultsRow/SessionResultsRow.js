@@ -26,7 +26,13 @@ function SessionResultsRow(props) {
   const rowSaveButtonHandler = (e) => {
     // Use tempKey instead of key when in dev
     // const tempKey = "TESTTEST";
-
+    console.log(
+      "%c --> %cline:41%ceditedQuestions.current",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
+      editedQuestions.current
+    );
     if (userLoggedIn) {
       addDocToDB(key, editedQuestions.current.edits);
     } else {
@@ -83,8 +89,25 @@ function SessionResultsRow(props) {
   function AssembleInnerRow(questionHistory, k, key, elmOpen, setElmOpen) {
     let rowHTML = [];
 
-    function onTextChangeHandler(e, itemKey) {
-      editedQuestions.current.edits[itemKey] = e.target.innerText;
+    function onTextChangeHandler(e, key, itemKey) {
+      console.log(
+        "%c --> %cline:93%ce.target",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px",
+        e.target
+      );
+      console.log(
+        "%c --> %cline:93%ce.target",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px",
+        itemKey
+      );
+      if (!editedQuestions.current.edits.hasOwnProperty(key))
+        editedQuestions.current.edits[key] = {};
+
+      editedQuestions.current.edits[key][itemKey] = e.target.innerText;
     }
     for (const itemKey in questionHistory[k][key]) {
       let value = questionHistory[k][key][itemKey];
@@ -164,7 +187,7 @@ function SessionResultsRow(props) {
               }, 0);
             }}
             onBlur={(e) => {
-              onTextChangeHandler(e, itemKey);
+              onTextChangeHandler(e, key, itemKey);
             }}
           >
             {value}

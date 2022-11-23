@@ -162,7 +162,7 @@ app.use(
 //Creating API for admin functions
 app.use("/api/special-admin/", userLimiter, adminRoute);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8001;
 
 //Express js listen method to run project on http://localhost:8000
 app.listen(

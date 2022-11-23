@@ -17,7 +17,7 @@ function AllQuestions() {
   const [dBErrorMessage, setDbErrorMessage] = useState(false);
 
   useEffect(() => {
-    if (questionMetadata.id.includes("errorGettingDataFromDatabase")) {
+    if (questionMetadata.identifier.includes("errorGettingDataFromDatabase")) {
       setNoDBErrors(false);
       setDbErrorMessage(allQuestions.errorGettingDataFromDatabase.question);
     }

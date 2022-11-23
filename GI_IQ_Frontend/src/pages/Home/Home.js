@@ -24,7 +24,7 @@ const Home = () => {
 
   useEffect(() => {
     if (
-      questionData.questionMetadata.id.includes("errorGettingDataFromDatabase")
+      questionData.questionMetadata.identifier.includes("errorGettingDataFromDatabase")
     ) {
       setNoDBErrors(false);
       setDbErrorMessage(allQuestions.errorGettingDataFromDatabase.question);
