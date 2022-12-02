@@ -2,9 +2,27 @@
 import { questionData } from "../storage/interviewQuestionsDB.js";
 import storage from "./storage";
 
-export default async function GatherQuestionData() {
+export default async function GatherQuestionData(user) {
+  console.log(
+    "%c --> %cline:5%cuser",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
+    user
+  );
   const allQuestionsData = {};
-  const dataFromStorage = storage("get");
+  const dataFromStorage =
+    user && user.questionHistory
+      ? { questionHistory: { ...user.questionHistory } }
+      : storage("get");
+  console.log(
+    "%c --> %cline:14%cdataFromStorage",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px",
+    dataFromStorage
+  );
+
   let historyDataFromStorage = null;
   let currentFilters = null;
   if (dataFromStorage) {
@@ -30,6 +48,7 @@ export default async function GatherQuestionData() {
         tags: ["*** Error Getting Tags Data ***"],
         credit: "***",
         id: "errorGettingDataFromDatabase",
+        identifier: "errorGettingDataFromDatabase",
         search: "***",
       },
     ];
@@ -82,13 +101,30 @@ export default async function GatherQuestionData() {
     );
     allQuestionsData.allQuestions[questionData.identifier] = questionData;
   });
-
+  console.log(
+    "%c --> %cline:102%chistoryDataFromStorage",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
+    historyDataFromStorage
+  );
   allQuestionsData.questionHistory = historyDataFromStorage ?? {
     incorrect: {},
     correct: {},
     unmarked: {},
     stats: {},
   };
+
+  // Make sure all needed items are present.
+  if (!allQuestionsData.questionHistory.hasOwnProperty("incorrect"))
+    allQuestionsData.questionHistory.incorrect = {};
+  if (!allQuestionsData.questionHistory.hasOwnProperty("correct"))
+    allQuestionsData.questionHistory.correct = {};
+  if (!allQuestionsData.questionHistory.hasOwnProperty("unmarked"))
+    allQuestionsData.questionHistory.unmarked = {};
+  if (!allQuestionsData.questionHistory.hasOwnProperty("stats"))
+    allQuestionsData.questionHistory.stats = {};
+
   allQuestionsData.currentFilters = currentFilters ?? {
     level: [],
     topic: [],
@@ -97,7 +133,8 @@ export default async function GatherQuestionData() {
 
   allQuestionsData.questionMetadata = gatherAllMetadata(allQuestions);
 
-  allQuestionsData.questionHistory.stats.usedIds = [];
+  if (!allQuestionsData.questionHistory.stats.hasOwnProperty("usedIds"))
+    allQuestionsData.questionHistory.stats.usedIds = [];
 
   allQuestionsData.currentQuestionData = {};
 

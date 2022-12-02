@@ -3,6 +3,13 @@ import axios from "axios";
 /// GET THE PLUGINS/////////////////////////////
 export const questionData = async (user) => {
   let axiosConfig = null;
+  console.log(
+    "%c --> %cline:5%caxiosConfig",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(20, 68, 106);padding:3px;border-radius:2px",
+    axiosConfig
+  );
 
   if (user) {
     axiosConfig = {
@@ -14,13 +21,30 @@ export const questionData = async (user) => {
     };
   }
 
-  const res = await axios.post(
-    "/api/all-interview-questions/",
-    user,
-    axiosConfig
-  );
-
-  return res.data;
+  try {
+    const res = await axios.post(
+      "/api/all-interview-questions/",
+      user,
+      axiosConfig
+    );
+    console.log(
+      "%c --> %cline:17%cres",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
+      res
+    );
+    return res.data;
+  } catch (err) {
+    console.log(
+      "%c --> %cline:38%cerr",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(23, 44, 60);padding:3px;border-radius:2px",
+      err
+    );
+    return [];
+  }
 };
 
 /// GET ONE PLUGIN /////////////////////////////

@@ -1,7 +1,7 @@
-import interviewQuestionSchema from "../models/interviewQuestionModel.js";
-import asyncHandler from "express-async-handler";
-import mongoose from "mongoose";
-import adminList from "../data/adminList.js";
+const interviewQuestionSchema = require("../models/interviewQuestionModel.js");
+const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
+const adminList = require("../data/adminList.js");
 
 function getInterviewQuestionModelAndCollection(user) {
   let collection = user ? user._id : "all-questions";
@@ -11,14 +11,14 @@ function getInterviewQuestionModelAndCollection(user) {
   return mongoose.model(collection, interviewQuestionSchema);
 }
 //getInterviewQuestions function to get all questions
-export const getInterviewQuestions = asyncHandler(async (req, res) => {
+module.exports.getInterviewQuestions = asyncHandler(async (req, res) => {
   const InterviewQuestion = getInterviewQuestionModelAndCollection(req.user);
   const interviewQuestions = await InterviewQuestion.find({});
   res.json(interviewQuestions);
 });
 
 //getInterviewQuestionById function to retrieve user by id
-export const getInterviewQuestionById = asyncHandler(async (req, res) => {
+module.exports.getInterviewQuestionById = asyncHandler(async (req, res) => {
   const InterviewQuestion = getInterviewQuestionModelAndCollection(req.user);
   const interviewQuestion = await InterviewQuestion.findById(req.params.id);
 
@@ -34,7 +34,7 @@ export const getInterviewQuestionById = asyncHandler(async (req, res) => {
 
 // getInterviewQuestionByHashId function to retrieve user
 // by the Hash id assigned when it was created.
-export const getInterviewQuestionByHashId = asyncHandler(async (req, res) => {
+module.exports.getInterviewQuestionByHashId = asyncHandler(async (req, res) => {
   const InterviewQuestion = getInterviewQuestionModelAndCollection(req.user);
   const hashId = req.params.hashId;
   const filter = { id: hashId };
@@ -50,10 +50,10 @@ export const getInterviewQuestionByHashId = asyncHandler(async (req, res) => {
 });
 
 /// ADD A QUESTIONS ////////////////////////////
-export const AddInterviewQuestion = asyncHandler(async (req, res, next) => {
+module.exports.AddInterviewQuestion = asyncHandler(async (req, res, next) => {
   const interviewQuestion = req.body.theData;
   const InterviewQuestion = getInterviewQuestionModelAndCollection(req.user);
-
+  console.log("interviewQuestion", interviewQuestion);
   if (req.user) {
     const newInterviewQuestion = new InterviewQuestion(interviewQuestion);
     newInterviewQuestion
@@ -77,7 +77,7 @@ export const AddInterviewQuestion = asyncHandler(async (req, res, next) => {
 });
 
 /// ADD MANY QUESTIONS /////////////////////////////
-export const AddManyInterviewQuestions = asyncHandler(
+module.exports.AddManyInterviewQuestions = asyncHandler(
   async (req, res, next) => {
     console.log("Saving Multiple Questions");
     const interviewQuestion = req.body.theData;
@@ -109,7 +109,7 @@ export const AddManyInterviewQuestions = asyncHandler(
 );
 
 /// UPDATE A QUESTION /////////////////////////////
-export const UpdateInterviewQuestion = asyncHandler(async (req, res) => {
+module.exports.UpdateInterviewQuestion = asyncHandler(async (req, res) => {
   const dataObj = req.body.dataObj;
   const InterviewQuestion = getInterviewQuestionModelAndCollection(req.user);
 
@@ -183,7 +183,7 @@ export const UpdateInterviewQuestion = asyncHandler(async (req, res) => {
   }
 });
 
-export const RemoveInterviewQuestion = asyncHandler(async (req, res) => {
+module.exports.RemoveInterviewQuestion = asyncHandler(async (req, res) => {
   const InterviewQuestion = getInterviewQuestionModelAndCollection(req.user);
 
   InterviewQuestion.deleteOne({ _id: req.params.id })
@@ -199,7 +199,7 @@ export const RemoveInterviewQuestion = asyncHandler(async (req, res) => {
       return new Error("Error saving question.");
     });
 });
-export const RemoveAllInterviewQuestions = asyncHandler(async (req, res) => {
+module.exports.RemoveAllInterviewQuestions = asyncHandler(async (req, res) => {
   const InterviewQuestion = getInterviewQuestionModelAndCollection(req.user);
   InterviewQuestion.deleteMany({})
     .then((doc) => {
@@ -215,7 +215,7 @@ export const RemoveAllInterviewQuestions = asyncHandler(async (req, res) => {
     });
 });
 
-export const InterviewQuestionModel = asyncHandler(async (req, res) => {
+module.exports.InterviewQuestionModel = asyncHandler(async (req, res) => {
   const interviewQuestions = await interviewQuestionSchema;
 
   res.json({ model: interviewQuestions });
@@ -225,7 +225,7 @@ export const InterviewQuestionModel = asyncHandler(async (req, res) => {
 ///       ADMIN ACCESS
 ////////////////////////////////////////////////////////////////
 //getAdminInterviewQuestions function to get all questions for the admin
-export const getAdminInterviewQuestions = asyncHandler(async (req, res) => {
+module.exports.getAdminInterviewQuestions = asyncHandler(async (req, res) => {
   if (!req.user) res.status(401).json({ message: "Access not authorized" });
 
   if (!adminList["all-questions"].includes(req.user._id))
@@ -239,7 +239,7 @@ export const getAdminInterviewQuestions = asyncHandler(async (req, res) => {
 });
 
 // getInterviewQuestions function to get all questions
-export const changeFieldNameInDB = asyncHandler(async (req, res) => {
+module.exports.changeFieldNameInDB = asyncHandler(async (req, res) => {
   console.log("Get all questions request", req);
   const InterviewQuestion = getInterviewQuestionModelAndCollection();
   console.log("InterviewQuestion", InterviewQuestion);

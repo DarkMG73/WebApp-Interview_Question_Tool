@@ -1,11 +1,11 @@
-import User from "../models/userModel.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import asyncHandler from "express-async-handler";
+const User = require("../models/userModel.js");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const asyncHandler = require("express-async-handler");
 
 const appCookieName = "giInterviewQuestionsTool";
 
-export const register = asyncHandler(async (req, res) => {
+module.exports.register = asyncHandler(async (req, res) => {
   console.log(" --> line:8 req", req.body);
   const user = { ...req.body, isAdmin: false };
   const newUser = new User(user);
@@ -26,7 +26,7 @@ export const register = asyncHandler(async (req, res) => {
   });
 });
 
-export const sign_in = asyncHandler(async (req, res) => {
+module.exports.sign_in = asyncHandler(async (req, res) => {
   console.log(" --> sign_in req.body", req.body);
   User.findOne(
     {
@@ -111,7 +111,7 @@ export const sign_in = asyncHandler(async (req, res) => {
   );
 });
 
-export const setCookie = asyncHandler(async (req, res) => {
+module.exports.setCookie = asyncHandler(async (req, res) => {
   res
     .status(202)
     .cookie(appCookieName, req.body.user.token, {
@@ -126,11 +126,11 @@ export const setCookie = asyncHandler(async (req, res) => {
     .send("Cookie being initialized");
 });
 
-export const deleteCookie = asyncHandler(async (req, res) => {
+module.exports.deleteCookie = asyncHandler(async (req, res) => {
   res.status(202).clearCookie(appCookieName).send("Cookie cleared");
 });
 
-export const getCookie = asyncHandler(async (req, res) => {
+module.exports.getCookie = asyncHandler(async (req, res) => {
   if (req.cookies[appCookieName]) {
     res.status(202).send({ cookie: req.cookies[appCookieName] });
   } else {
@@ -138,7 +138,7 @@ export const getCookie = asyncHandler(async (req, res) => {
   }
 });
 
-export const loginRequired = asyncHandler(async (req, res, next) => {
+module.exports.loginRequired = asyncHandler(async (req, res, next) => {
   if (req.user) {
     next();
   } else {
@@ -146,7 +146,7 @@ export const loginRequired = asyncHandler(async (req, res, next) => {
   }
 });
 
-export const get_user_by_token = asyncHandler(async (req, res, next) => {
+module.exports.get_user_by_token = asyncHandler(async (req, res, next) => {
   if (req.user && req.user._id) {
     const user = await User.findById(req.user._id);
     user.hash_password = undefined;
@@ -158,7 +158,7 @@ export const get_user_by_token = asyncHandler(async (req, res, next) => {
 });
 
 //getUsers function to get all users
-export const getUsers = asyncHandler(async (req, res) => {
+module.exports.getUsers = asyncHandler(async (req, res) => {
   if (req.user) {
     const users = await User.find({});
     res.json(users);
@@ -168,13 +168,42 @@ export const getUsers = asyncHandler(async (req, res) => {
 });
 
 //getUserById function to retrieve user by id
-export const getUserById = asyncHandler(async (req, res) => {
+module.exports.getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
   //if user id match param id send user else send error
   if (user) {
     user.hash_password = undefined;
     res.json(user);
+  } else {
+    res.status(404).json({ message: "User not found" });
+    res.status(404);
+  }
+});
+
+// Update User History
+module.exports.updateUserHistory = asyncHandler(async (req, res) => {
+  console.log("Updating User History");
+  const data = req.body.dataObj;
+  console.log("data", data);
+  const filter = { _id: req.user._id };
+  const user = await User.findOne(filter);
+  console.log("user", user);
+
+  if (user._id.toString() === req.user._id) {
+    User.findOneAndUpdate(filter, { questionHistory: data }, { new: false })
+      .then((doc) => {
+        res.status(200).json({ message: "It worked.", doc: doc });
+        res.status(200);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        res.status(404).json({
+          message: "Error when trying to save the user history.",
+          err: err,
+        });
+        res.status(404);
+      });
   } else {
     res.status(404).json({ message: "User not found" });
     res.status(404);

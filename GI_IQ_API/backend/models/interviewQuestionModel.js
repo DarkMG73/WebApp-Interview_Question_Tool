@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const interviewQuestionSchema = mongoose.Schema(
   {
@@ -50,4 +50,4 @@ const interviewQuestionSchema = mongoose.Schema(
   }
 );
 
-export default interviewQuestionSchema;
+module.exports = interviewQuestionSchema;

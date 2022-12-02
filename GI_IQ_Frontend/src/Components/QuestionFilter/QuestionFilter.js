@@ -189,8 +189,8 @@ function QuestionFilter(props) {
       </div>
       <div className={styles["output-container"]}>
         <p>
-          Of the {questionMetadata.identifier.length} questions, you have selected{" "}
-          {filteredQuestionsIds.length} in {selectionsOuput}.
+          Of the {questionMetadata.identifier.length} questions, you have
+          selected {filteredQuestionsIds.length} in {selectionsOuput}.
         </p>
       </div>
     </div>

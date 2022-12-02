@@ -1,4 +1,4 @@
-import {
+const {
   getUsers,
   getUserById,
   register,
@@ -6,10 +6,11 @@ import {
   setCookie,
   deleteCookie,
   getCookie,
+  updateUserHistory,
   loginRequired,
   get_user_by_token,
-} from "../controllers/userController.js";
-import express from "express";
+} = require("../controllers/userController.js");
+const express = require("express");
 
 const router = express.Router();
 
@@ -29,6 +30,9 @@ router.route("/auth/deleteCookie").get(deleteCookie);
 router.route("/auth/getCookie").get(getCookie);
 
 // express router method to create route for getting all users
+router.route("/auth/updateUserHistory").post(loginRequired, updateUserHistory);
+
+// express router method to create route for getting all users
 router.route("/auth/get_user_by_token").get(loginRequired, get_user_by_token);
 
 // express router method to create route for getting users by id
@@ -37,4 +41,4 @@ router.route("/:id").get(getUserById);
 // express router method to create route for getting all users
 router.route("/").get(getUsers);
 
-export default router;
+module.exports = router;

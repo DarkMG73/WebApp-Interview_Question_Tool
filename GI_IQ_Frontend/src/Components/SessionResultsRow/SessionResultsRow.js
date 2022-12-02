@@ -34,7 +34,7 @@ function SessionResultsRow(props) {
       editedQuestions.current
     );
     if (userLoggedIn) {
-      addDocToDB(key, editedQuestions.current.edits);
+      addDocToDB(key, editedQuestions.current.edits[key]);
     } else {
       const sendEmail = window.confirm(
         'Thank you for contributing. All contributions must be reviewed before becoming public. Click "OK" to send this via email for review and, if approved, to be included. Click "Cancel" to cancel this and not send an email.'

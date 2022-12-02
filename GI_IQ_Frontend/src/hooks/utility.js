@@ -76,3 +76,20 @@ export const refreshTokenSetup = (res) => {
   // Setup first refresh timer
   setTimeout(refreshToken, refreshTiming);
 };
+
+/// Convert string to title case /////////////////////////////
+export const toTitleCase = (str, spaceAtCamelCase = false) => {
+  if (spaceAtCamelCase) {
+    str = [...str].map((character) => {
+      if (!isNaN(character * 1) && character == character.toUpperCase()) {
+        return "-" + character;
+      }
+
+      return character;
+    });
+  }
+  if (str.constructor === Array) str = str.join("");
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+};

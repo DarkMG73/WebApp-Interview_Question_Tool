@@ -1,0 +1,31 @@
+Outliine for User and Question Interactions
+
+
+Non-logged in users:
+    can:
+        1. Gather all questions.
+        2. Send question edits via email to admin.
+        3. Send new questions to admin.
+        4. Save results to their browser's cache.
+    can not: 
+        1. Add questions directly.
+        2. Edit questions directly.
+        3. Save results and ongoing progress(when feature added) to the DB.
+
+Logged-In users:
+    can:
+        1. Gather all questions.
+        2. Send question edits via email to admin.
+        3. Send new questions to admin.
+        4. Save both results and ongoing progress(when feature added) to the DB.
+    can not:
+        1. Add new questions directly.
+        2. Edit questions directly.
+        3. Save results to their browser's cache.
+
+Logged-In admins:
+    can:
+        1. Gather all questions.
+        2. Directly edit questions in the main library.
+        2. Directly add questions in the main library.
+        

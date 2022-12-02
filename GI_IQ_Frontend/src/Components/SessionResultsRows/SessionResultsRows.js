@@ -5,6 +5,13 @@ import BarLoader from "../../UI/Loaders/BarLoader/BarLoader";
 
 function SessionResultsRows(props) {
   const questionHistory = props.questionHistory;
+  console.log(
+    "%c --> %cline:7%cquestionHistory",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(161, 23, 21);padding:3px;border-radius:2px",
+    questionHistory
+  );
   const questionHistoryCategories = [];
   const questionHistoryRows = {};
   let questionHistoryCount = 0;

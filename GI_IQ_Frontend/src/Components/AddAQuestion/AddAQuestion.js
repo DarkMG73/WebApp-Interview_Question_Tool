@@ -10,7 +10,7 @@ import { loginStatusActions } from "../../store/loginStatusSlice";
 import styles from "./AddAQuestion.module.css";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import AddAQuestionForm from "./AddAQuestionForm";
-import { auth } from "../../storage/firebase.config.js";
+import LoginStatus from "../User/LoginStatus/LoginStatus";
 
 function AddAQuestion(props) {
   const [showAddQuestionForm, setShowAddQuestionForm] = useState(false);
@@ -19,98 +19,9 @@ function AddAQuestion(props) {
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
   const userData = useSelector((state) => state.loginStatus);
-  const user = userData.user;
+  // const user = userData.user;
   const isLoggedIn = userData.userLoggedIn;
   const dispatch = useDispatch();
-
-  useEffect(() => {}, [dispatch]);
-  onAuthStateChanged(auth, (currentUser) => {
-    if (currentUser) {
-      if (!isLoggedIn || currentUser.email !== userData.user.email) {
-        const userObj = {};
-        const desiredKeys = ["displayName", "email", "photoURL", "uid"];
-
-        for (const key in currentUser) {
-          if (desiredKeys.includes(key)) userObj[key] = currentUser[key];
-        }
-        dispatch(loginStatusActions.logIn(userObj));
-      }
-    } else {
-      dispatch(loginStatusActions.logOut());
-    }
-  });
-  const logInButtonHandler = () => {
-    setShowLoginForm(!showLoginForm);
-  };
-  const logInSubmitHandler = async (e) => {
-    e.preventDefault();
-
-    try {
-      const user = await signInWithEmailAndPassword(
-        auth,
-        loginEmail,
-        loginPassword
-      );
-      setLoginError(false);
-      if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-        console.log(
-          "%c --> %cline:16%cuser",
-          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-          "color:#fff;background:rgb(3, 38, 58);padding:3px;border-radius:2px",
-          user
-        );
-      }
-    } catch (error) {
-      console.log(
-        "%c --> %cline:63%cerror",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(130, 57, 53);padding:3px;border-radius:2px",
-        error
-      );
-      setLoginError(
-        "Unfortunately, we could not log you in. Here is the error we received: " +
-          error.message.replace("Firebase", "")
-      );
-      console.log(
-        "%c --> %cline:18%cerror",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(118, 77, 57);padding:3px;border-radius:2px",
-        error.message
-      );
-    }
-  };
-
-  const logOutButtonHandler = async () => {
-    try {
-      const user = await signOut(auth);
-      if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-        console.log(
-          "%c --> %cline:67%cuser",
-          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-          "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
-          user
-        );
-      }
-
-      setLoginError(false);
-    } catch (error) {
-      setLoginError(
-        "Unfortunately, we could not log you out. Please contact general@glassinteractive.com if the problem continues. Error received: " +
-          error.message.replace("Firebase", "")
-      );
-      console.log(
-        "%c --> %cline:69%cerror",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
-        error
-      );
-    }
-  };
 
   function showNewQuestionFormButtonHandler() {
     setShowAddQuestionForm(!showAddQuestionForm);
@@ -118,6 +29,7 @@ function AddAQuestion(props) {
 
   return (
     <div id="output-controls" className={styles.outerwrap}>
+      <LoginStatus />
       <div id="add-quest-wrap" className={styles["add-quest-wrap"]}>
         <h2 className="section-title">Add Questions Here</h2>
         <p>
@@ -134,80 +46,7 @@ function AddAQuestion(props) {
           id="db-login-wrap"
           className={`${styles["inner-wrap "]}  ${styles["db-login"]}`}
         >
-          <p>Database login status:</p>
-          <p>
-            <span id="db-login-status" className={styles["db-login-status"]}>
-              {user ? (
-                <span className={styles["login-text"]}>
-                  {" "}
-                  {user.email} is logged in.{" "}
-                </span>
-              ) : (
-                <span
-                  className={
-                    styles["login-text"] + " " + styles["not-logged-in-text"]
-                  }
-                >
-                  {" "}
-                  No one is currently logged in.
-                </span>
-              )}
-            </span>
-          </p>
           <div className={styles["button-container"]}>
-            {!user && (
-              <PushButton
-                inputOrButton="button"
-                id="login-to-db"
-                colorType="primary"
-                value="login to db"
-                data=""
-                size="small"
-                onClick={logInButtonHandler}
-              >
-                Log In
-              </PushButton>
-            )}
-
-            {showLoginForm && !user ? (
-              <form name="login-form" onSubmit={logInSubmitHandler}>
-                <label for="login-email">Email Address</label>
-                <input
-                  type="email"
-                  name="login-email"
-                  onChange={(e) => {
-                    setLoginEmail(e.target.value);
-                  }}
-                />
-
-                <label for="login-password">Password</label>
-                <input
-                  type="password"
-                  name="login-password"
-                  onChange={(e) => {
-                    setLoginPassword(e.target.value);
-                  }}
-                />
-
-                <input type="submit" value="Submit" />
-              </form>
-            ) : (
-              ""
-            )}
-
-            {user && (
-              <PushButton
-                inputOrButton="button"
-                id="logout-from-db"
-                colorType="primary"
-                value="logout from db"
-                data=""
-                size="small"
-                onClick={logOutButtonHandler}
-              >
-                LogOut
-              </PushButton>
-            )}
             {loginError && <p>{loginError}</p>}
             <PushButton
               inputOrButton="button"

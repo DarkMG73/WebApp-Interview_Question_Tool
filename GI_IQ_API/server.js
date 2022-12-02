@@ -1,19 +1,18 @@
-import dotenv from "dotenv";
-import connectDB from "./backend/config/db.js";
-import userRoute from "./backend/routes/userRoute.js";
+const dotenv = require("dotenv");
+const connectDB = require("./backend/config/db.js");
+const userRoute = require("./backend/routes/userRoute.js");
 // import User from "./backend/models/userModel";
-import adminRoute from "./backend/routes/adminRoute.js";
-import interviewQuestionRoute from "./backend/routes/interviewQuestionRoute.js";
-import bodyParser from "body-parser";
-import jsonwebtoken from "jsonwebtoken";
-import express from "express";
-
-import cors from "cors";
-import cookieParser from "cookie-parser";
+const adminRoute = require("./backend/routes/adminRoute.js");
+const interviewQuestionRoute = require("./backend/routes/interviewQuestionRoute.js");
+const bodyParser = require("body-parser");
+const jsonwebtoken = require("jsonwebtoken");
+const express = require("express");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 /// SECURITY ///
-import helmet from "helmet";
-import rateLimit from "express-rate-limit";
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 //connect database
 connectDB();
@@ -127,7 +126,7 @@ try {
             }
             req.user = undefined;
           }
-
+          console.log("Trying to decode the user object", req.user);
           req.user = decode;
 
           next();

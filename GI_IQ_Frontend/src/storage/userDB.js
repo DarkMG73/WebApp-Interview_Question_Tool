@@ -78,7 +78,7 @@ export async function registerAUser(user) {
 export async function setUserCookie(user) {
   // SessionStorage used while hosting API on Heroku
   const output = new Promise((resolve, reject) => {
-    const cookie = StorageForSession("ADD", user, "giProductionTool");
+    const cookie = StorageForSession("ADD", user, "gi-interview-questions-Tool-user");
     let status = 400;
     if (cookie) status = 202;
 
@@ -108,7 +108,7 @@ export async function setUserCookie(user) {
 export async function deleteUserCookie(user) {
   // SessionStorage used while hosting API on Heroku
   const output = new Promise((resolve, reject) => {
-    const cookie = StorageForSession("DELETE", {}, "giProductionTool");
+    const cookie = StorageForSession("DELETE", {}, "gi-interview-questions-Tool-user");
     let status = 400;
     if (cookie) status = 202;
 
@@ -137,7 +137,7 @@ export async function deleteUserCookie(user) {
 export async function getUserCookie(user) {
   // SessionStorage used while hosting API on Heroku
   const output = new Promise((resolve, reject) => {
-    const cookie = StorageForSession("GET", {}, "giProductionTool");
+    const cookie = StorageForSession("GET", {}, "gi-interview-questions-Tool-user");
 
     let status = 400;
     if (cookie) status = 202;
@@ -206,4 +206,30 @@ export async function getUserUserByToken(token) {
     });
 
   return output;
+}
+
+/// Add or Update User History/////////////////////////////////////
+export async function updateUserHistory(userAndDataObject) {
+  const axiosConfig = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "JWT " + userAndDataObject.user.token,
+    },
+  };
+  const dataObj = userAndDataObject.dataObj;
+  const response = await axios
+    .post(
+      `/api/users/auth/updateUserHistory`,
+      { dataObj: dataObj },
+      axiosConfig
+    )
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log("err", err);
+      // console.log("errors", err.response.data.err.message);
+      return err;
+    });
+  return response;
 }

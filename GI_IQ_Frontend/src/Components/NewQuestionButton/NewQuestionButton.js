@@ -4,6 +4,7 @@ import { questionDataActions } from "../../store/questionDataSlice";
 import { timerActions } from "../../store/timerSlice";
 import styles from "./NewQuestionButton.module.css";
 import storage from "../../hooks/storage";
+import { updateUserHistory } from "../../storage/userDB";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 
 function NewQuestionButton(props) {
@@ -11,6 +12,7 @@ function NewQuestionButton(props) {
   const { questionHistory, currentFilters } = useSelector(
     (state) => state.questionData
   );
+  const user = useSelector((state) => state.auth.user);
   const timerRunning = useSelector((state) => state.timer.timerRunning);
   const dispatch = useDispatch();
 
@@ -22,7 +24,25 @@ function NewQuestionButton(props) {
   }, [questionComplete, setQuestionComplete]);
 
   useEffect(() => {
-    storage("add", { questionHistory, currentFilters });
+    if (user) {
+      console.log(
+        "%c --> %cline:32%ccurrentFilters",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(222, 125, 44);padding:3px;border-radius:2px",
+        currentFilters
+      );
+      console.log(
+        "%c --> %cline:32%cquestionHistory",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(34, 8, 7);padding:3px;border-radius:2px",
+        questionHistory
+      );
+      updateUserHistory({ user, dataObj: questionHistory });
+    } else {
+      storage("add", { questionHistory, currentFilters });
+    }
   }, [questionHistory, currentFilters]);
 
   function newQuestionBtnHandler() {

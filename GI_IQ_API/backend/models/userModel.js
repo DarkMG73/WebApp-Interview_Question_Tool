@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = mongoose.Schema(
   {
@@ -33,6 +33,9 @@ const userSchema = mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    questionHistory: {
+      type: Object,
+    },
   },
   {
     timestamps: true,
@@ -45,4 +48,4 @@ userSchema.methods.comparePassword = function (password) {
 
 const User = mongoose.model("User", userSchema);
 
-export default User;
+module.exports = User;

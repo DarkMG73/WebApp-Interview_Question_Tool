@@ -1,4 +1,4 @@
-import {
+const {
   getInterviewQuestions,
   getInterviewQuestionById,
   getInterviewQuestionByHashId,
@@ -9,8 +9,9 @@ import {
   RemoveAllInterviewQuestions,
   InterviewQuestionModel,
   getAdminInterviewQuestions,
-} from "../controllers/interviewQuestionController.js";
-import express from "express";
+} = require("../controllers/interviewQuestionController.js");
+const express = require("express");
+
 const router = express.Router();
 
 // express router method to create route for adding an interview question
@@ -43,4 +44,4 @@ router.route("/:id").get(getInterviewQuestionById);
 // express router method to create route for an admin to get all tools
 router.route("/").post(getInterviewQuestions);
 
-export default router;
+module.exports = router;
