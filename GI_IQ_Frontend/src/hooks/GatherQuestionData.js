@@ -69,13 +69,6 @@ export default async function GatherQuestionData(user) {
   ////////////
 
   allQuestions.forEach((questionData) => {
-    console.log(
-      "%c --> %cline:52%cquestionData",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(60, 79, 57);padding:3px;border-radius:2px",
-      questionData
-    );
     const tags = [];
     if (questionData.hasOwnProperty("tags")) {
       if (questionData.tags.constructor === String) {
@@ -92,13 +85,6 @@ export default async function GatherQuestionData(user) {
       questionData.tags = [];
     }
 
-    console.log(
-      "%c --> %cline:53%cquestionData",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(60, 79, 57);padding:3px;border-radius:2px",
-      questionData
-    );
     allQuestionsData.allQuestions[questionData.identifier] = questionData;
   });
   console.log(

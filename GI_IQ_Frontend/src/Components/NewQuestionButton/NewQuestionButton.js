@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { questionDataActions } from "../../store/questionDataSlice";
+import { authActions } from "../../store/authSlice";
 import { timerActions } from "../../store/timerSlice";
 import styles from "./NewQuestionButton.module.css";
 import storage from "../../hooks/storage";
@@ -12,7 +13,7 @@ function NewQuestionButton(props) {
   const { questionHistory, currentFilters } = useSelector(
     (state) => state.questionData
   );
-  const user = useSelector((state) => state.auth.user);
+  const { user, recentLogout } = useSelector((state) => state.auth);
   const timerRunning = useSelector((state) => state.timer.timerRunning);
   const dispatch = useDispatch();
 
@@ -40,6 +41,27 @@ function NewQuestionButton(props) {
         questionHistory
       );
       updateUserHistory({ user, dataObj: questionHistory });
+    } else if (recentLogout) {
+      dispatch(authActions.resetRecentLogout());
+      const browserSessionHistory = storage("get");
+      const newQuestionHistory = browserSessionHistory.hasOwnProperty(
+        "questionHistory"
+      )
+        ? browserSessionHistory.questionHistory
+        : {
+            incorrect: {},
+            correct: {},
+            unmarked: {},
+            stats: {},
+          };
+      console.log(
+        "%c --> %cline:47%cnewQuestionHistory",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(222, 125, 44);padding:3px;border-radius:2px",
+        newQuestionHistory
+      );
+      dispatch(questionDataActions.updateQuestionHistory(newQuestionHistory));
     } else {
       storage("add", { questionHistory, currentFilters });
     }

@@ -11,7 +11,10 @@ import SessionResults from "../../Components/SessionResults/SessionResults";
 import OutputControls from "../../Components/OutputControls/OutputControls";
 import WorkArea from "../../Components/WorkArea/WorkArea";
 import AddAQuestion from "../../Components/AddAQuestion/AddAQuestion";
+import Footer from "../../Components/Footer/Footer";
+import LoginStatus from "../../Components/User/LoginStatus/LoginStatus";
 import Timer from "../../Components/Timer/Timer";
+import { ErrorBoundary } from "../../HOC/ErrorHandling/ErrorBoundary/ErrorBoundary";
 
 const Home = () => {
   const questionData = useSelector((state) => state.questionData);
@@ -24,7 +27,9 @@ const Home = () => {
 
   useEffect(() => {
     if (
-      questionData.questionMetadata.identifier.includes("errorGettingDataFromDatabase")
+      questionData.questionMetadata.identifier.includes(
+        "errorGettingDataFromDatabase"
+      )
     ) {
       setNoDBErrors(false);
       setDbErrorMessage(allQuestions.errorGettingDataFromDatabase.question);
@@ -41,8 +46,15 @@ const Home = () => {
       {noDBErrors && (
         <Fragment>
           <CardSecondary>
-            <QuestionFilter />
+            <ErrorBoundary>
+              <LoginStatus />
+            </ErrorBoundary>
           </CardSecondary>
+          <CardPrimary>
+            <ErrorBoundary>
+              <QuestionFilter />
+            </ErrorBoundary>
+          </CardPrimary>
           <CardTransparent
             styles={{
               top: "0",
@@ -52,37 +64,51 @@ const Home = () => {
                 "20px 20px 40px -30px rgb(0 0 0 / 50%), 10px 10px 30px -20px black ",
             }}
           >
-            <NewQuestionButton
-              scrollToElm={scrollToElm}
-              scrollToAnswer={scrollToAnswer}
-            />
+            <ErrorBoundary>
+              <NewQuestionButton
+                scrollToElm={scrollToElm}
+                scrollToAnswer={scrollToAnswer}
+              />
+            </ErrorBoundary>
           </CardTransparent>
           <div id="timer-area-wrap" styles="position:relative">
             <Timer />
             <CardSecondary>
-              <Question
-                setScrollToElm={setScrollToElm}
-                scrollToSessionResults={scrollToSessionResults}
-                scrollToAnswer={scrollToAnswer}
-              />
+              <ErrorBoundary>
+                <Question
+                  setScrollToElm={setScrollToElm}
+                  scrollToSessionResults={scrollToSessionResults}
+                  scrollToAnswer={scrollToAnswer}
+                />
+              </ErrorBoundary>
             </CardSecondary>
             <CardPrimary>
-              <WorkArea setScrollToAnswer={setScrollToAnswer} />
+              <ErrorBoundary>
+                <WorkArea setScrollToAnswer={setScrollToAnswer} />
+              </ErrorBoundary>
             </CardPrimary>
           </div>
         </Fragment>
       )}
-      <CardPrimary>
+      <CardSecondary>
         <SessionResults setScrollToSessionResults={setScrollToSessionResults} />
-      </CardPrimary>
+      </CardSecondary>
       {noDBErrors && (
         <Fragment>
-          {" "}
           <CardPrimary>
-            <OutputControls />
+            <ErrorBoundary>
+              <OutputControls />
+            </ErrorBoundary>
           </CardPrimary>
           <CardSecondary>
-            <AddAQuestion />
+            <ErrorBoundary>
+              <AddAQuestion />
+            </ErrorBoundary>
+          </CardSecondary>{" "}
+          <CardSecondary>
+            <ErrorBoundary>
+              <Footer />
+            </ErrorBoundary>
           </CardSecondary>
         </Fragment>
       )}

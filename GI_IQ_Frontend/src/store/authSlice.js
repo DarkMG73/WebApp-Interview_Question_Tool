@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initState = {
   user: false,
   authToken: false,
+  recentLogout: false,
 };
 
 export const authSlice = createSlice({
@@ -22,7 +23,18 @@ export const authSlice = createSlice({
       state.authToken = action.payload.token;
     },
     logOut: (state) => {
-      return initState;
+      const recentLogoutState = { ...initState };
+      recentLogoutState.recentLogout = true;
+      return recentLogoutState;
+    },
+    resetRecentLogout: (state) => {
+      console.log(
+        "%c --> %cline:30%cresetRecentLogout",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(227, 160, 93);padding:3px;border-radius:2px"
+      );
+      state.recentLogout = false;
     },
   },
 });

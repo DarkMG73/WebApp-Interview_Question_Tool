@@ -1,6 +1,9 @@
+// For all cases, isAdmin=true must be set on the user.
+// Admin Users have "all-questions" editing acesss.
+// Super Admins have "all-question" and "users" access.
 const adminList = {
-  "all-questions": ["6377043c46c690ab11f60c42"],
-  users: ["6377043c46c690ab11f60c42"],
+  "all-questions": ["638a683f1873f6f99e0863c5"],
+  users: [""],
 };
 
 module.exports = adminList;

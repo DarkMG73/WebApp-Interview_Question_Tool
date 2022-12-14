@@ -2,7 +2,7 @@
   "name": "gi_interview_questions_tool_api",
   "version": "0.9.0",
   "engines": {
-    "node": "16.17.1" 
+    "node": "16.17.1"
   },
   "main": "server.js",
   "scripts": {
@@ -25,6 +25,8 @@
     "image-downloader": "^4.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.2",
+    "nodemailer": "^6.8.0",
+    "nodemailer-express-handlebars": "^5.0.0",
     "save": "^2.5.0"
   },
   "description": "",

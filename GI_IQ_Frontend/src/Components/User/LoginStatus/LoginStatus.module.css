@@ -33,7 +33,7 @@
 }
 
 .db-login-container p {
-  margin: 0 auto 0em;
+  margin: 0 auto 1em;
   padding: 0;
 }
 
@@ -57,12 +57,12 @@
   box-shadow: inset 1px 1px 3px -2px black, inset -1px -1px 3px -2px white;
   border: 1px inset var(--iq-color-background-warm);
   background: var(--iq-color-background-warm);
-  color: var(--iq-color-foreground);
+  color: var(--iq-color-accent);
   border-radius: 50px;
 }
 
 .not-logged-in-text {
-  background-color: var(--iq-color-foreground);
+  background-color: var(--iq-color-accent);
   color: var(--iq-color-background);
   font-size: 1.25em;
   font-weight: 700;
@@ -100,7 +100,7 @@ body .form-container input[type="password"] {
   justify-content: center;
   align-items: center;
   background: var(--iq-color-background-warm-gradient);
-  color: var(--iq-color-foreground);
+  color: var(--iq-color-accent);
   box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
     inset 1px -1px 1px rgb(0 0 0 / 15%), 1px 1px 5px -3px black;
   border: none;
@@ -150,7 +150,7 @@ body .form-container input[type="password"] {
 
 .db-login-container.horizontal-display span button {
   margin-left: 1em;
-  color: var(--iq-color-foreground);
+  color: var(--iq-color-accent);
   text-shadow: 0 0 3px wheat;
   background: linear-gradient(rgb(255 135 0) 37%, rgba(0, 0, 0, 1) 100%);
 }

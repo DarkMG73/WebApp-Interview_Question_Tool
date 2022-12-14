@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2em;
 }
 .login-container h3 {
   padding: 0;
@@ -183,7 +182,7 @@
 .horizontal-display .login-question button {
   background: var(--iq-color-accent-gradient);
   /* border-radius: 15px; */
-  color: var(--iq-color-foreground);
+  color: var(--iq-color-background);
   text-shadow: 0 0 3px wheat;
   background: linear-gradient(rgb(255 135 0) 37%, rgba(0, 0, 0, 1) 100%);
   margin-left: 1em;
@@ -204,7 +203,7 @@
   max-width: 100%;
   min-width: 0;
   padding: 0.5em 3em 1em !important;
-  background: var(--iq-color-foreground-gradient);
+  background: var(--iq-color-background-warm-gradient);
   color: var(--iq-color-background-warm);
   left: 50%;
   transform: translateX(-50%);

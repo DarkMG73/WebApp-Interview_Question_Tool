@@ -2,9 +2,39 @@ const User = require("../models/userModel.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
-
 const appCookieName = "giInterviewQuestionsTool";
+const path = require("path");
+const async = require("async");
+const { sendEmail } = require("../tools/sendEmail");
+const jsonwebtoken = require("jsonwebtoken");
 
+////////////////////////////////
+/// Handlebars COnfig
+////////////////////////////////
+// const hbs = require("nodemailer-express-handlebars"),
+//   email = process.env.MAILER_EMAIL_ID || "auth_email_address@gmail.com",
+//   pass = process.env.MAILER_PASSWORD || "auth_email_pass";
+// nodemailer = require("nodemailer");
+
+// const smtpTransport = nodemailer.createTransport({
+//   service: process.env.MAILER_SERVICE_PROVIDER || "Gmail",
+//   auth: {
+//     user: email,
+//     pass: pass,
+//   },
+// });
+
+// const handlebarsOptions = {
+//   viewEngine: "handlebars",
+//   viewPath: path.resolve("../templates/"),
+//   extName: ".html",
+// };
+
+// smtpTransport.use("compile", hbs(handlebarsOptions));
+
+////////////////////////////////
+/// Register a User
+////////////////////////////////
 module.exports.register = asyncHandler(async (req, res) => {
   console.log(" --> line:8 req", req.body);
   const user = { ...req.body, isAdmin: false };
@@ -28,11 +58,13 @@ module.exports.register = asyncHandler(async (req, res) => {
 
 module.exports.sign_in = asyncHandler(async (req, res) => {
   console.log(" --> sign_in req.body", req.body);
+
   User.findOne(
     {
       email: req.body.email,
     },
     function (err, user) {
+      console.log(" --> sign_in user", user);
       if (err) {
         console.log(" --> sign_in req.body", req.body);
         return res.status(401).json({
@@ -47,21 +79,19 @@ module.exports.sign_in = asyncHandler(async (req, res) => {
       }
       try {
         if (user.isAdmin) {
+          console.log("user.isAdmin", user.isAdmin);
           if (process.env.SECRET && process.env.SECRET != "undefined") {
+            console.log(
+              'process.env.SECRET && process.env.SECRET != "undefined"',
+              process.env.SECRET && process.env.SECRET != "undefined"
+            );
             return res.json({
               token: jwt.sign(
                 { email: user.email, fullName: user.fullName, _id: user._id },
                 process.env.SECRET,
                 { expiresIn: "1 day" } // The httpOnly cookie express in 12 hours, so this would only apply if that cookie is tampered with.
               ),
-
-              firstName: user.firstName,
-              secondName: user.secondName,
-              userName: user.userName,
-              email: user.email,
-              created: user.created,
-              _id: user._id,
-              isAdmin: user.isAdmin,
+              ...user._doc,
             });
           } else {
             console.log(
@@ -74,6 +104,7 @@ module.exports.sign_in = asyncHandler(async (req, res) => {
           }
         } else {
           if (process.env.SECRET && process.env.SECRET != "undefined") {
+            delete user._doc.isAdmin;
             return res.json({
               token: jwt.sign(
                 { email: user.email, fullName: user.fullName, _id: user._id },
@@ -81,12 +112,7 @@ module.exports.sign_in = asyncHandler(async (req, res) => {
                 { expiresIn: "1 day" } // The httpOnly cookie expires in 12 hours, so this would only apply if that cookie is tampered with.
               ),
 
-              firstName: user.firstName,
-              secondName: user.secondName,
-              userName: user.userName,
-              email: user.email,
-              created: user.created,
-              _id: user._id,
+              ...user._doc,
             });
           } else {
             console.log(
@@ -98,13 +124,15 @@ module.exports.sign_in = asyncHandler(async (req, res) => {
             });
           }
         }
-      } catch {
+      } catch (err) {
         console.log(
-          "There is a temporary server issue. Please try your request again. Error: NS"
+          "There is a temporary server issue. Please try your request again. Error: NS | ",
+          err
         );
         return res.status(500).json({
           message:
-            "There is a temporary issue running part of the program on the server. Please try your request again and contact the website admin if teh problem persists. Error: TC-UC",
+            "There is a temporary issue running part of the program on the server. Please try your request again and contact the website admin if the problem persists. Error: TC-UC | " +
+            err,
         });
       }
     }
@@ -181,7 +209,9 @@ module.exports.getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-// Update User History
+///////////////////////////////////
+// Update User History - Export
+///////////////////////////////////
 module.exports.updateUserHistory = asyncHandler(async (req, res) => {
   console.log("Updating User History");
   const data = req.body.dataObj;
@@ -189,6 +219,8 @@ module.exports.updateUserHistory = asyncHandler(async (req, res) => {
   const filter = { _id: req.user._id };
   const user = await User.findOne(filter);
   console.log("user", user);
+  console.log("user._id.toString()", user._id.toString());
+  console.log("req.user._id", req.user._id);
 
   if (user._id.toString() === req.user._id) {
     User.findOneAndUpdate(filter, { questionHistory: data }, { new: false })
@@ -209,3 +241,233 @@ module.exports.updateUserHistory = asyncHandler(async (req, res) => {
     res.status(404);
   }
 });
+
+////////////////////////////////////
+// Update User History - Local Use
+///////////////////////////////////
+const updateUserHistoryLocalFunction = async (
+  dataObj,
+  requestedUser,
+  callback
+) => {
+  console.log("Updating User History");
+  console.log("dataObj", dataObj);
+  const filter = { _id: requestedUser._id };
+  const user = await User.findOne(filter);
+  console.log("user", user);
+
+  if (user._id.toString() === requestedUser._id.toString()) {
+    User.findOneAndUpdate(filter, dataObj, { new: false })
+      .then((doc) => {
+        console.log("It worked! ", doc);
+        callback({ status: 200, data: { message: "It worked.", doc: doc } });
+        return { status: 200, data: { message: "It worked.", doc: doc } };
+      })
+      .catch((err) => {
+        console.log("err", err);
+        callback({
+          message: "Error when trying to save the user history.",
+          err: err,
+        });
+        return {
+          status: 404,
+          data: {
+            message: "Error when trying to save the user history.",
+            err: err,
+          },
+        };
+      });
+  } else {
+    callback({ status: 404, data: { message: "User not found" } });
+    return { status: 404, data: { message: "User not found" } };
+  }
+};
+
+/////////////////////
+exports.index = function (req, res) {
+  return res.sendFile(path.resolve("./public/home.html"));
+};
+
+exports.render_forgot_password_template = function (req, res) {
+  console.log("path", path);
+  console.log("res", res);
+  const thePath = path.resolve("./public/forgot-password.html");
+  console.log("thePath", thePath);
+  return res
+    .set(
+      "Content-Security-Policy",
+      "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'"
+    )
+    .sendFile(path.resolve("./public/forgot-password.html"));
+};
+
+exports.render_reset_password_template = function (req, res) {
+  console.log("RESET path", path);
+  console.log("RESET res", res);
+  return res
+    .set(
+      "Content-Security-Policy",
+      "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'"
+    )
+    .sendFile(path.resolve("./public/reset-password.html"));
+};
+
+exports.forgot_password = function (req, res) {
+  console.log(" --> forgot_password req.body", req.body);
+
+  User.findOne(
+    {
+      email: req.body.email,
+    },
+    function (err, user) {
+      console.log(" --> Found User", user);
+      if (err) {
+        console.log(" --> forgot_password Find User Error", err);
+        return res.status(401).json({
+          message: "There was a problem with authentication: " + err,
+        });
+      }
+      if (!user) {
+        console.log(" --> forgot_password User Not Find", req.body);
+        return res.status(401).json({
+          message: "There was a problem with authentication: " + req.body,
+        });
+      }
+      console.log(" --> Confirming and Sending Email");
+
+      try {
+        if (process.env.SECRET && process.env.SECRET != "undefined") {
+          const JWTToken = jwt.sign(
+            {
+              email: user.email,
+              fullName: user.fullName,
+              _id: user._id,
+              passwordReset: true,
+            },
+            process.env.SECRET,
+            // TODO: SE THIS TO 10 MINUTES *********
+            { expiresIn: "1000 minutes" } // The httpOnly cookie expires in 10 minutes, so this would only apply if that cookie is tampered with.
+          );
+          console.log("JWTToken", JWTToken);
+
+          const mailOptions = {
+            from: process.env.MAILER_EMAIL_ID,
+            to: "levelthreeemail@gmail.com",
+            template: "forgot-password-email",
+            subject: "Sending Email using Node.js",
+            text: "That was easy!",
+            context: {
+              url:
+                "http://localhost:8000/api/users/auth/reset_password?token=" +
+                JWTToken,
+              name: "Mike",
+            },
+          };
+
+          sendEmail(mailOptions)
+            .then((emailResponse) => {
+              console.log("res", emailResponse);
+              return res.status(250).json({
+                message: "The email was sent!",
+              });
+            })
+            .catch((err) => {
+              console.log("Send email error: ", err);
+              return res.status(403).json({
+                message:
+                  "There is an issue trying to send the email. Please try your request again. Error: EM-UC-1",
+              });
+            });
+        } else {
+          console.log(
+            "There is a temporary server issue. Please try your request again. Error: NS-UC 2"
+          );
+          return res.status(403).json({
+            message:
+              "There is a temporary issue accessing the required security data. Please try your request again. Error: NS-UC-2",
+          });
+        }
+      } catch (err) {
+        console.log(
+          "There is a temporary server issue. Please try your request again. Error: NS | ",
+          err
+        );
+        return res.status(500).json({
+          message:
+            "There is a temporary issue running part of the program on the server. Please try your request again and contact the website admin if the problem persists. Error: TC-UC | " +
+            err,
+        });
+      }
+    }
+  );
+};
+
+/////////////////////////////////////////
+/// Reset password
+/////////////////////////////////////////
+exports.reset_password = (req, res, next) => {
+  console.log("req", req.body);
+  const { newPassword, verifyPassword, token } = req.body;
+
+  if (newPassword === verifyPassword) {
+    jsonwebtoken.verify(token, process.env.SECRET, function (err, decode) {
+      console.log("IN TOKEN VERIFY", token);
+      if (err) {
+        if (process.env.SECRET && process.env.SECRET != "undefined") {
+          console.log(
+            "There is a temporary server issue. Please try your request again. Error: NS-UC1",
+            err
+          );
+          return res.status(403).json({
+            message:
+              "There is a temporary issue accessing the required security data. Please try your request again. Error: NS-UC2 | " +
+              err,
+          });
+        }
+        // req.user = undefined;
+      }
+      console.log("Trying to decode the user object", req.user);
+      const tokenData = decode;
+      console.log("tokenData", tokenData);
+      if (tokenData.passwordReset) {
+        const groomedNewPasswordData = {
+          hash_password: bcrypt.hashSync(newPassword, 10),
+        };
+        console.log("groomedNewPasswordData", groomedNewPasswordData);
+        const filter = { email: tokenData.email };
+        const user = User.findOne(filter).then((user) => {
+          console.log("RESET PW: User: ", user);
+
+          const updateCallback = (updateResults) => {
+            if (updateResults.status < 400) {
+              console.log("updateResults", updateResults);
+              res.status(200).json({
+                message: updateResults.data.message,
+                data: updateResults.data,
+              });
+              res.status(200);
+              res.send("test");
+            }
+            if (updateResults.status >= 400) {
+              console.log("err", updateResults);
+              res.status(404).json({
+                message: "Error when trying to save the user history.",
+                err: updateResults.data.message,
+              });
+              res.status(404);
+            }
+          };
+          updateUserHistoryLocalFunction(
+            groomedNewPasswordData,
+            user,
+            updateCallback
+          );
+        });
+      }
+      next();
+    });
+  } else {
+    console.log("Passwords do not match", newPassword, verifyPassword);
+  }
+  next();
+};

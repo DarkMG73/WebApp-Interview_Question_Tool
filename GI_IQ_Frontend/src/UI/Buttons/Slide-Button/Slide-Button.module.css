@@ -34,10 +34,10 @@
   min-height: 100%;
   width: 50%;
   left: 0;
-  background-color: var(--iq-color-background-warm);
+  background-color: var(--iq-color-accent);
   box-shadow: inset -1px -1px 7px -5px black,
-    inset 30px 30px 30px -15px rgb(255 255 255 / 51%), 1px 1px 7px -5px white,
-    inset 1px 1px 7px -5px white, 2px 2px 7px -5px black;
+    inset 7px 7px 30px -23px rgb(255 255 255 / 51%), 1px 1px 7px -5px white,
+    inset 4px 4px 7px -5px #ffffff7d, 2px 2px 7px -5px black;
   transition: 0.2s all linear;
 }
 

@@ -17,6 +17,7 @@ import {
   getUserUserByToken,
 } from "./storage/userDB";
 import { loadingRequestsActions } from "./store/loadingRequestsSlice";
+import { ErrorBoundary } from "./HOC/ErrorHandling/ErrorBoundary/ErrorBoundary";
 
 function App() {
   const dispatch = useDispatch();
@@ -162,7 +163,23 @@ function App() {
         user
       );
       dispatch(authActions.logIn(user));
+      // const newUserHistory = user.hasOwnProperty("questionHistory")
+      //   ? user.questionHistory
+      //   : {
+      //       incorrect: {},
+      //       correct: {},
+      //       unmarked: {},
+      //       stats: {},
+      //     };
+      // dispatch(questionDataActions.updateQuestionHistory(newUserHistory));
       runGatherQuestionData(user);
+      // console.log(
+      //   "%c --> %cline:165%cnewUserHistory",
+      //   "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      //   "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      //   "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
+      //   newUserHistory
+      // );
     }
   }, [user, dispatch]);
 
@@ -184,22 +201,25 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <CardPrimarySquareTop>
-          {" "}
-          {currentState.questionMetadata && <Header />}
-        </CardPrimarySquareTop>
-      </header>
-
-      <Routes>
-        {currentState.allQuestions && (
-          <Route path="/list-of-all-questions" element={<AllQuestions />} />
-        )}
-        {currentState.allQuestions && <Route path="/" element={<Home />} />}
-        {!currentState.allQuestions && (
-          <Route path="/" element={<BarLoader />} />
-        )}
-      </Routes>
+      <ErrorBoundary>
+        <header className="App-header">
+          <CardPrimarySquareTop>
+            {" "}
+            {currentState.questionMetadata && <Header />}
+          </CardPrimarySquareTop>
+        </header>
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <Routes>
+          {currentState.allQuestions && (
+            <Route path="/list-of-all-questions" element={<AllQuestions />} />
+          )}
+          {currentState.allQuestions && <Route path="/" element={<Home />} />}
+          {!currentState.allQuestions && (
+            <Route path="/" element={<BarLoader />} />
+          )}
+        </Routes>
+      </ErrorBoundary>
     </div>
   );
 }

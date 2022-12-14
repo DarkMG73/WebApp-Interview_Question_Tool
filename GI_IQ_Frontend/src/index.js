@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import axios from "axios";
+import { ErrorBoundary } from "./HOC/ErrorHandling/ErrorBoundary/ErrorBoundary";
 
 ////////////////////////
 ///    Axios Config
@@ -83,7 +84,9 @@ root.render(
   <Router basename={process.env.PUBLIC_URL}>
     <React.StrictMode>
       <Provider store={store}>
-        <App />
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
       </Provider>
       ,
     </React.StrictMode>

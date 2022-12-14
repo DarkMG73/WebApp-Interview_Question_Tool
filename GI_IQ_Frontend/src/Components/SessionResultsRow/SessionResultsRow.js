@@ -1,24 +1,57 @@
 import styles from "./SessionResultsRow.module.css";
 import { useState, useRef, Fragment } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import { isValidHttpUrl } from "../../hooks/utility";
 import Card from "../../UI/Cards/Card/Card";
 import CollapsibleElm from "../../UI/CollapsibleElm/CollapsibleElm";
 import { addDocToDB, deleteDocFromDb } from "../../storage/firebase.config";
+import { updateAQuestion } from "../../storage/interviewQuestionsDB";
 
 function SessionResultsRow(props) {
+  const dispatch = useDispatch();
   const [inEditMode, setInEditMode] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const editedQuestions = useRef({ edits: {} });
+  const { allQuestions } = useSelector((state) => state.questionData);
+  console.log(
+    "%c --> %cline:18%callQuestions",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
+    allQuestions
+  );
   const questionHistory = props.questionHistory;
+  console.log(
+    "%c --> %cline:20%cquestionHistory",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
+    questionHistory
+  );
+
   const key = props.keyTwo;
   const k = props.keyOne;
   // editButtonDirection to be used with future edit mode visual manipulations
   const editButtonDirection = inEditMode ? "" : "";
   const editButtonWidth = inEditMode ? "max-content" : "5em";
+  const user = useSelector((state) => state.auth.user);
   const userLoggedIn = useSelector((state) => state.loginStatus.userLoggedIn);
+  console.log(
+    "%c --> %cline:20%cuserLoggedIn",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
+    userLoggedIn
+  );
 
+  console.log(
+    "%c --> %cline:48%callQuestions.id",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(60, 79, 57);padding:3px;border-radius:2px",
+    allQuestions.id
+  );
   const rowEditButtonHandler = (e, setElmOpen) => {
     setInEditMode(!inEditMode);
   };
@@ -26,15 +59,25 @@ function SessionResultsRow(props) {
   const rowSaveButtonHandler = (e) => {
     // Use tempKey instead of key when in dev
     // const tempKey = "TESTTEST";
-    console.log(
-      "%c --> %cline:41%ceditedQuestions.current",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
-      editedQuestions.current
-    );
-    if (userLoggedIn) {
-      addDocToDB(key, editedQuestions.current.edits[key]);
+    updateAQuestion(key, editedQuestions.current.edits[key], user);
+
+    if (user && user.isAdmin == true) {
+      updateAQuestion(
+        questionHistory[k][key]._id,
+        editedQuestions.current.edits[key],
+        user
+      ).then((res) => {
+        console.log(
+          "%c --> %cline:47%cres",
+          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+          "color:#fff;background:rgb(153, 80, 84);padding:3px;border-radius:2px",
+          res
+        );
+        alert("Success! The item has been updated.");
+
+        setInEditMode(false);
+      });
     } else {
       const sendEmail = window.confirm(
         'Thank you for contributing. All contributions must be reviewed before becoming public. Click "OK" to send this via email for review and, if approved, to be included. Click "Cancel" to cancel this and not send an email.'
@@ -90,27 +133,30 @@ function SessionResultsRow(props) {
     let rowHTML = [];
 
     function onTextChangeHandler(e, key, itemKey) {
-      console.log(
-        "%c --> %cline:93%ce.target",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px",
-        e.target
-      );
-      console.log(
-        "%c --> %cline:93%ce.target",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px",
-        itemKey
-      );
       if (!editedQuestions.current.edits.hasOwnProperty(key))
         editedQuestions.current.edits[key] = {};
 
       editedQuestions.current.edits[key][itemKey] = e.target.innerText;
     }
+    console.log(
+      "%c --> %cline:141%cquestionHistory[k]",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px",
+      questionHistory[k]
+    );
     for (const itemKey in questionHistory[k][key]) {
-      let value = questionHistory[k][key][itemKey];
+      console.log(
+        "%c --> %cline:141%citemKey",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(248, 214, 110);padding:3px;border-radius:2px",
+        allQuestions[key]
+      );
+
+      let value = allQuestions[key]
+        ? allQuestions[key][itemKey]
+        : questionHistory[k][key][itemKey];
       let itemTitle = itemKey;
 
       // Skip if no value

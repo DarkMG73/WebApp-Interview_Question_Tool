@@ -4,8 +4,12 @@ import styles from "./SessionResults.module.css";
 import Score from "../../Components/Score/Score";
 import SessionResultsRows from "../../Components/SessionResultsRows/SessionResultsRows";
 import CollapsibleElm from "../../UI/CollapsibleElm/CollapsibleElm";
+import { ErrorBoundary } from "../../HOC/ErrorHandling/ErrorBoundary/ErrorBoundary";
+import { ReactComponent as BrainLogo } from "../../assets/images/brain-logo.svg";
 
 function SessionResults(props) {
+  const { allQuestions } = useSelector((state) => state.questionData);
+
   const questionHistory = useSelector(
     (state) => state.questionData.questionHistory
   );
@@ -15,6 +19,23 @@ function SessionResults(props) {
     props.setScrollToSessionResults(sessionResultsBox);
   }, []);
 
+  console.log(
+    "%c --> %cline:23%cObject.keys(allQuestions).length >= 0 ",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(227, 160, 93);padding:3px;border-radius:2px",
+    Object.keys(allQuestions).length >= 0
+  );
+
+  if (
+    Object.keys(allQuestions).length <= 0 ||
+    Object.keys(allQuestions).includes("errorGettingDataFromDatabase")
+  )
+    return (
+      <div className={styles["logo-wrap"]}>
+        <BrainLogo />
+      </div>
+    );
   return (
     <div
       id="session-results"
@@ -53,10 +74,12 @@ function SessionResults(props) {
         data=""
         size="large"
       >
-        <SessionResultsRows
-          questionHistory={questionHistory}
-          showLoader={props.showLoader}
-        />
+        <ErrorBoundary>
+          <SessionResultsRows
+            questionHistory={questionHistory}
+            showLoader={props.showLoader}
+          />
+        </ErrorBoundary>
       </CollapsibleElm>
     </div>
   );

@@ -71,6 +71,14 @@ export const getQuestionBy_Id = async (user, question_Id) => {
 
 /// SAVE ONE /////////////////////////////////////
 export async function addDocToDB(userAndDataObject) {
+  console.log("userAndDataObject", userAndDataObject);
+  console.log(
+    "%c --> %cline:73%cuserAndDataObject",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(217, 104, 49);padding:3px;border-radius:2px",
+    userAndDataObject
+  );
   const axiosConfig = {
     headers: {
       "Content-Type": "application/json",
@@ -119,6 +127,14 @@ export async function saveManyQuestions(userAndDataObject) {
 
 /// UPDATE //////////////////////////////////
 export async function updateAQuestion(id, dataObj, user) {
+  dataObj.dbID = id;
+  console.log(
+    "%c --> %cline:121%cdataObj",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
+    dataObj
+  );
   const axiosConfig = {
     headers: {
       "Content-Type": "application/json",

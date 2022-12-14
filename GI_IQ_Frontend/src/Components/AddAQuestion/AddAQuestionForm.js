@@ -4,9 +4,10 @@ import styles from "./AddAQuestionForm.module.css";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import AddAQuestionFormElms from "./AddAQuestionFormElms";
 import { sha256 } from "js-sha256";
-import { addDocToDB } from "../../storage/firebase.config";
+import { addDocToDB } from "../../storage/interviewQuestionsDB";
 
 function AddAQuestionForm(props) {
+  const user = useSelector((state) => state.auth.user);
   const userLoggedIn = useSelector((state) => state.loginStatus.userLoggedIn);
   const [formJSX, setFormJSX] = useState([<AddAQuestionFormElms />]);
 
@@ -44,7 +45,7 @@ function AddAQuestionForm(props) {
       const hasId = sha256(JSON.stringify(questions[i]));
       const newId = year + "-" + hasId;
       questionsGroomed[newId] = questions[i];
-      questionsGroomed[newId].identifierentifier = newId;
+      questionsGroomed[newId].identifier = newId;
     }
 
     // Access FormData fields with `data.get(fieldName)`
@@ -55,8 +56,34 @@ function AddAQuestionForm(props) {
     for (const key in questionsGroomed) {
       const theData = questionsGroomed[key];
 
-      if (userLoggedIn) {
-        addDocToDB(key, theData);
+      if (user && user.isAdmin == true) {
+        console.log("user", user);
+        addDocToDB({ user, theData })
+          .then((res) => {
+            if (res.hasOwnProperty("status") && res.status <= 200) {
+              alert("Success! The question was added to the question library.");
+            } else {
+              alert(
+                "There was an error trying to save the question. Error: " +
+                  res.message
+              );
+            }
+          })
+          .catch((err) => {
+            alert(
+              "There was an error trying to save the question. Error: " + err
+            );
+            console.log(
+              "There was an error trying to save the question. Error: " + err
+            );
+          });
+        console.log(
+          "%c --> %cline:60%cuser",
+          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+          "color:#fff;background:rgb(20, 68, 106);padding:3px;border-radius:2px",
+          user
+        );
       } else {
         const questionAdminEmail = "general@glassinteractive.com";
         const subject = "A New Question for the Interview Questions Tool";

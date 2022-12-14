@@ -313,7 +313,7 @@ const Register = (props) => {
                 key={"captcha" + horizontalDisplay}
                 charset="un"
                 length={5}
-                color="var(--iq-color-foreground)"
+                color="var(--iq-color-accent)"
                 bgColor="var(--iq-color-background-warm)"
                 reload={true}
                 reloadText="Reload Captcha"

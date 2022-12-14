@@ -78,7 +78,11 @@ export async function registerAUser(user) {
 export async function setUserCookie(user) {
   // SessionStorage used while hosting API on Heroku
   const output = new Promise((resolve, reject) => {
-    const cookie = StorageForSession("ADD", user, "gi-interview-questions-Tool-user");
+    const cookie = StorageForSession(
+      "ADD",
+      user,
+      "gi-interview-questions-Tool-user"
+    );
     let status = 400;
     if (cookie) status = 202;
 
@@ -108,7 +112,11 @@ export async function setUserCookie(user) {
 export async function deleteUserCookie(user) {
   // SessionStorage used while hosting API on Heroku
   const output = new Promise((resolve, reject) => {
-    const cookie = StorageForSession("DELETE", {}, "gi-interview-questions-Tool-user");
+    const cookie = StorageForSession(
+      "DELETE",
+      {},
+      "gi-interview-questions-Tool-user"
+    );
     let status = 400;
     if (cookie) status = 202;
 
@@ -137,7 +145,11 @@ export async function deleteUserCookie(user) {
 export async function getUserCookie(user) {
   // SessionStorage used while hosting API on Heroku
   const output = new Promise((resolve, reject) => {
-    const cookie = StorageForSession("GET", {}, "gi-interview-questions-Tool-user");
+    const cookie = StorageForSession(
+      "GET",
+      {},
+      "gi-interview-questions-Tool-user"
+    );
 
     let status = 400;
     if (cookie) status = 202;
@@ -210,6 +222,13 @@ export async function getUserUserByToken(token) {
 
 /// Add or Update User History/////////////////////////////////////
 export async function updateUserHistory(userAndDataObject) {
+  console.log(
+    "%c --> %cline:212%c updateUserHistory userAndDataObject",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(3, 101, 100);padding:3px;border-radius:2px",
+    userAndDataObject
+  );
   const axiosConfig = {
     headers: {
       "Content-Type": "application/json",

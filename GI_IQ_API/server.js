@@ -60,11 +60,12 @@ app.use(helmet());
 
 const whitelist = [
   "http://localhost:3000",
-  "https://interview-question-organizer.glassinteractive.com/",
-  "https://interview-question-organizer.glassinteractive.com",
-  "https://www.interview-question-organizer.glassinteractive.com",
-  "https://www.interview-question-organizer.glassinteractive.com/",
+  "https://interview-questions.glassinteractive.com/",
+  "https://interview-questions.glassinteractive.com",
+  "https://www.interview-questions.glassinteractive.com",
+  "https://www.interview-questions.glassinteractive.com/",
   "glassinteractive.com",
+  "http://localhost:8000",
 ];
 
 const options = {
@@ -82,7 +83,7 @@ const options = {
   exposedHeaders: "ratelimit-limit, ratelimit-remaining, ratelimit-reset",
   credentials: true,
   methods: ["GET", "OPTIONS", "POST", "PUT", "PATCH", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  // allowedHeaders: ["Content-Type", "Authorization"],
   maxAge: 3600,
 };
 app.use(cors(options));
@@ -102,16 +103,18 @@ try {
     console.log("process.env.DOMAIN ", process.env.DOMAIN);
     // ****************************************************************
     console.log("A request------->");
+    console.log("HEADERS -->", req.headers);
     if (
       req.headers &&
       req.headers.authorization &&
       req.headers.authorization.split(" ")[0] === "JWT"
     ) {
+      console.log("IN SERVER HAS SPECIFIC HEADERS");
       jsonwebtoken.verify(
         req.headers.authorization.split(" ")[1],
         process.env.SECRET,
         function (err, decode) {
-          console.log("An error of some sort -->", err);
+          console.log("IN SERVER JSON VERIFY", err);
           if (err) {
             if (process.env.SECRET && process.env.SECRET != "undefined") {
               console.log(
