@@ -156,7 +156,6 @@ module.exports.UpdateInterviewQuestion = asyncHandler(async (req, res) => {
 
   const groomedDataObject = groomObjectForDB(dataObj);
   const dbID = groomedDataObject.dbID;
-  console.log("groomedDataObject", groomedDataObject);
   const filter = { _id: dbID };
   const interviewQuestion = await InterviewQuestion.findOne(filter);
 

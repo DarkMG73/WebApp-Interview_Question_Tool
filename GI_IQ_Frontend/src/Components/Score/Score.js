@@ -7,13 +7,7 @@ function Score(props) {
   const { questionHistory, filteredQuestionsIds } = useSelector(
     (state) => state.questionData
   );
-  console.log(
-    "%c --> %cline:12%cquestionHistory",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
-    questionHistory
-  );
+
   const totalQuestions = filteredQuestionsIds.length;
   const { correct, incorrect, unmarked } = questionHistory;
 

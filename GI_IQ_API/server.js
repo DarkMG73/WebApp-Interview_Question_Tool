@@ -60,12 +60,14 @@ app.use(helmet());
 
 const whitelist = [
   "http://localhost:3000",
+  "http://localhost:3000/",
   "https://interview-questions.glassinteractive.com/",
   "https://interview-questions.glassinteractive.com",
   "https://www.interview-questions.glassinteractive.com",
   "https://www.interview-questions.glassinteractive.com/",
   "glassinteractive.com",
   "http://localhost:8000",
+  "https://api-iq.glassinteractive.com"
 ];
 
 const options = {
@@ -74,7 +76,8 @@ const options = {
     console.log("origin", origin);
     console.log("whitelist", whitelist);
     console.log("whitelist.indexOf(origin)", whitelist.indexOf(origin));
-    if (origin === undefined || whitelist.indexOf(origin) !== -1) {
+    if (!origin || origin === undefined || whitelist.indexOf(origin) !== -1) {
+      console.log("in");
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -98,23 +101,21 @@ try {
     // ****************************************************************
     // *** FOR DEV ONLY REMOVE FOR PROD ***
     // ****************************************************************
-    console.log("process.env.SECRET ", process.env.SECRET);
-    console.log("process.env.PORT ", process.env.PORT);
-    console.log("process.env.DOMAIN ", process.env.DOMAIN);
+    // console.log("process.env.SECRET ", process.env.SECRET);
+    // console.log("process.env.PORT ", process.env.PORT);
+    // console.log("process.env.DOMAIN ", process.env.DOMAIN);
     // ****************************************************************
     console.log("A request------->");
-    console.log("HEADERS -->", req.headers);
+    // console.log("HEADERS -->", req.headers);
     if (
       req.headers &&
       req.headers.authorization &&
       req.headers.authorization.split(" ")[0] === "JWT"
     ) {
-      console.log("IN SERVER HAS SPECIFIC HEADERS");
       jsonwebtoken.verify(
         req.headers.authorization.split(" ")[1],
         process.env.SECRET,
         function (err, decode) {
-          console.log("IN SERVER JSON VERIFY", err);
           if (err) {
             if (process.env.SECRET && process.env.SECRET != "undefined") {
               console.log(

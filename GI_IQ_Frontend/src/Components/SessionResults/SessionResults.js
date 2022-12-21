@@ -19,14 +19,6 @@ function SessionResults(props) {
     props.setScrollToSessionResults(sessionResultsBox);
   }, []);
 
-  console.log(
-    "%c --> %cline:23%cObject.keys(allQuestions).length >= 0 ",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(227, 160, 93);padding:3px;border-radius:2px",
-    Object.keys(allQuestions).length >= 0
-  );
-
   if (
     Object.keys(allQuestions).length <= 0 ||
     Object.keys(allQuestions).includes("errorGettingDataFromDatabase")

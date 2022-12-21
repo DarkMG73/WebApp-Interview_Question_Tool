@@ -14,21 +14,8 @@ function SessionResultsRow(props) {
   const [deleted, setDeleted] = useState(false);
   const editedQuestions = useRef({ edits: {} });
   const { allQuestions } = useSelector((state) => state.questionData);
-  console.log(
-    "%c --> %cline:18%callQuestions",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
-    allQuestions
-  );
+
   const questionHistory = props.questionHistory;
-  console.log(
-    "%c --> %cline:20%cquestionHistory",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
-    questionHistory
-  );
 
   const key = props.keyTwo;
   const k = props.keyOne;
@@ -37,21 +24,7 @@ function SessionResultsRow(props) {
   const editButtonWidth = inEditMode ? "max-content" : "5em";
   const user = useSelector((state) => state.auth.user);
   const userLoggedIn = useSelector((state) => state.loginStatus.userLoggedIn);
-  console.log(
-    "%c --> %cline:20%cuserLoggedIn",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
-    userLoggedIn
-  );
 
-  console.log(
-    "%c --> %cline:48%callQuestions.id",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(60, 79, 57);padding:3px;border-radius:2px",
-    allQuestions.id
-  );
   const rowEditButtonHandler = (e, setElmOpen) => {
     setInEditMode(!inEditMode);
   };
@@ -138,22 +111,8 @@ function SessionResultsRow(props) {
 
       editedQuestions.current.edits[key][itemKey] = e.target.innerText;
     }
-    console.log(
-      "%c --> %cline:141%cquestionHistory[k]",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(179, 214, 110);padding:3px;border-radius:2px",
-      questionHistory[k]
-    );
-    for (const itemKey in questionHistory[k][key]) {
-      console.log(
-        "%c --> %cline:141%citemKey",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(248, 214, 110);padding:3px;border-radius:2px",
-        allQuestions[key]
-      );
 
+    for (const itemKey in questionHistory[k][key]) {
       let value = allQuestions[key]
         ? allQuestions[key][itemKey]
         : questionHistory[k][key][itemKey];

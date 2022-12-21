@@ -93,26 +93,19 @@ const Register = (props) => {
 
         if (!passwordValidCheck.isValid) {
           if (process.env.NODE_ENV === "development")
-            console.log(
-              "%c --> %cline:117%cpasswordTestResults",
-              "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-              "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-              "color:#fff;background:rgb(3, 101, 100);padding:3px;border-radius:2px",
-              passwordValidCheck
-            );
-          return {
-            valid: false,
-            message: `The password does not meet the requirements. It failed with these errors:\n\n${passwordValidCheck.details
-              .map((error, i) => {
-                const groomedMessage = error.message
-                  .replace("string", "password")
-                  .replace("digit", "number");
-                return "   " + (i + 1) + ": " + groomedMessage + ". ";
-              })
-              .join(
-                "\n"
-              )}\n\nHere are all of the password requirements: ${passwordRequirements}`,
-          };
+            return {
+              valid: false,
+              message: `The password does not meet the requirements. It failed with these errors:\n\n${passwordValidCheck.details
+                .map((error, i) => {
+                  const groomedMessage = error.message
+                    .replace("string", "password")
+                    .replace("digit", "number");
+                  return "   " + (i + 1) + ": " + groomedMessage + ". ";
+                })
+                .join(
+                  "\n"
+                )}\n\nHere are all of the password requirements: ${passwordRequirements}`,
+            };
         }
       }
     }

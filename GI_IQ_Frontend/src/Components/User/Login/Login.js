@@ -16,14 +16,29 @@ const Login = (props) => {
   });
   const [loginError, seLoginError] = useState(false);
   const [showLoginError, setShowLoginError] = useState(true);
+  const [showChangePasswordHTML, setShowChangePasswordHTML] = useState(false);
   const dispatch = useDispatch();
   const horizontalDisplay = props.horizontalDisplay ? "horizontal-display" : "";
+  let forgotPasswordURL =
+    "https://api-iq.glassinteractive.com/api/users/auth/forgot_password?";
+  if (process.env.NODE_ENV === "development")
+    forgotPasswordURL = "http://localhost:8000/api/users/auth/forgot_password?";
+  console.log(
+    "%c --> %cline:25%cforgotPasswordURL",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px",
+    forgotPasswordURL
+  );
+
   const makeLoadingRequest = function () {
     return dispatch(loadingRequestsActions.addToLoadRequest());
   };
+
   const removeLoadingRequest = function () {
     dispatch(loadingRequestsActions.removeFromLoadRequest());
   };
+
   const completeSignInProcedures = (res) => {
     if (process.env.NODE_ENV === "development")
       console.log(
@@ -71,6 +86,10 @@ const Login = (props) => {
 
   const errorDisplayButtonHandler = () => {
     setShowLoginError(!showLoginError);
+  };
+  const requestNewPasswordButtonHandler = (e) => {
+    e.preventDefault();
+    setShowChangePasswordHTML(!showChangePasswordHTML);
   };
 
   //register function
@@ -200,7 +219,7 @@ const Login = (props) => {
               Login
             </PushButton>
           </div>
-        </form>
+        </form>{" "}
         {loginError && showLoginError && (
           <div className={styles["form-input-error"]}>
             <button
@@ -211,6 +230,29 @@ const Login = (props) => {
             </button>
             <p>{loginError}</p>
           </div>
+        )}{" "}
+        <PushButton
+          inputOrButton="button"
+          id="create-entry-btn"
+          colorType="secondary"
+          styles={{ margin: "1em" }}
+          value="Login"
+          data=""
+          size="small"
+          onClick={requestNewPasswordButtonHandler}
+        >
+          Need to reset your password?
+        </PushButton>
+        {showChangePasswordHTML && (
+          <iframe
+            className={styles["change-password-iframe"]}
+            src={forgotPasswordURL}
+            name="test"
+            height="auto"
+            width="100%"
+          >
+            You need a Frames Capable browser to view this content.
+          </iframe>
         )}
       </div>
     </div>

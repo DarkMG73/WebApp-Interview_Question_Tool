@@ -26,20 +26,6 @@ function NewQuestionButton(props) {
 
   useEffect(() => {
     if (user) {
-      console.log(
-        "%c --> %cline:32%ccurrentFilters",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(222, 125, 44);padding:3px;border-radius:2px",
-        currentFilters
-      );
-      console.log(
-        "%c --> %cline:32%cquestionHistory",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(34, 8, 7);padding:3px;border-radius:2px",
-        questionHistory
-      );
       updateUserHistory({ user, dataObj: questionHistory });
     } else if (recentLogout) {
       dispatch(authActions.resetRecentLogout());
@@ -54,13 +40,7 @@ function NewQuestionButton(props) {
             unmarked: {},
             stats: {},
           };
-      console.log(
-        "%c --> %cline:47%cnewQuestionHistory",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(222, 125, 44);padding:3px;border-radius:2px",
-        newQuestionHistory
-      );
+
       dispatch(questionDataActions.updateQuestionHistory(newQuestionHistory));
     } else {
       storage("add", { questionHistory, currentFilters });

@@ -57,7 +57,6 @@ function AddAQuestionForm(props) {
       const theData = questionsGroomed[key];
 
       if (user && user.isAdmin == true) {
-        console.log("user", user);
         addDocToDB({ user, theData })
           .then((res) => {
             if (res.hasOwnProperty("status") && res.status <= 200) {
@@ -77,13 +76,6 @@ function AddAQuestionForm(props) {
               "There was an error trying to save the question. Error: " + err
             );
           });
-        console.log(
-          "%c --> %cline:60%cuser",
-          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-          "color:#fff;background:rgb(20, 68, 106);padding:3px;border-radius:2px",
-          user
-        );
       } else {
         const questionAdminEmail = "general@glassinteractive.com";
         const subject = "A New Question for the Interview Questions Tool";

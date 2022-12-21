@@ -25,7 +25,6 @@ function WorkArea(props) {
   }, [timerRunning]);
 
   const editorTabButtonHandler = (e) => {
-    console.log("editorTabButtonHandler target", e.target);
     SetOpenTab(!openTab);
   };
 

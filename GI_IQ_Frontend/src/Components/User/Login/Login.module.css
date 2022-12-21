@@ -216,6 +216,12 @@
   flex-grow: 1;
 }
 
+.change-password-iframe {
+  border: none;
+  border-radius: 30px;
+  box-shadow: -2px -2px 3px -2px black, 2px 2px 3px -2px white;
+}
+
 @media only screen and (max-width: 500px) {
   .form *,
   form .input-container {

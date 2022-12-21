@@ -7,9 +7,13 @@ const path = require("path");
 const async = require("async");
 const { sendEmail } = require("../tools/sendEmail");
 const jsonwebtoken = require("jsonwebtoken");
+const {
+  usePasswordValidator,
+  passwordRequirements,
+} = require("../tools/usePasswordValidator");
 
 ////////////////////////////////
-/// Handlebars COnfig
+/// Handlebars Config
 ////////////////////////////////
 // const hbs = require("nodemailer-express-handlebars"),
 //   email = process.env.MAILER_EMAIL_ID || "auth_email_address@gmail.com",
@@ -36,12 +40,11 @@ const jsonwebtoken = require("jsonwebtoken");
 /// Register a User
 ////////////////////////////////
 module.exports.register = asyncHandler(async (req, res) => {
-  console.log(" --> line:8 req", req.body);
   const user = { ...req.body, isAdmin: false };
   const newUser = new User(user);
 
   newUser.hash_password = bcrypt.hashSync(req.body.password, 10);
-  console.log(" --> newUser", newUser);
+
   newUser.save(function (err, user) {
     if (err) {
       console.log(" --> Resgister err", err);
@@ -56,6 +59,9 @@ module.exports.register = asyncHandler(async (req, res) => {
   });
 });
 
+////////////////////////////////
+/// Sing In a User
+////////////////////////////////
 module.exports.sign_in = asyncHandler(async (req, res) => {
   console.log(" --> sign_in req.body", req.body);
 
@@ -64,14 +70,13 @@ module.exports.sign_in = asyncHandler(async (req, res) => {
       email: req.body.email,
     },
     function (err, user) {
-      console.log(" --> sign_in user", user);
       if (err) {
         console.log(" --> sign_in req.body", req.body);
         return res.status(401).json({
           message: "There was a problem with authentication: " + err,
         });
       }
-      console.log(" --> sign_in user", user);
+
       if (!user || !user.comparePassword(req.body.password)) {
         return res.status(401).json({
           message: "Authentication failed. Invalid user or password.",
@@ -81,10 +86,6 @@ module.exports.sign_in = asyncHandler(async (req, res) => {
         if (user.isAdmin) {
           console.log("user.isAdmin", user.isAdmin);
           if (process.env.SECRET && process.env.SECRET != "undefined") {
-            console.log(
-              'process.env.SECRET && process.env.SECRET != "undefined"',
-              process.env.SECRET && process.env.SECRET != "undefined"
-            );
             return res.json({
               token: jwt.sign(
                 { email: user.email, fullName: user.fullName, _id: user._id },
@@ -139,6 +140,9 @@ module.exports.sign_in = asyncHandler(async (req, res) => {
   );
 });
 
+////////////////////////////////
+/// Set a User's Cookie
+////////////////////////////////
 module.exports.setCookie = asyncHandler(async (req, res) => {
   res
     .status(202)
@@ -154,10 +158,16 @@ module.exports.setCookie = asyncHandler(async (req, res) => {
     .send("Cookie being initialized");
 });
 
+////////////////////////////////
+/// Delete a User's Cookie
+////////////////////////////////
 module.exports.deleteCookie = asyncHandler(async (req, res) => {
   res.status(202).clearCookie(appCookieName).send("Cookie cleared");
 });
 
+////////////////////////////////
+/// Get a User's Cookie
+////////////////////////////////
 module.exports.getCookie = asyncHandler(async (req, res) => {
   if (req.cookies[appCookieName]) {
     res.status(202).send({ cookie: req.cookies[appCookieName] });
@@ -166,6 +176,9 @@ module.exports.getCookie = asyncHandler(async (req, res) => {
   }
 });
 
+////////////////////////////////
+///  Login Required
+////////////////////////////////
 module.exports.loginRequired = asyncHandler(async (req, res, next) => {
   if (req.user) {
     next();
@@ -174,6 +187,9 @@ module.exports.loginRequired = asyncHandler(async (req, res, next) => {
   }
 });
 
+////////////////////////////////
+/// Get a User By Token
+////////////////////////////////
 module.exports.get_user_by_token = asyncHandler(async (req, res, next) => {
   if (req.user && req.user._id) {
     const user = await User.findById(req.user._id);
@@ -185,7 +201,9 @@ module.exports.get_user_by_token = asyncHandler(async (req, res, next) => {
   }
 });
 
-//getUsers function to get all users
+////////////////////////////////
+/// Get All Users
+////////////////////////////////
 module.exports.getUsers = asyncHandler(async (req, res) => {
   if (req.user) {
     const users = await User.find({});
@@ -195,7 +213,9 @@ module.exports.getUsers = asyncHandler(async (req, res) => {
   }
 });
 
-//getUserById function to retrieve user by id
+////////////////////////////////
+/// Get A USER BY ID
+////////////////////////////////
 module.exports.getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
@@ -219,8 +239,6 @@ module.exports.updateUserHistory = asyncHandler(async (req, res) => {
   const filter = { _id: req.user._id };
   const user = await User.findOne(filter);
   console.log("user", user);
-  console.log("user._id.toString()", user._id.toString());
-  console.log("req.user._id", req.user._id);
 
   if (user._id.toString() === req.user._id) {
     User.findOneAndUpdate(filter, { questionHistory: data }, { new: false })
@@ -245,65 +263,55 @@ module.exports.updateUserHistory = asyncHandler(async (req, res) => {
 ////////////////////////////////////
 // Update User History - Local Use
 ///////////////////////////////////
-const updateUserHistoryLocalFunction = async (
-  dataObj,
-  requestedUser,
-  callback
-) => {
-  console.log("Updating User History");
+const updateUserHistoryLocalFunction = async (dataObj, requestedUser) => {
+  let output = {};
+  console.log("Updating User History Local");
   console.log("dataObj", dataObj);
   const filter = { _id: requestedUser._id };
   const user = await User.findOne(filter);
   console.log("user", user);
 
   if (user._id.toString() === requestedUser._id.toString()) {
-    User.findOneAndUpdate(filter, dataObj, { new: false })
-      .then((doc) => {
-        console.log("It worked! ", doc);
-        callback({ status: 200, data: { message: "It worked.", doc: doc } });
-        return { status: 200, data: { message: "It worked.", doc: doc } };
-      })
-      .catch((err) => {
-        console.log("err", err);
-        callback({
+    output = await User.findOneAndUpdate(filter, dataObj, { new: true });
+    if (output) {
+      console.log("Success: ", output);
+      output = { status: 200, data: { message: "Success!", doc: output } };
+    } else {
+      console.log("err", output);
+      output = {
+        status: 404,
+        data: {
           message: "Error when trying to save the user history.",
           err: err,
-        });
-        return {
-          status: 404,
-          data: {
-            message: "Error when trying to save the user history.",
-            err: err,
-          },
-        };
-      });
+        },
+      };
+    }
   } else {
     callback({ status: 404, data: { message: "User not found" } });
-    return { status: 404, data: { message: "User not found" } };
+    output = { status: 404, data: { message: "User not found" } };
   }
+  return output;
 };
 
-/////////////////////
-exports.index = function (req, res) {
-  return res.sendFile(path.resolve("./public/home.html"));
-};
-
+////////////////////////////////
+/// Send Forgotten Password HTML
+////////////////////////////////
 exports.render_forgot_password_template = function (req, res) {
-  console.log("path", path);
-  console.log("res", res);
   const thePath = path.resolve("./public/forgot-password.html");
-  console.log("thePath", thePath);
+
   return res
     .set(
       "Content-Security-Policy",
       "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'"
     )
+    .set("X-Frame-Options", "")
     .sendFile(path.resolve("./public/forgot-password.html"));
 };
 
+////////////////////////////////
+/// Send Reset Password HTML
+////////////////////////////////
 exports.render_reset_password_template = function (req, res) {
-  console.log("RESET path", path);
-  console.log("RESET res", res);
   return res
     .set(
       "Content-Security-Policy",
@@ -312,6 +320,9 @@ exports.render_reset_password_template = function (req, res) {
     .sendFile(path.resolve("./public/reset-password.html"));
 };
 
+////////////////////////////////
+/// Forgot Password POST Route
+////////////////////////////////
 exports.forgot_password = function (req, res) {
   console.log(" --> forgot_password req.body", req.body);
 
@@ -322,15 +333,22 @@ exports.forgot_password = function (req, res) {
     function (err, user) {
       console.log(" --> Found User", user);
       if (err) {
-        console.log(" --> forgot_password Find User Error", err);
+        console.log(" --> 1 forgot_password Find User Error", err);
         return res.status(401).json({
           message: "There was a problem with authentication: " + err,
         });
       }
       if (!user) {
-        console.log(" --> forgot_password User Not Find", req.body);
+        console.log(
+          " --> 2 forgot_password There was a problem with authentication: User " +
+            req.body.email +
+            " was not found."
+        );
         return res.status(401).json({
-          message: "There was a problem with authentication: " + req.body,
+          message:
+            "There was a problem with authentication: User " +
+            req.body.email +
+            ' was not found. Please fix the email address or, if you are not signed up yet, use the "Sign Up" button to get started.',
         });
       }
       console.log(" --> Confirming and Sending Email");
@@ -348,17 +366,17 @@ exports.forgot_password = function (req, res) {
             // TODO: SE THIS TO 10 MINUTES *********
             { expiresIn: "1000 minutes" } // The httpOnly cookie expires in 10 minutes, so this would only apply if that cookie is tampered with.
           );
-          console.log("JWTToken", JWTToken);
 
           const mailOptions = {
             from: process.env.MAILER_EMAIL_ID,
-            to: "levelthreeemail@gmail.com",
+            to: user.email,
             template: "forgot-password-email",
-            subject: "Sending Email using Node.js",
+            subject: "interview Questions Tool Reset Request",
             text: "That was easy!",
             context: {
               url:
-                "http://localhost:8000/api/users/auth/reset_password?token=" +
+                process.env.DOMAIN +
+                "api/users/auth/reset_password?token=" +
                 JWTToken,
               name: "Mike",
             },
@@ -403,71 +421,121 @@ exports.forgot_password = function (req, res) {
 };
 
 /////////////////////////////////////////
-/// Reset password
+/// Reset password POST Route
 /////////////////////////////////////////
-exports.reset_password = (req, res, next) => {
-  console.log("req", req.body);
+exports.reset_password = async (req, res, next) => {
   const { newPassword, verifyPassword, token } = req.body;
+  const passwordValidator = usePasswordValidator();
 
-  if (newPassword === verifyPassword) {
-    jsonwebtoken.verify(token, process.env.SECRET, function (err, decode) {
-      console.log("IN TOKEN VERIFY", token);
-      if (err) {
+  const passwordValidCheck = passwordValidator(newPassword, true);
+
+  if (!passwordValidCheck.isValid) {
+    if (process.env.NODE_ENV === "development")
+      console.log("--> passwordTestResults", passwordValidCheck);
+    res.status(412).json({
+      valid: false,
+      message: `The password does not meet the requirements. It failed with these errors:\n\n${passwordValidCheck.details
+        .map((error, i) => {
+          const groomedMessage = error.message
+            .replace("string", "password")
+            .replace("digit", "number");
+          return "   " + (i + 1) + ": " + groomedMessage + ". ";
+        })
+        .join(
+          "\n"
+        )}\n\nHere are all of the password requirements: ${passwordRequirements}`,
+    });
+  } else {
+    if (newPassword === verifyPassword) {
+      let tokenData = null;
+      try {
+        tokenData = jsonwebtoken.verify(token, process.env.SECRET);
+      } catch (err) {
         if (process.env.SECRET && process.env.SECRET != "undefined") {
           console.log(
-            "There is a temporary server issue. Please try your request again. Error: NS-UC1",
+            "<><><> There is a temporary server issue. Please try your request again. Error: NS-UC1",
             err
           );
-          return res.status(403).json({
+          res.status(403).json({
             message:
               "There is a temporary issue accessing the required security data. Please try your request again. Error: NS-UC2 | " +
               err,
           });
+        } else {
+          console.log(
+            "<><><> There is an issue with the JWT. Error: JWT-UC1",
+            err
+          );
+          res.status(401).json({
+            message:
+              "There is a temporary issue accessing the required security data. Please try your request again. Error: JWT-UC1 | " +
+              err,
+          });
         }
-        // req.user = undefined;
       }
-      console.log("Trying to decode the user object", req.user);
-      const tokenData = decode;
-      console.log("tokenData", tokenData);
+
       if (tokenData.passwordReset) {
         const groomedNewPasswordData = {
           hash_password: bcrypt.hashSync(newPassword, 10),
         };
-        console.log("groomedNewPasswordData", groomedNewPasswordData);
-        const filter = { email: tokenData.email };
-        const user = User.findOne(filter).then((user) => {
-          console.log("RESET PW: User: ", user);
 
-          const updateCallback = (updateResults) => {
-            if (updateResults.status < 400) {
-              console.log("updateResults", updateResults);
-              res.status(200).json({
-                message: updateResults.data.message,
-                data: updateResults.data,
-              });
-              res.status(200);
-              res.send("test");
-            }
-            if (updateResults.status >= 400) {
-              console.log("err", updateResults);
-              res.status(404).json({
-                message: "Error when trying to save the user history.",
-                err: updateResults.data.message,
-              });
-              res.status(404);
-            }
-          };
-          updateUserHistoryLocalFunction(
-            groomedNewPasswordData,
-            user,
-            updateCallback
+        const filter = { email: tokenData.email };
+        const user = await User.findOne(filter);
+        console.log("<><><> FOUND USER ->", user);
+
+        const updateResults = await updateUserHistoryLocalFunction(
+          groomedNewPasswordData,
+          user
+        );
+
+        console.log("<><><> updateResults: ", updateResults);
+
+        if (updateResults.status < 400) {
+          console.log(
+            "<><><> updateResults.status < 400",
+            updateResults.status < 400
           );
+
+          if (
+            groomedNewPasswordData.hash_password ===
+            updateResults.data.doc.hash_password
+          ) {
+            res.status(200).json({
+              message: updateResults.data.message,
+              data: updateResults.data,
+            });
+          } else {
+            updateResults.data.message = "error";
+            res.status(403).json({
+              message:
+                "A problem occurred and the password was not able to be reset. Please contact teh site administrator for further assistance.",
+              data: updateResults.data,
+            });
+          }
+        }
+        if (updateResults.status >= 400) {
+          console.log("err", updateResults);
+          res.status(404).json({
+            message: "Error when trying to save the user history.",
+            err: updateResults.data.message,
+          });
+        }
+      } else {
+        res.json({
+          message:
+            "Password reset is not allowed in this case. If you need to reset your password, please contact this site administrator.",
         });
       }
       next();
-    });
-  } else {
-    console.log("Passwords do not match", newPassword, verifyPassword);
+    } else {
+      console.log("Passwords do not match", newPassword, verifyPassword);
+      res.status(412).json({
+        message:
+          "The two passwords do not match. please ensure they are identical.",
+      });
+      next();
+    }
   }
+
   next();
 };

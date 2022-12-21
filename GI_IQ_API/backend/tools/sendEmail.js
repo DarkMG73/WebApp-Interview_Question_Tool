@@ -41,11 +41,18 @@ module.exports.sendEmail = function (mailOptionsObj) {
 
     console.log("sendEmail: Begin email sending...");
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "mi3-ts5.a2hosting.com",
+      port: 465,
+      secure: true, // use TLS/ upgrade later with STARTTLS
       auth: {
         user: process.env.MAILER_EMAIL_ID,
         pass: process.env.MAILER_PASSWORD,
       },
+      // tls: {
+      //   // do not fail on invalid certs
+      //   rejectUnauthorized: false,
+      // },
+      debug: true,
     });
 
     console.log("sendEmail: transporter: ", transporter);
@@ -68,6 +75,8 @@ module.exports.sendEmail = function (mailOptionsObj) {
     console.log("handlebarsOptions", handlebarsOptions);
     transporter.use("compile", hbs(handlebarsOptions));
     transporter.sendMail(groomedMailOptionsObj, function (error, info) {
+      console.log("error **** ", error);
+      console.log("info **** ", info);
       if (error) {
         console.log(error);
         resolve({
