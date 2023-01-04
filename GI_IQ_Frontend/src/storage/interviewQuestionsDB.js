@@ -127,7 +127,7 @@ export async function saveManyQuestions(userAndDataObject) {
 
 /// UPDATE //////////////////////////////////
 export async function updateAQuestion(id, dataObj, user) {
-  dataObj.dbID = id;
+  dataObj.identifier = id;
   console.log(
     "%c --> %cline:121%cdataObj",
     "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",

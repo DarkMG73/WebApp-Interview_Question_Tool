@@ -105,13 +105,13 @@ const Home = () => {
               <AddAQuestion />
             </ErrorBoundary>
           </CardSecondary>{" "}
-          <CardSecondary>
-            <ErrorBoundary>
-              <Footer />
-            </ErrorBoundary>
-          </CardSecondary>
         </Fragment>
-      )}
+      )}{" "}
+      <CardSecondary>
+        <ErrorBoundary>
+          <Footer />
+        </ErrorBoundary>
+      </CardSecondary>
     </div>
   );
 };

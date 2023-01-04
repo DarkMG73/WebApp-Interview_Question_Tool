@@ -53,7 +53,7 @@ module.exports.getInterviewQuestionByHashId = asyncHandler(async (req, res) => {
 module.exports.AddInterviewQuestion = asyncHandler(async (req, res, next) => {
   const interviewQuestion = req.body.theData;
   const InterviewQuestion = getInterviewQuestionModelAndCollection(req.user);
-  console.log("interviewQuestion", interviewQuestion);
+
   if (req.user) {
     const newInterviewQuestion = new InterviewQuestion(interviewQuestion);
     newInterviewQuestion
@@ -111,8 +111,9 @@ module.exports.AddManyInterviewQuestions = asyncHandler(
 /// UPDATE A QUESTION /////////////////////////////
 module.exports.UpdateInterviewQuestion = asyncHandler(async (req, res) => {
   const dataObj = req.body.dataObj;
+  console.log("dataObj", dataObj);
   const InterviewQuestion = getInterviewQuestionModelAndCollection(req.user);
-
+  console.log("InterviewQuestion", InterviewQuestion);
   // Convert strings to numbers where needed
   function groomObjectForDB(dataObj) {
     const requiresNumber = ["rating"];
@@ -155,11 +156,13 @@ module.exports.UpdateInterviewQuestion = asyncHandler(async (req, res) => {
   }
 
   const groomedDataObject = groomObjectForDB(dataObj);
-  const dbID = groomedDataObject.dbID;
-  const filter = { _id: dbID };
+  console.log("groomedDataObject", groomedDataObject);
+  const identifier = groomedDataObject.identifier;
+  console.log("identifier", identifier);
+  const filter = { identifier: identifier };
   const interviewQuestion = await InterviewQuestion.findOne(filter);
-
-  if (interviewQuestion._id.toString() === dbID) {
+  console.log("interviewQuestion", interviewQuestion);
+  if (interviewQuestion.identifier === identifier) {
     InterviewQuestion.findOneAndUpdate(
       filter,
       { $set: groomedDataObject },

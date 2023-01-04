@@ -6,6 +6,7 @@ import SessionResultsRows from "../../Components/SessionResultsRows/SessionResul
 import CollapsibleElm from "../../UI/CollapsibleElm/CollapsibleElm";
 import { ErrorBoundary } from "../../HOC/ErrorHandling/ErrorBoundary/ErrorBoundary";
 import { ReactComponent as BrainLogo } from "../../assets/images/brain-logo.svg";
+import CardPrimary from "../../UI/Cards/CardPrimary/CardPrimary";
 
 function SessionResults(props) {
   const { allQuestions } = useSelector((state) => state.questionData);
@@ -24,9 +25,12 @@ function SessionResults(props) {
     Object.keys(allQuestions).includes("errorGettingDataFromDatabase")
   )
     return (
-      <div className={styles["logo-wrap"]}>
-        <BrainLogo />
-      </div>
+      <CardPrimary>
+        {" "}
+        <div className={styles["logo-wrap"]}>
+          <BrainLogo />{" "}
+        </div>
+      </CardPrimary>
     );
   return (
     <div

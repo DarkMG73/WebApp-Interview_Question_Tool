@@ -32,11 +32,11 @@ function SessionResultsRow(props) {
   const rowSaveButtonHandler = (e) => {
     // Use tempKey instead of key when in dev
     // const tempKey = "TESTTEST";
-    updateAQuestion(key, editedQuestions.current.edits[key], user);
+    // updateAQuestion(key, editedQuestions.current.edits[key], user);
 
     if (user && user.isAdmin == true) {
       updateAQuestion(
-        questionHistory[k][key]._id,
+        questionHistory[k][key].identifier,
         editedQuestions.current.edits[key],
         user
       ).then((res) => {
@@ -47,9 +47,16 @@ function SessionResultsRow(props) {
           "color:#fff;background:rgb(153, 80, 84);padding:3px;border-radius:2px",
           res
         );
-        alert("Success! The item has been updated.");
 
-        setInEditMode(false);
+        const status = res.status ? res.status : res.response.status;
+        if (status >= 400) {
+          alert("There was an error: " + res.response.data.message);
+        } else if (status >= 200) {
+          alert("Success! The item has been updated.");
+          setInEditMode(false);
+        } else {
+          alert("there was an error: " + +res.message);
+        }
       });
     } else {
       const sendEmail = window.confirm(

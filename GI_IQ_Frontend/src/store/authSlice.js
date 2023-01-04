@@ -19,8 +19,8 @@ export const authSlice = createSlice({
         action.payload
       );
       state.user = action.payload;
-
-      state.authToken = action.payload.token;
+      if (action.payload && action.payload.hasOwnProperty("token"))
+        state.authToken = action.payload.token;
     },
     logOut: (state) => {
       const recentLogoutState = { ...initState };
