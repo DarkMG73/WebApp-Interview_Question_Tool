@@ -2,11 +2,13 @@ import { useSelector } from "react-redux";
 import styles from "./Score.module.css";
 import storage from "../../hooks/storage";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
+import { updateUserHistory } from "../../storage/userDB";
 
 function Score(props) {
   const { questionHistory, filteredQuestionsIds } = useSelector(
     (state) => state.questionData
   );
+  const user = useSelector((state) => state.auth.user);
 
   const totalQuestions = filteredQuestionsIds.length;
   const { correct, incorrect, unmarked } = questionHistory;
@@ -17,8 +19,23 @@ function Score(props) {
   const totalCompleted = correctAmount + incorrectAmount + unmarkedAmount;
 
   const resetSessionButtonHandler = (e) => {
-    storage("delete");
-    window.location.reload();
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete your question history? If you do, this will erase your question history from your local browser storage. This will not affect the question database."
+    );
+    if (shouldDelete) {
+      if (user) {
+        const defaultUserHistory = {
+          correct: {},
+          stats: { usedIds: [] },
+          incorrect: {},
+          unmarked: {},
+        };
+        updateUserHistory({ user, dataObj: defaultUserHistory });
+      } else {
+        storage("delete");
+      }
+      window.location.reload();
+    }
   };
 
   function tallyItemsInObject(obj) {
