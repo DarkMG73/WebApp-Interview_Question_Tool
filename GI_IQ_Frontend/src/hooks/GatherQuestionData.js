@@ -1,34 +1,68 @@
 // import { questionData } from "../storage/firebase.config";
 import { questionData } from "../storage/interviewQuestionsDB.js";
-import storage from "./storage";
+import storage from "../storage/storage";
 
 export default async function GatherQuestionData(user) {
-  console.log(
-    "%c --> %cline:5%cuser",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
-    user
-  );
   const allQuestionsData = {};
-  const dataFromStorage =
-    user && user.questionHistory
-      ? { questionHistory: { ...user.questionHistory } }
-      : storage("get");
-  console.log(
-    "%c --> %cline:14%cdataFromStorage",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px",
-    dataFromStorage
-  );
+
+  const dataFromStorage = {};
+  if (user) {
+    if (user.hasOwnProperty("questionHistory")) {
+      dataFromStorage.questionHistory = { ...user.questionHistory };
+    }
+    if (user.hasOwnProperty("currentFilters")) {
+      dataFromStorage.currentFilters = { ...user.currentFilters };
+    }
+    if (user.hasOwnProperty("studyNotes")) {
+      dataFromStorage.studyNotes = { ...user.studyNotes };
+    }
+  }
+
+  if (!user) {
+    const dataFromLocalStorage = storage("GET");
+    console.log(
+      "%c --> %cline:22%cdataFromLocalStorage",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
+      dataFromLocalStorage
+    );
+    if (dataFromLocalStorage) {
+      if (dataFromLocalStorage.hasOwnProperty("questionHistory")) {
+        dataFromStorage.questionHistory = {
+          ...dataFromLocalStorage.questionHistory,
+        };
+      }
+      if (dataFromLocalStorage.hasOwnProperty("currentFilters")) {
+        dataFromStorage.currentFilters = {
+          ...dataFromLocalStorage.currentFilters,
+        };
+      }
+      if (dataFromLocalStorage.hasOwnProperty("studyNotes")) {
+        dataFromStorage.studyNotes = { ...dataFromLocalStorage.studyNotes };
+      }
+    }
+  }
 
   let historyDataFromStorage = null;
   let currentFilters = null;
+  let studyNotes = null;
   if (dataFromStorage) {
     historyDataFromStorage = dataFromStorage.questionHistory;
     currentFilters = dataFromStorage.currentFilters;
+    studyNotes = dataFromStorage.studyNotes;
   }
+
+  allQuestionsData.currentFilters = currentFilters ?? {
+    level: [],
+    topic: [],
+    tags: [],
+  };
+
+  allQuestionsData.studyNotes = studyNotes ?? {
+    studyTopicsIDs: [],
+    studyNotes: [],
+  };
 
   allQuestionsData.allQuestions = {};
 
@@ -87,13 +121,7 @@ export default async function GatherQuestionData(user) {
 
     allQuestionsData.allQuestions[questionData.identifier] = questionData;
   });
-  console.log(
-    "%c --> %cline:102%chistoryDataFromStorage",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(252, 157, 154);padding:3px;border-radius:2px",
-    historyDataFromStorage
-  );
+
   allQuestionsData.questionHistory = historyDataFromStorage ?? {
     incorrect: {},
     correct: {},
@@ -110,12 +138,6 @@ export default async function GatherQuestionData(user) {
     allQuestionsData.questionHistory.unmarked = {};
   if (!allQuestionsData.questionHistory.hasOwnProperty("stats"))
     allQuestionsData.questionHistory.stats = {};
-
-  allQuestionsData.currentFilters = currentFilters ?? {
-    level: [],
-    topic: [],
-    tags: [],
-  };
 
   allQuestionsData.questionMetadata = gatherAllMetadata(allQuestions);
 

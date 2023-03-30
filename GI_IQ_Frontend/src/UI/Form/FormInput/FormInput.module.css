@@ -77,7 +77,7 @@
   flex-basis: 100%;
   flex-grow: 1;
   padding: 0.5em;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 700;
   border: none;
   margin-bottom: 0.25em;
@@ -158,7 +158,7 @@
 
 .input-container input[type="checkbox"]:checked:after {
   content: "\2714";
-  font-size: 28px;
+  font-size: 2.8rem;
   position: absolute;
   font-weight: 900;
   top: 50%;
@@ -176,7 +176,7 @@
 .input-container input[type="checkbox"]:after {
   /* content: "\2714"; */
   content: "";
-  font-size: 28px;
+  font-size: 2.8rem;
   position: absolute;
   font-weight: 900;
   top: 50%;
@@ -200,7 +200,7 @@
   flex-basis: 100%;
   flex-grow: 1;
   padding: 0.5em;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 700;
   border: none;
   text-align: center;
@@ -358,7 +358,7 @@ body .input-container.input-functions input[type="checkbox"]:hover:after {
 body .input-container.input-functions input[type="checkbox"]:checked:after,
 body .input-container.input-functions input[type="checkbox"]:hover:after {
   content: "";
-  font-size: 28px;
+  font-size: 2.8rem;
   position: absolute;
   font-weight: 900;
   top: 50%;

@@ -187,10 +187,12 @@ module.exports.UpdateInterviewQuestion = asyncHandler(async (req, res) => {
 });
 
 module.exports.RemoveInterviewQuestion = asyncHandler(async (req, res) => {
+  console.log("RemoveInterviewQuestion", req.params);
   const InterviewQuestion = getInterviewQuestionModelAndCollection(req.user);
 
-  InterviewQuestion.deleteOne({ _id: req.params.id })
+  InterviewQuestion.deleteOne({ identifier: req.params.identifier })
     .then((doc) => {
+      console.log("success", res);
       res.json(doc);
     })
     .catch((err) => {

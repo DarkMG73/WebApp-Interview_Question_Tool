@@ -222,26 +222,44 @@ export async function getUserUserByToken(token) {
 
 /// Add or Update User History/////////////////////////////////////
 export async function updateUserHistory(userAndDataObject) {
-  console.log(
-    "%c --> %cline:212%c updateUserHistory userAndDataObject",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(3, 101, 100);padding:3px;border-radius:2px",
-    userAndDataObject
-  );
   const axiosConfig = {
     headers: {
       "Content-Type": "application/json",
       Authorization: "JWT " + userAndDataObject.user.token,
     },
   };
-  const dataObj = userAndDataObject.dataObj;
+  const { dataObj, currentFiltersObj } = userAndDataObject;
+  console.log("currentFiltersObj***", currentFiltersObj);
   const response = await axios
     .post(
       `/api/users/auth/updateUserHistory`,
-      { dataObj: dataObj },
+      { dataObj: dataObj, currentFiltersObj: currentFiltersObj },
       axiosConfig
     )
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log("err", err);
+      // console.log("errors", err.response.data.err.message);
+      return err;
+    });
+  return response;
+}
+
+/// Update Study Notes /////////////////////////////////////
+export async function updateStudyNotes(userAndDataObject) {
+  const axiosConfig = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "JWT " + userAndDataObject.user.token,
+    },
+  };
+  const { dataObj } = userAndDataObject;
+  console.log("userAndDataObject***", userAndDataObject);
+  console.log("studyNotes***", dataObj);
+  const response = await axios
+    .post(`/api/users/auth/updateStudyNotes`, { dataObj: dataObj }, axiosConfig)
     .then((res) => {
       return res;
     })

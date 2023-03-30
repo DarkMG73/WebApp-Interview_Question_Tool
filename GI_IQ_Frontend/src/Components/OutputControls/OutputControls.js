@@ -7,11 +7,17 @@ function OutputControls(props) {
   let navigate = useNavigate();
   const exportData = useExportData({ type: "" });
 
-  function exportCVSButtonHandler() {
+  function exportCSVButtonHandler() {
     exportData({ type: "cvs" });
+  }
+  function exportStudyTopicsCSVButtonHandler() {
+    exportData({ type: "cvs", exportStudyTopics: true });
   }
   function exportJSONButtonHandler() {
     exportData({ type: "json" });
+  }
+  function exportAllToJSONButtonHandler() {
+    exportData({ type: "json", exportAll: true });
   }
   function exportAllToJSONButtonHandler() {
     exportData({ type: "json", exportAll: true });
@@ -27,7 +33,7 @@ function OutputControls(props) {
         className={`${styles["inner-wrap"]} 
       ${styles["button-wrap"]} `}
       >
-        {!props.hideExportIncorrectToCVSButton && (
+        {!props.hideExportIncorrectToCSVButton && (
           <PushButton
             inputOrButton="button"
             id="export-cvs-btn"
@@ -35,9 +41,22 @@ function OutputControls(props) {
             value="export-cvs"
             data-value="export-cvs"
             size="medium"
-            onClick={exportCVSButtonHandler}
+            onClick={exportCSVButtonHandler}
           >
-            Export Incorrect Questions to CVS
+            Export Incorrect Questions to Cvs
+          </PushButton>
+        )}
+        {props.showExportStudyTopicsToCSV && (
+          <PushButton
+            inputOrButton="button"
+            id="export-cvs-btn"
+            colorType="secondary"
+            value="export-cvs"
+            data-value="export-cvs"
+            size="medium"
+            onClick={exportStudyTopicsCSVButtonHandler}
+          >
+            Export Study Topics Questions to CSV
           </PushButton>
         )}
 

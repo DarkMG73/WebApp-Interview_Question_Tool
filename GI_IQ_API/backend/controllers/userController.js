@@ -52,7 +52,6 @@ module.exports.register = asyncHandler(async (req, res) => {
         message: err,
       });
     } else {
-      console.log(" --> SUCCESS user", user);
       user.hash_password = undefined;
       return res.json(user);
     }
@@ -63,8 +62,6 @@ module.exports.register = asyncHandler(async (req, res) => {
 /// Sing In a User
 ////////////////////////////////
 module.exports.sign_in = asyncHandler(async (req, res) => {
-  console.log(" --> sign_in req.body", req.body);
-
   User.findOne(
     {
       email: req.body.email,
@@ -233,15 +230,20 @@ module.exports.getUserById = asyncHandler(async (req, res) => {
 // Update User History - Export
 ///////////////////////////////////
 module.exports.updateUserHistory = asyncHandler(async (req, res) => {
-  console.log("Updating User History");
-  const data = req.body.dataObj;
-  console.log("data", data);
+  const questionHistoryData = req.body.dataObj;
+  const currentFiltersData = req.body.currentFiltersObj;
   const filter = { _id: req.user._id };
   const user = await User.findOne(filter);
-  console.log("user", user);
 
   if (user._id.toString() === req.user._id) {
-    User.findOneAndUpdate(filter, { questionHistory: data }, { new: false })
+    User.findOneAndUpdate(
+      filter,
+      {
+        questionHistory: questionHistoryData,
+        currentFilters: currentFiltersData,
+      },
+      { new: false }
+    )
       .then((doc) => {
         res.status(200).json({ message: "It worked.", doc: doc });
         res.status(200);
@@ -265,16 +267,12 @@ module.exports.updateUserHistory = asyncHandler(async (req, res) => {
 ///////////////////////////////////
 const updateUserHistoryLocalFunction = async (dataObj, requestedUser) => {
   let output = {};
-  console.log("Updating User History Local");
-  console.log("dataObj", dataObj);
   const filter = { _id: requestedUser._id };
   const user = await User.findOne(filter);
-  console.log("user", user);
 
   if (user._id.toString() === requestedUser._id.toString()) {
     output = await User.findOneAndUpdate(filter, dataObj, { new: true });
     if (output) {
-      console.log("Success: ", output);
       output = { status: 200, data: { message: "Success!", doc: output } };
     } else {
       console.log("err", output);
@@ -292,6 +290,41 @@ const updateUserHistoryLocalFunction = async (dataObj, requestedUser) => {
   }
   return output;
 };
+
+///////////////////////////////////
+// Update Study Notes - Export
+///////////////////////////////////
+module.exports.updateStudyNotes = asyncHandler(async (req, res) => {
+  const studyNotesData = req.body.dataObj;
+  console.log("studyNotesData", studyNotesData);
+  const filter = { _id: req.user._id };
+  const user = await User.findOne(filter);
+  console.log("user", user);
+  if (user._id.toString() === req.user._id) {
+    User.findOneAndUpdate(
+      filter,
+      {
+        studyNotes: studyNotesData,
+      },
+      { new: false }
+    )
+      .then((doc) => {
+        res.status(200).json({ message: "It worked.", doc: doc });
+        res.status(200);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        res.status(404).json({
+          message: "Error when trying to save the user history.",
+          err: err,
+        });
+        res.status(404);
+      });
+  } else {
+    res.status(404).json({ message: "User not found" });
+    res.status(404);
+  }
+});
 
 ////////////////////////////////
 /// Send Forgotten Password HTML
@@ -331,7 +364,6 @@ exports.forgot_password = function (req, res) {
       email: req.body.email,
     },
     function (err, user) {
-      console.log(" --> Found User", user);
       if (err) {
         console.log(" --> 1 forgot_password Find User Error", err);
         return res.status(401).json({
@@ -351,7 +383,6 @@ exports.forgot_password = function (req, res) {
             ' was not found. Please fix the email address or, if you are not signed up yet, use the "Sign Up" button to get started.',
         });
       }
-      console.log(" --> Confirming and Sending Email");
 
       try {
         if (process.env.SECRET && process.env.SECRET != "undefined") {
@@ -384,7 +415,6 @@ exports.forgot_password = function (req, res) {
 
           sendEmail(mailOptions)
             .then((emailResponse) => {
-              console.log("res", emailResponse);
               return res.status(250).json({
                 message: "The email was sent!",
               });
@@ -431,20 +461,19 @@ exports.reset_password = async (req, res, next) => {
 
   if (!passwordValidCheck.isValid) {
     if (process.env.NODE_ENV === "development")
-      console.log("--> passwordTestResults", passwordValidCheck);
-    res.status(412).json({
-      valid: false,
-      message: `The password does not meet the requirements. It failed with these errors:\n\n${passwordValidCheck.details
-        .map((error, i) => {
-          const groomedMessage = error.message
-            .replace("string", "password")
-            .replace("digit", "number");
-          return "   " + (i + 1) + ": " + groomedMessage + ". ";
-        })
-        .join(
-          "\n"
-        )}\n\nHere are all of the password requirements: ${passwordRequirements}`,
-    });
+      res.status(412).json({
+        valid: false,
+        message: `The password does not meet the requirements. It failed with these errors:\n\n${passwordValidCheck.details
+          .map((error, i) => {
+            const groomedMessage = error.message
+              .replace("string", "password")
+              .replace("digit", "number");
+            return "   " + (i + 1) + ": " + groomedMessage + ". ";
+          })
+          .join(
+            "\n"
+          )}\n\nHere are all of the password requirements: ${passwordRequirements}`,
+      });
   } else {
     if (newPassword === verifyPassword) {
       let tokenData = null;

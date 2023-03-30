@@ -6,6 +6,13 @@ function FilterQuestions(questionData) {
     questionMetadata,
   } = questionData;
 
+  console.log(
+    "%c --> %cline:3%cIN FILTERQUESTION-----> filteredQuestionsIds",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(118, 77, 57);padding:3px;border-radius:2px",
+    filteredQuestionsIds
+  );
   const allFilters = currentFilters;
 
   let filteredQuestions = allQuestions;

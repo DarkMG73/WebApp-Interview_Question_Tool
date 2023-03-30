@@ -1,9 +1,12 @@
 import { useSelector } from "react-redux";
 
 const useExportData = (props) => {
-  const { allQuestions, questionHistory, filteredQuestionsIds } = useSelector(
-    (state) => state.questionData
-  );
+  const {
+    allQuestions,
+    questionHistory,
+    filteredQuestionsIds,
+    studyNotes,
+  } = useSelector((state) => state.questionData);
   if (!filteredQuestionsIds) return null;
   const totalQuestions = filteredQuestionsIds.length;
   const { correct, incorrect, unmarked } = questionHistory;
@@ -29,19 +32,63 @@ const useExportData = (props) => {
         exportSessionHistoryJSON(questionHistory, score, totalQuestions);
       }
     } else {
-      var headers = {
-        score: score,
-        totalQuestions:
-          totalCompleted + " answered of " + totalQuestions + "questions.",
-        level: "Level",
-        topic: "Topic",
-        title: "Question",
-        question: "Question Detail".replace(/,/g, ""), // remove commas to avoid errors
-        answer: "Answer",
-        time: "Time",
-      };
+      let questionsUsed = questionHistory["incorrect"];
+      let headers;
 
-      const itemsReadyForCVS = formatAnObject(questionHistory["incorrect"]);
+      if (props.exportStudyTopics) {
+        if (studyNotes && studyNotes.hasOwnProperty("studyTopicsIDs")) {
+          console.log(
+            "%c --> %cline:39%cstudyNotes",
+            "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+            "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+            "color:#fff;background:rgb(56, 13, 49);padding:3px;border-radius:2px",
+            studyNotes
+          );
+          questionsUsed = studyNotes.studyTopicsIDs.map(
+            (topicID) => allQuestions[topicID]
+          );
+        } else {
+          console.log(
+            "%c --> %cline:50%celse",
+            "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+            "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+            "color:#fff;background:rgb(1, 77, 103);padding:3px;border-radius:2px"
+          );
+          questionsUsed = [];
+        }
+
+        headers = {
+          score: "-",
+          totalQuestions: "-",
+          level: "Level",
+          topic: "Topic",
+          title: "Question",
+          question: "Question Detail".replace(/,/g, ""), // remove commas to avoid errors
+          answer: "Answer",
+          time: "Time",
+        };
+
+        console.log(
+          "%c --> %cline:34%cquestionsUsed",
+          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+          "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
+          questionsUsed
+        );
+      } else {
+        headers = {
+          score: score,
+          totalQuestions:
+            totalCompleted + " answered of " + totalQuestions + "questions.",
+          level: "Level",
+          topic: "Topic",
+          title: "Question",
+          question: "Question Detail".replace(/,/g, ""), // remove commas to avoid errors
+          answer: "Answer",
+          time: "Time",
+        };
+      }
+      const itemsReadyForCSV = formatAnObject(questionsUsed);
       // format the data
       function formatAnObject(obj) {
         var itemsFormatted = [];
@@ -66,7 +113,7 @@ const useExportData = (props) => {
 
       const fileName = prompt("What would you like to name the file?");
       let exportFileName = fileName || "interview_questions_list.json";
-      exportCSVFile(headers, itemsReadyForCVS, exportFileName); // call the exportCSVFile() function to process the JSON and trigger the download
+      exportCSVFile(headers, itemsReadyForCSV, exportFileName); // call the exportCSVFile() function to process the JSON and trigger the download
     }
   };
 

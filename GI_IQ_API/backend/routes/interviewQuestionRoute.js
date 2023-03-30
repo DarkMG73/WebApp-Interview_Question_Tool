@@ -24,7 +24,7 @@ router.route("/add-many").post(AddManyInterviewQuestions);
 router.route("/deleteAll").get(RemoveAllInterviewQuestions);
 
 // express router method to create route for removing an interview question
-router.route("/:id/delete").get(RemoveInterviewQuestion);
+router.route("/:identifier/delete").get(RemoveInterviewQuestion);
 
 // express router method to create route for updating an interview question
 router.route("/update").post(UpdateInterviewQuestion);

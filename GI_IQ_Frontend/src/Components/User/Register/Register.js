@@ -117,7 +117,7 @@ const Register = (props) => {
 
   const completeSignInProcedures = (res) => {
     setLoginError(false);
-    // storage("add", res.data);
+    // storage("ADD", res.data);
 
     // For Dev use
     // setUserCookie(res.data).then((res) => {

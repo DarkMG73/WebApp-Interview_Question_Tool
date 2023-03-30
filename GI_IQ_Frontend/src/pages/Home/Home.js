@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./Home.module.css";
 import CardPrimary from "../../UI/Cards/CardPrimary/CardPrimary";
 import CardSecondary from "../../UI/Cards/CardSecondary/CardSecondary";
@@ -14,9 +14,15 @@ import AddAQuestion from "../../Components/AddAQuestion/AddAQuestion";
 import Footer from "../../Components/Footer/Footer";
 import LoginStatus from "../../Components/User/LoginStatus/LoginStatus";
 import Timer from "../../Components/Timer/Timer";
+import BottomBar from "../../Components/BottomBar/BottomBar";
+import StudyNotes from "../../Components/StudyNotes/StudyNotes";
 import { ErrorBoundary } from "../../HOC/ErrorHandling/ErrorBoundary/ErrorBoundary";
+import axios from "axios";
+import { statusUpdateActions } from "../../store/statusUpdateSlice";
+import { loadingRequestsActions } from "../../store/loadingRequestsSlice";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const questionData = useSelector((state) => state.questionData);
   const allQuestions = questionData.allQuestions;
   const [scrollToElm, setScrollToElm] = useState(false);
@@ -25,6 +31,53 @@ const Home = () => {
   const [noDBErrors, setNoDBErrors] = useState(true);
   const [dBErrorMessage, setDbErrorMessage] = useState(false);
 
+  axios.interceptors.request.use(
+    (request) => {
+      dispatch(loadingRequestsActions.addToLoadRequest());
+      return request;
+    },
+    (error) => {
+      alert("In REQ Error");
+      return Promise.reject(error);
+    }
+  );
+
+  axios.interceptors.response.use(
+    (response) => {
+      const serverRateLimitRemaining = response.headers["ratelimit-remaining"];
+      dispatch(loadingRequestsActions.removeFromLoadRequest());
+      dispatch(
+        statusUpdateActions.updateStatus({
+          status: response.status,
+          statusText: response.statusText,
+          rateLimitRemaining: serverRateLimitRemaining,
+        })
+      );
+      return response;
+    },
+    (error) => {
+      const serializedError = new Set();
+      // console.log("HOME---ERROR", error.response);
+
+      dispatch(
+        statusUpdateActions.updateStatus({
+          status: error.response.status,
+          statusText: error.response.statusText,
+        })
+      );
+      return Promise.reject(error);
+    }
+  );
+
+  useEffect(() => {
+    if (!noDBErrors)
+      dispatch(
+        statusUpdateActions.updateStatus({
+          status: 500,
+          statusText: dBErrorMessage,
+        })
+      );
+  }, [noDBErrors]);
   useEffect(() => {
     if (
       questionData.questionMetadata.identifier.includes(
@@ -91,27 +144,34 @@ const Home = () => {
         </Fragment>
       )}
       <CardSecondary>
-        <SessionResults setScrollToSessionResults={setScrollToSessionResults} />
+        <StudyNotes />
       </CardSecondary>
+      <CardPrimary>
+        <SessionResults setScrollToSessionResults={setScrollToSessionResults} />
+      </CardPrimary>
       {noDBErrors && (
         <Fragment>
-          <CardPrimary>
+          <CardSecondary>
             <ErrorBoundary>
               <OutputControls />
             </ErrorBoundary>
-          </CardPrimary>
-          <CardSecondary>
+          </CardSecondary>
+
+          <CardPrimary>
             <ErrorBoundary>
               <AddAQuestion />
             </ErrorBoundary>
-          </CardSecondary>{" "}
+          </CardPrimary>
         </Fragment>
-      )}{" "}
+      )}
       <CardSecondary>
         <ErrorBoundary>
           <Footer />
         </ErrorBoundary>
       </CardSecondary>
+      <ErrorBoundary>
+        <BottomBar />
+      </ErrorBoundary>
     </div>
   );
 };

@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import styles from "./Score.module.css";
-import storage from "../../hooks/storage";
+import storage from "../../storage/storage";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import { updateUserHistory } from "../../storage/userDB";
 
 function Score(props) {
-  const { questionHistory, filteredQuestionsIds } = useSelector(
+  const { questionHistory, filteredQuestionsIds, currentFilters } = useSelector(
     (state) => state.questionData
   );
   const user = useSelector((state) => state.auth.user);
@@ -30,9 +30,13 @@ function Score(props) {
           incorrect: {},
           unmarked: {},
         };
-        updateUserHistory({ user, dataObj: defaultUserHistory });
+        updateUserHistory({
+          user,
+          dataObj: defaultUserHistory,
+          currentFiltersObj: currentFilters,
+        });
       } else {
-        storage("delete");
+        storage("DELETE");
       }
       window.location.reload();
     }

@@ -1,4 +1,4 @@
-import styles from "./AllQuestions.module.css";
+import styles from "./StudyTopicsTool.module.css";
 import { useState, useEffect, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,12 +7,12 @@ import SessionResultsRows from "../../Components/SessionResultsRows/SessionResul
 import CollapsibleElm from "../../UI/CollapsibleElm/CollapsibleElm";
 import CardSecondary from "../../UI/Cards/CardSecondary/CardSecondary";
 import OutputControls from "../../Components/OutputControls/OutputControls";
-import AddAQuestion from "../../Components/AddAQuestion/AddAQuestion";
 import Footer from "../../Components/Footer/Footer";
 import BottomBar from "../../Components/BottomBar/BottomBar";
+import LoginStatus from "../../Components/User/LoginStatus/LoginStatus";
 
 function AllQuestions() {
-  const { allQuestions, questionMetadata } = useSelector(
+  const { allQuestions, questionMetadata, studyNotes } = useSelector(
     (state) => state.questionData
   );
   const user = useSelector((state) => state.auth.user);
@@ -26,19 +26,31 @@ function AllQuestions() {
     }
   }, [allQuestions]);
 
+  useEffect(() => {
+    console.log("CHANGED");
+  }, [studyNotes]);
+
   let navigate = useNavigate();
 
   const allQuestionsSet = { questions: {} };
   const groupSize = 10000;
   let count = 0;
-  for (const key in allQuestions) {
-    allQuestionsSet.questions[key] = { ...allQuestions[key] };
+  for (const id of studyNotes.studyTopicsIDs) {
+    console.log(
+      "%c --> %cline:31%cID",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
+      id
+    );
+    allQuestionsSet.questions[id] = { ...allQuestions[id] };
     count++;
     if (count >= groupSize) break;
   }
   const returnHomeButtonHandler = () => {
     navigate("../", { replace: false });
   };
+
   return (
     <div>
       <CardSecondary>
@@ -60,10 +72,10 @@ function AllQuestions() {
           >
             &larr; Return to Interview Mode
           </PushButton>
+          <LoginStatus />
           {noDBErrors && (
             <Fragment>
-              <AddAQuestion />
-              <h2 className="section-title">List of All of the Questions</h2>
+              <h2 className="section-title">Study Topics You Have Selected</h2>
               <CollapsibleElm
                 id={"session-results-see-more-btn"}
                 maxHeight="27em"
@@ -98,17 +110,17 @@ function AllQuestions() {
             </Fragment>
           )}
         </div>
-        {noDBErrors && user.isAdmin && (
+        {noDBErrors && (
           <Fragment>
             <OutputControls
               hideExportIncorrectToCSVButton={true}
               hideExportSessionHistoryToJSONButton={true}
               hideAllQuestionsListButton={true}
-              showExportAllQuestions={true}
+              showExportStudyTopicsToCSV={true}
             />
           </Fragment>
         )}
-      </CardSecondary>
+      </CardSecondary>{" "}
       <CardSecondary>
         <Footer />
       </CardSecondary>

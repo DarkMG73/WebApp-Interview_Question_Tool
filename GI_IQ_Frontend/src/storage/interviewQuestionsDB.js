@@ -3,13 +3,6 @@ import axios from "axios";
 /// GET THE PLUGINS/////////////////////////////
 export const questionData = async (user) => {
   let axiosConfig = null;
-  console.log(
-    "%c --> %cline:5%caxiosConfig",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(20, 68, 106);padding:3px;border-radius:2px",
-    axiosConfig
-  );
 
   if (user) {
     axiosConfig = {
@@ -26,13 +19,6 @@ export const questionData = async (user) => {
       "/api/all-interview-questions/",
       user,
       axiosConfig
-    );
-    console.log(
-      "%c --> %cline:17%cres",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
-      res
     );
     return res.data;
   } catch (err) {

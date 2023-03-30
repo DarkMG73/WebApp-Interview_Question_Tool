@@ -4,13 +4,13 @@ import { questionDataActions } from "../../store/questionDataSlice";
 import { authActions } from "../../store/authSlice";
 import { timerActions } from "../../store/timerSlice";
 import styles from "./NewQuestionButton.module.css";
-import storage from "../../hooks/storage";
+import storage from "../../storage/storage";
 import { updateUserHistory } from "../../storage/userDB";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 
 function NewQuestionButton(props) {
   const [questionComplete, setQuestionComplete] = useState(false);
-  const { questionHistory, currentFilters } = useSelector(
+  const { questionHistory, currentFilters, ...otherQuestionData } = useSelector(
     (state) => state.questionData
   );
   const { user, recentLogout } = useSelector((state) => state.auth);
@@ -26,10 +26,28 @@ function NewQuestionButton(props) {
 
   useEffect(() => {
     if (user) {
-      updateUserHistory({ user, dataObj: questionHistory });
+      console.log(
+        "%c --> %cline:28%cuser",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(251, 178, 23);padding:3px;border-radius:2px",
+        user
+      );
+      updateUserHistory({
+        user,
+        dataObj: questionHistory,
+        currentFiltersObj: currentFilters,
+      });
     } else if (recentLogout) {
+      console.log(
+        "%c --> %cline:30%crecentLogout",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(17, 63, 61);padding:3px;border-radius:2px",
+        recentLogout
+      );
       dispatch(authActions.resetRecentLogout());
-      const browserSessionHistory = storage("get");
+      const browserSessionHistory = storage("GET");
       const newQuestionHistory = browserSessionHistory.hasOwnProperty(
         "questionHistory"
       )
@@ -43,7 +61,13 @@ function NewQuestionButton(props) {
 
       dispatch(questionDataActions.updateQuestionHistory(newQuestionHistory));
     } else {
-      storage("add", { questionHistory, currentFilters });
+      console.log(
+        "%c --> %cline:63%celse",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px"
+      );
+      storage("ADD", { questionHistory, currentFilters, ...otherQuestionData });
     }
   }, [questionHistory, currentFilters]);
 

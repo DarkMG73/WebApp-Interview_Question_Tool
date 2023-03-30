@@ -10,6 +10,7 @@ import GatherQuestionData from "./hooks/GatherQuestionData";
 import { questionDataActions } from "./store/questionDataSlice";
 import { authActions } from "./store/authSlice";
 import AllQuestions from "./pages/AllQuestions/AllQuestions";
+import StudyTopicsTool from "./pages/StudyTopicsTool/StudyTopicsTool";
 import BarLoader from "./UI/Loaders/BarLoader/BarLoader";
 import {
   getUserCookie,
@@ -18,11 +19,13 @@ import {
 } from "./storage/userDB";
 import { loadingRequestsActions } from "./store/loadingRequestsSlice";
 import { ErrorBoundary } from "./HOC/ErrorHandling/ErrorBoundary/ErrorBoundary";
+import { statusUpdateActions } from "./store/statusUpdateSlice";
 
 function App() {
   const dispatch = useDispatch();
   // const allQuestionsData = GatherQuestionData();
   const currentState = useSelector((state) => state.questionData);
+  const currentStatus = useSelector((state) => state.statusUpdate);
   const [user, setUser] = useState(false);
   const userLoggedIn = useSelector((state) => state.auth.user);
   const makeLoadingRequest = function () {
@@ -51,6 +54,15 @@ function App() {
             data
           );
         dispatch(questionDataActions.initState(data));
+        if (currentStatus.status === null) {
+          dispatch(
+            statusUpdateActions.updateStatus({
+              status: currentStatus.status,
+              statusText: "OK. Saving to Browser Storage.",
+              rateLimitRemaining: currentStatus.rateLimitRemaining,
+            })
+          );
+        }
       })
       .catch((err) => {
         console.log(
@@ -155,13 +167,6 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      console.log(
-        "%c --> %cline:156%cuser",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(229, 187, 129);padding:3px;border-radius:2px",
-        user
-      );
       dispatch(authActions.logIn(user));
       // const newUserHistory = user.hasOwnProperty("questionHistory")
       //   ? user.questionHistory
@@ -180,6 +185,8 @@ function App() {
       //   "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
       //   newUserHistory
       // );
+    } else {
+      runGatherQuestionData(user);
     }
   }, [user, dispatch]);
 
@@ -213,6 +220,9 @@ function App() {
         <Routes>
           {currentState.allQuestions && (
             <Route path="/list-of-all-questions" element={<AllQuestions />} />
+          )}
+          {currentState.allQuestions && (
+            <Route path="/study-topics-tool" element={<StudyTopicsTool />} />
           )}
           {currentState.allQuestions && <Route path="/" element={<Home />} />}
           {!currentState.allQuestions && (

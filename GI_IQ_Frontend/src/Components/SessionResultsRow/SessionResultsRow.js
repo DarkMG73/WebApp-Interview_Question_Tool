@@ -5,25 +5,31 @@ import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import { isValidHttpUrl } from "../../hooks/utility";
 import Card from "../../UI/Cards/Card/Card";
 import CollapsibleElm from "../../UI/CollapsibleElm/CollapsibleElm";
-import { addDocToDB, deleteDocFromDb } from "../../storage/firebase.config";
-import { updateAQuestion } from "../../storage/interviewQuestionsDB";
+import {
+  updateAQuestion,
+  deleteDocFromDb,
+} from "../../storage/interviewQuestionsDB";
+import storage from "../../storage/storage";
+import { updateUserHistory } from "../../storage/userDB";
 
 function SessionResultsRow(props) {
   const dispatch = useDispatch();
   const [inEditMode, setInEditMode] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const editedQuestions = useRef({ edits: {} });
-  const { allQuestions } = useSelector((state) => state.questionData);
+  const { allQuestions, currentFilters, ...otherQuestionData } = useSelector(
+    (state) => state.questionData
+  );
 
   const questionHistory = props.questionHistory;
 
   const key = props.keyTwo;
   const k = props.keyOne;
+
   // editButtonDirection to be used with future edit mode visual manipulations
   const editButtonDirection = inEditMode ? "" : "";
   const editButtonWidth = inEditMode ? "max-content" : "5em";
   const user = useSelector((state) => state.auth.user);
-  const userLoggedIn = useSelector((state) => state.loginStatus.userLoggedIn);
 
   const rowEditButtonHandler = (e, setElmOpen) => {
     setInEditMode(!inEditMode);
@@ -40,14 +46,6 @@ function SessionResultsRow(props) {
         editedQuestions.current.edits[key],
         user
       ).then((res) => {
-        console.log(
-          "%c --> %cline:47%cres",
-          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-          "color:#fff;background:rgb(153, 80, 84);padding:3px;border-radius:2px",
-          res
-        );
-
         const status = res.status ? res.status : res.response.status;
         if (status >= 400) {
           alert("There was an error: " + res.response.data.message);
@@ -81,12 +79,29 @@ function SessionResultsRow(props) {
   const deleteQuestionButtonHandler = (e) => {
     // Use tempKey instead of key when in dev
     // const tempKey = "TESTTEST";
-    if (userLoggedIn) {
+
+    if (user && user.isAdmin == true) {
       const shouldDelete = window.confirm(
         "Are you sure you want to delete this question (ID: " + key + ")"
       );
       if (shouldDelete) {
-        deleteDocFromDb(key);
+        // Remove from question history
+        const newQuestionHistory = {};
+
+        Object.keys(questionHistory).forEach((categoryKey) => {
+          newQuestionHistory[categoryKey] = { ...questionHistory[categoryKey] };
+        });
+
+        delete newQuestionHistory[k][key];
+
+        updateUserHistory({
+          user,
+          dataObj: newQuestionHistory,
+          currentFiltersObj: currentFilters,
+        });
+
+        // remove fro the DB
+        deleteDocFromDb(questionHistory[k][key].identifier, user);
         setDeleted(true);
       }
     } else {
@@ -94,6 +109,16 @@ function SessionResultsRow(props) {
         'Thank you for your suggestion to remove this question. All contributions must be reviewed before becoming public. Click "OK" to send this via email for review and, if approved, to be deleted. Click "Cancel" to cancel this and not send an email.'
       );
       if (sendEmail) {
+        // Remove from question history
+        const newQuestionHistory = { ...questionHistory };
+        delete newQuestionHistory[k][key];
+        storage("ADD", {
+          questionHistory,
+          currentFilters,
+          ...otherQuestionData,
+        });
+
+        // Send delte request
         const questionAdminEmail = "general@glassinteractive.com";
         const subject =
           "A Recommendation to Remove a Question from the Interview Questions Tool";
@@ -120,13 +145,12 @@ function SessionResultsRow(props) {
     }
 
     for (const itemKey in questionHistory[k][key]) {
-      let value = allQuestions[key]
-        ? allQuestions[key][itemKey]
-        : questionHistory[k][key][itemKey];
+      let value = allQuestions[key] ? allQuestions[key][itemKey] : null;
       let itemTitle = itemKey;
 
       // Skip if no value
-      if (value == undefined || value === "" || value == " ") continue;
+      if (value == undefined || value == null || value === "" || value == " ")
+        continue;
 
       // If link, add <a> tag
       const isValidLink = isValidHttpUrl(value);

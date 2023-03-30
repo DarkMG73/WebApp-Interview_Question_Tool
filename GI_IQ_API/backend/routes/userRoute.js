@@ -7,6 +7,7 @@ const {
   deleteCookie,
   getCookie,
   updateUserHistory,
+  updateStudyNotes,
   loginRequired,
   get_user_by_token,
   render_forgot_password_template,
@@ -45,8 +46,11 @@ router.route("/auth/deleteCookie").get(deleteCookie);
 // express router method to get the logged-in user httponly cookie from the client
 router.route("/auth/getCookie").get(getCookie);
 
-// express router method to create route for getting all users
+// express router method to create route for updating question history
 router.route("/auth/updateUserHistory").post(loginRequired, updateUserHistory);
+
+// express router method to create route for updating question history
+router.route("/auth/updateStudyNotes").post(loginRequired, updateStudyNotes);
 
 // express router method to create route for getting all users
 router.route("/auth/get_user_by_token").get(loginRequired, get_user_by_token);

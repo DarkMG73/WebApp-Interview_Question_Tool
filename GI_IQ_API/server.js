@@ -27,7 +27,7 @@ const app = express();
 
 const globallimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 1500, // Limit each IP to 200 requests per `window` (here, per 10 minutes)
+  max: 200, // Limit each IP to 200 requests per `window` (here, per 10 minutes)
   message:
     "Too many accounts created from this IP, please try again after an hour",
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
@@ -39,7 +39,7 @@ app.use(globallimiter);
 // Set user route limits
 const userLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 50, // Limit each IP to 50 requests per `window` (here, per 10 minutes)
+  max: 100, // Limit each IP to 200 requests per `window` (here, per 10 minutes)
   message:
     "Too many user requests from this IP, please try again after an hour",
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
@@ -48,7 +48,7 @@ const userLimiter = rateLimit({
 // Set user route limits
 const questionLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 1000, // Limit each IP to 100 requests per `window` (here, per 10 minutes)
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 10 minutes)
   message:
     "Too many user requests from this IP, please try again after an hour",
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
@@ -67,17 +67,16 @@ const whitelist = [
   "https://www.interview-questions.glassinteractive.com/",
   "glassinteractive.com",
   "http://localhost:8000",
-  "https://api-iq.glassinteractive.com"
+  "https://api-iq.glassinteractive.com",
 ];
 
 const options = {
   // origin: true,
   origin: function (origin, callback) {
     console.log("origin", origin);
-    console.log("whitelist", whitelist);
-    console.log("whitelist.indexOf(origin)", whitelist.indexOf(origin));
+    // console.log("whitelist", whitelist);
+    // console.log("whitelist.indexOf(origin)", whitelist.indexOf(origin));
     if (!origin || origin === undefined || whitelist.indexOf(origin) !== -1) {
-      console.log("in");
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));

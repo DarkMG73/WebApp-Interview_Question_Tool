@@ -11,13 +11,6 @@ export const authSlice = createSlice({
   initialState: initState,
   reducers: {
     logIn: (state, action) => {
-      console.log(
-        "%c --> %cline:13%caction.payload",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(23, 44, 60);padding:3px;border-radius:2px",
-        action.payload
-      );
       state.user = action.payload;
       if (action.payload && action.payload.hasOwnProperty("token"))
         state.authToken = action.payload.token;

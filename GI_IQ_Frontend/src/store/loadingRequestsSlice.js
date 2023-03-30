@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initState = {
-  pendingLoadRequests: false,
+  pendingLoadRequests: 0,
 };
 
 export const loadingRequestsSlice = createSlice({
@@ -14,7 +14,9 @@ export const loadingRequestsSlice = createSlice({
     },
     removeFromLoadRequest: (state) => {
       const currentValue = state.pendingLoadRequests;
-      state.pendingLoadRequests = currentValue - 1;
+
+      const newCurrentValue = currentValue - 1 < 0 ? 0 : currentValue - 1;
+      state.pendingLoadRequests = newCurrentValue;
     },
   },
 });

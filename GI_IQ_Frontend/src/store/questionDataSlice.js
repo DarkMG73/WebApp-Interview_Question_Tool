@@ -8,6 +8,7 @@ function InitState() {
   initialState.questionMetadata = null;
   initialState.currentQuestionData = null;
   initialState.currentFilters = null;
+  initialState.studyNotes = null;
   return initialState;
 }
 
@@ -22,26 +23,18 @@ export const questionDataSlice = createSlice({
       state.questionHistory = questionData.questionHistory;
       state.questionMetadata = questionData.questionMetadata;
       state.currentFilters = questionData.currentFilters;
+      state.studyNotes = questionData.studyNotes;
       state.currentQuestionData = {};
     },
     generateNewQuestion: (state) => {
-      function addCurrentToUsedIds(state) {
-        let output = [...state.questionHistory.stats.usedIds];
-
-        if (state.currentQuestionData) {
-          const newUsedIdsData = new Set([
-            ...state.questionHistory.stats.usedIds,
-          ]);
-          if (state.currentQuestionData.identifier)
-            newUsedIdsData.add(state.currentQuestionData.identifier);
-
-          output = Array.from(newUsedIdsData);
-        }
-
-        return output;
-      }
-
       function randomQuestion(state, usedIdsArray) {
+        // const usedIds = [
+        //   ...state.questionHistory.stats.usedIds,
+        // ];
+        // ensure no duplicates in filteredIds
+        // let  filteredIds = new Set([...state.filteredQuestionsIds]);
+        // const  = Array.from(filteredIds)
+        // remainingIds
         let remainingIds = [...state.filteredQuestionsIds];
 
         usedIdsArray.forEach((id) => {
@@ -67,10 +60,10 @@ export const questionDataSlice = createSlice({
         return false;
       }
 
-      const newUsedIds = addCurrentToUsedIds(state);
-      const newQuestion = randomQuestion(state, newUsedIds);
+      const usedIds = [...state.questionHistory.stats.usedIds];
+      const newQuestion = randomQuestion(state, usedIds);
 
-      if (newUsedIds) state.questionHistory.stats.usedIds = newUsedIds;
+      if (usedIds) state.questionHistory.stats.usedIds = usedIds;
       if (newQuestion) {
         state.currentQuestionData = newQuestion;
       } else {
@@ -131,6 +124,13 @@ export const questionDataSlice = createSlice({
     },
     addToHistoryUnmarked: (state) => {
       const currentQuestionId = state.currentQuestionData.identifier;
+      // Add to used ID's
+      const newUsedIdsData = new Set([...state.questionHistory.stats.usedIds]);
+      if (currentQuestionId) {
+        newUsedIdsData.add(state.currentQuestionData.identifier);
+        const newUsedIdsArray = Array.from(newUsedIdsData);
+        state.questionHistory.stats.usedIds = newUsedIdsArray;
+      }
 
       // Clear question from history
       const {
@@ -151,16 +151,65 @@ export const questionDataSlice = createSlice({
       };
     },
     updateQuestionHistory: (state, action) => {
-      console.log(
-        "%c --> %cline:153%cupdateQuestionHistory",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(130, 57, 53);padding:3px;border-radius:2px",
-        action.payload
-      );
       const newQuestionHistory = action.payload;
       // Update newQuestionHistory
       state.questionHistory = newQuestionHistory;
+    },
+    addStudyTopicID: (state, action) => {
+      console.log(
+        "%c --> %cline:165%caddStudyNote",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(56, 13, 49);padding:3px;border-radius:2px",
+        action.payload
+      );
+
+      console.log(
+        "%c --> %cline:167%cstate.studyNotes.studyTopics",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px",
+        state.studyNotes.studyTopics
+      );
+
+      const newStudyTopics = [
+        ...state.studyNotes.studyTopicsIDs,
+        action.payload,
+      ];
+      // Update newQuestionHistory
+      state.studyNotes.studyTopicsIDs = newStudyTopics;
+    },
+    clearStudyTopicsIDs: (state, action) => {
+      state.studyNotes.studyTopicsIDs = [];
+    },
+    updateStudyNotes: (state, action) => {
+      console.log(
+        "%c --> %cline:165%caddStudyNote",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(56, 13, 49);padding:3px;border-radius:2px",
+        action.payload
+      );
+
+      console.log(
+        "%c --> %cline:167%cstate.studyNotes.studyTopics",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px",
+        state.studyNotes.studyNotes
+      );
+
+      state.studyNotes.studyNotes = [action.payload];
+    },
+    clearStudyNotes: (state, action) => {
+      state.studyNotes.studyNotes = [];
+      console.log(
+        "%c --> %cline:205%cstate.studyNotes.",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(254, 67, 101);padding:3px;border-radius:2px",
+        state.studyNotes
+      );
     },
     addToQuestionFilters: (state, action) => {
       state.currentFilters[action.payload.type] = [
@@ -182,7 +231,32 @@ export const questionDataSlice = createSlice({
     },
   },
 });
+function addCurrentToUsedIds(state) {
+  const newUsedIdsData = new Set([...state.questionHistory.stats.usedIds]);
+  let output = [...newUsedIdsData];
+  console.log(
+    "%c --> %cline:29%coutput",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(38, 157, 128);padding:3px;border-radius:2px",
+    output
+  );
+  console.log(
+    "%c --> %cline:41%cstate.currentQuestionData",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px",
+    state.currentQuestionData
+  );
+  if (state.currentQuestionData) {
+    if (state.currentQuestionData.identifier)
+      newUsedIdsData.add(state.currentQuestionData.identifier);
 
+    output = Array.from(newUsedIdsData);
+  }
+
+  return output;
+}
 // Action creators are generated for each case reducer function
 export const questionDataActions = questionDataSlice.actions;
 

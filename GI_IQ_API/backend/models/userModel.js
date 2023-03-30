@@ -36,6 +36,12 @@ const userSchema = mongoose.Schema(
     questionHistory: {
       type: Object,
     },
+    currentFilters: {
+      type: Object,
+    },
+    studyNotes: {
+      type: Object,
+    },
   },
   {
     timestamps: true,
