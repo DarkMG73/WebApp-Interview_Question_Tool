@@ -230,8 +230,9 @@ module.exports.getUserById = asyncHandler(async (req, res) => {
 // Update User History - Export
 ///////////////////////////////////
 module.exports.updateUserHistory = asyncHandler(async (req, res) => {
+  console.log("updateUserHistory ---------");
   const questionHistoryData = req.body.dataObj;
-  const currentFiltersData = req.body.currentFiltersObj;
+  console.log("questionHistoryData", questionHistoryData);
   const filter = { _id: req.user._id };
   const user = await User.findOne(filter);
 
@@ -240,11 +241,11 @@ module.exports.updateUserHistory = asyncHandler(async (req, res) => {
       filter,
       {
         questionHistory: questionHistoryData,
-        currentFilters: currentFiltersData,
       },
       { new: false }
     )
       .then((doc) => {
+        console.log("doc", doc.email);
         res.status(200).json({ message: "It worked.", doc: doc });
         res.status(200);
       })
@@ -290,6 +291,43 @@ const updateUserHistoryLocalFunction = async (dataObj, requestedUser) => {
   }
   return output;
 };
+
+///////////////////////////////////
+// Update User  Current Filters
+///////////////////////////////////
+module.exports.updateUserCurrentFilters = asyncHandler(async (req, res) => {
+  console.log("updateCurrentFilters ---------");
+  const currentFiltersData = req.body.dataObj;
+  console.log("currentFiltersData", currentFiltersData);
+  const filter = { _id: req.user._id };
+  const user = await User.findOne(filter);
+
+  if (user._id.toString() === req.user._id) {
+    User.findOneAndUpdate(
+      filter,
+      {
+        currentFilters: currentFiltersData,
+      },
+      { new: false }
+    )
+      .then((doc) => {
+        console.log("doc", doc);
+        res.status(200).json({ message: "Current Filters Updated.", doc: doc });
+        res.status(200);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        res.status(404).json({
+          message: "Error when trying to save the user history.",
+          err: err,
+        });
+        res.status(404);
+      });
+  } else {
+    res.status(404).json({ message: "User not found" });
+    res.status(404);
+  }
+});
 
 ///////////////////////////////////
 // Update Study Notes - Export

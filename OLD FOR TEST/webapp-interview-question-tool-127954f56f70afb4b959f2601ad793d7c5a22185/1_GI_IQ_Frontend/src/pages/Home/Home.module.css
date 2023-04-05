@@ -1,0 +1,17 @@
+.page-wrap {
+  display: flex;
+  flex-direction: column;
+  /* background-color: #f6f6f6; */
+  width: 100%;
+  max-width: 1200px;
+}
+
+.outerwrap {
+  color: blue;
+}
+
+.db-error-message {
+  font: var(--iq-font-subheading);
+  max-width: 800px;
+  margin: 2em auto;
+}

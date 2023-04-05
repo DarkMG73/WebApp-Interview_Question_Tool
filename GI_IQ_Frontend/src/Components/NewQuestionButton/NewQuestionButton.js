@@ -33,9 +33,18 @@ function NewQuestionButton(props) {
         "color:#fff;background:rgb(251, 178, 23);padding:3px;border-radius:2px",
         user
       );
+      console.log(
+        "%c --> %cline:38%cquestionHistory",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(161, 23, 21);padding:3px;border-radius:2px",
+        questionHistory
+      );
+      alert("IN COPY");
       updateUserHistory({
         user,
         dataObj: questionHistory,
+
         currentFiltersObj: currentFilters,
       });
     } else if (recentLogout) {
@@ -60,15 +69,16 @@ function NewQuestionButton(props) {
           };
 
       dispatch(questionDataActions.updateQuestionHistory(newQuestionHistory));
-    } else {
-      console.log(
-        "%c --> %cline:63%celse",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px"
-      );
-      storage("ADD", { questionHistory, currentFilters, ...otherQuestionData });
     }
+    // else {
+    //   console.log(
+    //     "%c --> %cline:63%celse",
+    //     "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    //     "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    //     "color:#fff;background:rgb(178, 190, 126);padding:3px;border-radius:2px"
+    //   );
+    //   storage("ADD", { questionHistory, currentFilters, ...otherQuestionData });
+    // }
   }, [questionHistory, currentFilters]);
 
   function newQuestionBtnHandler() {

@@ -185,9 +185,11 @@ function App() {
       //   "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
       //   newUserHistory
       // );
-    } else {
-      runGatherQuestionData(user);
     }
+
+    // else {
+    //   runGatherQuestionData(user);
+    // }
   }, [user, dispatch]);
 
   useEffect(() => {
@@ -199,11 +201,11 @@ function App() {
     (!process.env.NODE_ENV || process.env.NODE_ENV === "development")
   ) {
     // const updateState = currentState;
-    console.log(
-      "%ccurrentState.allQuestions: ",
-      "color:#fff;background:#64bbe3;padding:14px;border-radius:0 25px 25px 0",
-      currentState.allQuestions
-    );
+    // console.log(
+    //   "%ccurrentState.allQuestions: ",
+    //   "color:#fff;background:#64bbe3;padding:14px;border-radius:0 25px 25px 0",
+    //   currentState.allQuestions
+    // );
   }
 
   return (

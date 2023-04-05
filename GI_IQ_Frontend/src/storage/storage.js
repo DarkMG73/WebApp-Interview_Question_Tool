@@ -1,9 +1,8 @@
-const appCookieName = "gi-interview-questions-local";
+const appCookieName = "gi-interview-questions-tool-local";
 
 function storage(action, data, name) {
   data = JSON.stringify(data);
   const storageFileName = name ? name : appCookieName;
-
   let output = null;
   if (action === "ADD") {
     output = localStorage.setItem(storageFileName, data);

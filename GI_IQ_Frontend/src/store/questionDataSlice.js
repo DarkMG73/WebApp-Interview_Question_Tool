@@ -22,7 +22,9 @@ export const questionDataSlice = createSlice({
       state.filteredQuestionsIds = [];
       state.questionHistory = questionData.questionHistory;
       state.questionMetadata = questionData.questionMetadata;
-      state.currentFilters = questionData.currentFilters;
+      state.currentFilters = questionData.currentFilters
+        ? questionData.currentFilters
+        : { level: [], topic: [], tags: [] };
       state.studyNotes = questionData.studyNotes;
       state.currentQuestionData = {};
     },

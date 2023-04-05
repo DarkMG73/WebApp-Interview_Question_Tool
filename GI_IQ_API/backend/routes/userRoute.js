@@ -7,6 +7,7 @@ const {
   deleteCookie,
   getCookie,
   updateUserHistory,
+  updateUserCurrentFilters,
   updateStudyNotes,
   loginRequired,
   get_user_by_token,
@@ -48,6 +49,11 @@ router.route("/auth/getCookie").get(getCookie);
 
 // express router method to create route for updating question history
 router.route("/auth/updateUserHistory").post(loginRequired, updateUserHistory);
+
+// express router method to create route for updating question history
+router
+  .route("/auth/updateUserCurrentFilters")
+  .post(loginRequired, updateUserCurrentFilters);
 
 // express router method to create route for updating question history
 router.route("/auth/updateStudyNotes").post(loginRequired, updateStudyNotes);

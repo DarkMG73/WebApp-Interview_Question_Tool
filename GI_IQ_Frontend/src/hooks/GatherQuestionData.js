@@ -16,15 +16,13 @@ export default async function GatherQuestionData(user) {
     if (user.hasOwnProperty("studyNotes")) {
       dataFromStorage.studyNotes = { ...user.studyNotes };
     }
-  }
-
-  if (!user) {
+  } else {
     const dataFromLocalStorage = storage("GET");
     console.log(
-      "%c --> %cline:22%cdataFromLocalStorage",
+      "%c --> %cline:20%cdataFromLocalStorage",
       "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
       "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(38, 157, 128);padding:3px;border-radius:2px",
       dataFromLocalStorage
     );
     if (dataFromLocalStorage) {

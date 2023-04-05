@@ -14,9 +14,6 @@
         "editorBracketHighlight.foreground6": "#abb2c0",
         "editorBracketHighlight.unexpectedBracket.foreground": "#db6165",
         "editor.lineHighlightBackground": "#9fced10c",
-        "editor.lineHighlightBorder": "#a910cf12",
-        "activityBar.background": "#FFFFFF",
-        "titleBar.activeBackground": "#FFFFFF",
-        "titleBar.activeForeground": "#191919"
+        "editor.lineHighlightBorder": "#a910cf12"
     }
 }

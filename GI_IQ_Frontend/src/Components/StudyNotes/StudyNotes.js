@@ -10,6 +10,7 @@ const StudyNotes = () => {
     (state) => state.questionData
   );
   const user = useSelector((state) => state.auth.user);
+
   const allQuestions = useSelector((state) => state.questionData.allQuestions);
   const studyTopicIdentifierElm = useRef();
   const studyNotesElm = useRef();
@@ -18,14 +19,20 @@ const StudyNotes = () => {
   const [currentStudyNotesText, setCurrentStudyNotesText] = useState(
     studyNotes.studyNotes
   );
-
-  console.log(
-    "%c --> %cline:5%cstudyNotes",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(38, 157, 128);padding:3px;border-radius:2px",
-    studyNotes
-  );
+  // console.log(
+  //   "%c --> %cline:12%cuser",
+  //   "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+  //   "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+  //   "color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px",
+  //   user
+  // );
+  // console.log(
+  //   "%c --> %cline:5%cstudyNotes",
+  //   "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+  //   "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+  //   "color:#fff;background:rgb(38, 157, 128);padding:3px;border-radius:2px",
+  //   studyNotes
+  // );
 
   const studyTopicIDSubmitHandler = (e) => {
     e.preventDefault();
@@ -128,6 +135,8 @@ const StudyNotes = () => {
           <button onClick={clearListButtonHandler}>Clear Study Topics</button>
           <ul className={styles["study-list"]}>
             {studyNotes &&
+              studyNotes.hasOwnProperty("studyTopicsIDs") &&
+              studyNotes.studyTopicsIDs &&
               studyNotes.studyTopicsIDs.map((identifier) => {
                 let output;
                 if (allQuestions.hasOwnProperty(identifier))

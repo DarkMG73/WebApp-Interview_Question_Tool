@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/somecss.css",
+    "main.js": "/static/js/all_in_one_file.js",
+    "static/js/787.6f86f6e2.chunk.js": "/static/js/787.6f86f6e2.chunk.js",
+    "static/media/brain-logo.svg": "/static/media/brain-logo.42828fd3062c0e0423a5178c1924d0ee.svg",
+    "static/media/reloadIcon.svg": "/static/media/reloadIcon.26bd4b9a720ac3fd1b7f08be92ac9f07.svg",
+    "index.html": "/index.html",
+    "somecss.css.map": "/static/css/somecss.css.map",
+    "all_in_one_file.js.map": "/static/js/all_in_one_file.js.map",
+    "787.6f86f6e2.chunk.js.map": "/static/js/787.6f86f6e2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/somecss.css",
+    "static/js/all_in_one_file.js"
+  ]
+}

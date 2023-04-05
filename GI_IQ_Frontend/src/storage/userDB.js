@@ -222,6 +222,13 @@ export async function getUserUserByToken(token) {
 
 /// Add or Update User History/////////////////////////////////////
 export async function updateUserHistory(userAndDataObject) {
+  console.log(
+    "%c --> %cline:224%cupdateUserHistory",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(114, 83, 52);padding:3px;border-radius:2px",
+    userAndDataObject
+  );
   const axiosConfig = {
     headers: {
       "Content-Type": "application/json",
@@ -249,6 +256,13 @@ export async function updateUserHistory(userAndDataObject) {
 
 /// Update Study Notes /////////////////////////////////////
 export async function updateStudyNotes(userAndDataObject) {
+  console.log(
+    "%c --> %cline:252%cupdateStudyNotes",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(3, 38, 58);padding:3px;border-radius:2px",
+    userAndDataObject
+  );
   const axiosConfig = {
     headers: {
       "Content-Type": "application/json",

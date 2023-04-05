@@ -1,0 +1,13 @@
+.card {
+  margin: 0.5rem 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  /* border: 3px solid red; */
+  background: var(--iq-color-background);
+  color: var(--iq-color-background-contrast);
+  padding: 2rem;
+  border-radius: 50px;
+}

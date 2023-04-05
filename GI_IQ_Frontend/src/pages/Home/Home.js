@@ -144,7 +144,10 @@ const Home = () => {
         </Fragment>
       )}
       <CardSecondary>
-        <StudyNotes />
+        {" "}
+        <ErrorBoundary>
+          <StudyNotes />
+        </ErrorBoundary>
       </CardSecondary>
       <CardPrimary>
         <SessionResults setScrollToSessionResults={setScrollToSessionResults} />
