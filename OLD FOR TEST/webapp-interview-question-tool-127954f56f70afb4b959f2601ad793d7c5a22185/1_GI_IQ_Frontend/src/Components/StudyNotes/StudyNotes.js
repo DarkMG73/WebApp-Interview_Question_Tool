@@ -93,8 +93,11 @@ const StudyNotes = () => {
     }
   };
 
-  function allTopicsPageButtonHandler() {
+  function studyTopicsPageButtonHandler() {
     navigate("../study-topics-tool", { replace: false });
+  }
+  function studyTopicDeleteButtonHandler() {
+    console.log("click");
   }
 
   useEffect(() => {
@@ -149,24 +152,36 @@ const StudyNotes = () => {
                       <h4>{allQuestions[identifier].title}</h4>
                       <p>{allQuestions[identifier].topic}</p>
                       <div className={styles["button-wrap"]}>
-                        <div className={styles["list-item-launch"]} href="">
-                          Launch
+                        <div className={styles["topic-button-wrap"]} href="">
+                          <div className={styles["list-item-launch"]} href="">
+                            <PushButton
+                              inputOrButton="button"
+                              id="study-topics-tool-link"
+                              colorType="secondary"
+                              value="study-topics-tool"
+                              href="./study-topics-tool"
+                              data-value="link-study-topics-tool-page"
+                              size="small"
+                              onClick={studyTopicsPageButtonHandler}
+                            >
+                              Open Topic
+                            </PushButton>
+                          </div>{" "}
+                          <div className={styles["list-item-delete"]}>
+                            <PushButton
+                              inputOrButton="button"
+                              id="study-topic-delete-button"
+                              colorType="secondary"
+                              value="study-topic-delete-button"
+                              href="./study-topic-delete-button"
+                              data-value="study-topic-delete-button"
+                              size="small"
+                              onClick={studyTopicDeleteButtonHandler}
+                            >
+                              Delete
+                            </PushButton>
+                          </div>
                         </div>
-                        <PushButton
-                          inputOrButton="button"
-                          id="all-quest-link"
-                          colorType="secondary"
-                          value="all-questions-list"
-                          href="./list-of-all-questions"
-                          data-value="link-all-quests-page"
-                          size="small"
-                          onClick={allTopicsPageButtonHandler}
-                        >
-                          Open Topic ->
-                        </PushButton>
-                        <button className={styles["list-item-delete"]}>
-                          Remove
-                        </button>
                       </div>
                     </li>
                   );

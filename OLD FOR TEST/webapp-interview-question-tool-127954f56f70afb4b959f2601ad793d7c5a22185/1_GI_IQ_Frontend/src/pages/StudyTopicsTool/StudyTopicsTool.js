@@ -26,10 +26,6 @@ function AllQuestions() {
     }
   }, [allQuestions]);
 
-  useEffect(() => {
-    console.log("CHANGED");
-  }, [studyNotes]);
-
   let navigate = useNavigate();
 
   const allQuestionsSet = { questions: {} };
