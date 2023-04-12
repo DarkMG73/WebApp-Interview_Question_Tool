@@ -14,7 +14,16 @@ function SessionResultsRow(props) {
   const [deleted, setDeleted] = useState(false);
   const editedQuestions = useRef({ edits: {} });
   const { allQuestions } = useSelector((state) => state.questionData);
-
+  const refToScrollTo = useRef();
+  const shouldBeOpen = inEditMode ? inEditMode : props.open;
+  // props.refToPass(refToScrollTo);
+  console.log(
+    "%c --> %cline:17%crefToScrollTo",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(3, 38, 58);padding:3px;border-radius:2px",
+    refToScrollTo
+  );
   const questionHistory = props.questionHistory;
 
   const key = props.keyTwo;
@@ -158,6 +167,7 @@ function SessionResultsRow(props) {
               colorType="primary"
               data=""
               size="small"
+              open={props.open}
             >
               <pre>
                 <code contentEditable={inEditMode}>{value}</code>
@@ -212,7 +222,12 @@ function SessionResultsRow(props) {
 
   // Add the edit button
   const output = (
-    <div key={key} id={key} className="question-result-container">
+    <div
+      key={key}
+      id={key}
+      className="question-result-container"
+      ref={refToScrollTo}
+    >
       <Card>
         <CollapsibleElm
           id={key + "-collapsible-elm"}
@@ -235,7 +250,7 @@ function SessionResultsRow(props) {
           colorType="primary"
           data=""
           size="small"
-          open={inEditMode}
+          open={shouldBeOpen}
         >
           {AssembleInnerRow(questionHistory, k, key)}
           <div className={styles["button-container"]}>

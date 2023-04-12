@@ -40,7 +40,7 @@ console.log(
 
 if (inDevelopment) {
   // axios.defaults.baseURL = "https://api-organizer.glassinteractive.com/";
-  axios.defaults.baseURL = "http://localhost:8001";
+  axios.defaults.baseURL = "http://localhost:8000";
   console.log(
     "%cRunning in DEV MODE with the base URL:",
     "color:#fff;background:#027482;padding:14px;border-radius:0 25px 25px 0",

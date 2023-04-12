@@ -219,9 +219,10 @@ export const questionDataSlice = createSlice({
     clearStudyTopicsIDs: (state, action) => {
       state.studyNotes.studyTopicsIDs = [];
     },
+
     updateStudyNotes: (state, action) => {
       console.log(
-        "%c --> %cline:165%caddStudyNote",
+        "%c --> %cline:165%cupdateStudyNotes",
         "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
         "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
         "color:#fff;background:rgb(56, 13, 49);padding:3px;border-radius:2px",
@@ -236,17 +237,7 @@ export const questionDataSlice = createSlice({
         state.studyNotes.studyNotes
       );
 
-      state.studyNotes.studyNotes = [action.payload];
-    },
-    clearStudyNotes: (state, action) => {
-      state.studyNotes.studyNotes = [];
-      console.log(
-        "%c --> %cline:205%cstate.studyNotes.",
-        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(254, 67, 101);padding:3px;border-radius:2px",
-        state.studyNotes
-      );
+      state.studyNotes = { ...action.payload };
     },
   },
 });

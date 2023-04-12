@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import styles from "./SessionResultsRows.module.css";
 import SessionResultsRow from "../SessionResultsRow/SessionResultsRow";
 import Card from "../../UI/Cards/Card/Card";
@@ -5,8 +6,9 @@ import BarLoader from "../../UI/Loaders/BarLoader/BarLoader";
 
 function SessionResultsRows(props) {
   const questionHistory = props.questionHistory;
-
   const questionHistoryCategories = [];
+  const refToPass = props.refToPass;
+  const scrollToID = props.scrollToID;
   const questionHistoryRows = {};
   let questionHistoryCount = 0;
 
@@ -36,14 +38,29 @@ function SessionResultsRows(props) {
                   <h3 className={styles["history-section-title"]}>{cat}</h3>
                 )}
                 {questionHistoryRows[cat].map((key) => {
-                  return (
-                    <SessionResultsRow
-                      key={"session-results-row" + cat + key + i}
-                      questionHistory={questionHistory}
-                      keyOne={cat}
-                      keyTwo={key}
-                    />
-                  );
+                  if (key === scrollToID) {
+                    return (
+                      <Fragment>
+                        <a ref={refToPass}></a>
+                        <SessionResultsRow
+                          key={"session-results-row" + cat + key + i}
+                          questionHistory={questionHistory}
+                          keyOne={cat}
+                          keyTwo={key}
+                          open={true}
+                        />
+                      </Fragment>
+                    );
+                  } else {
+                    return (
+                      <SessionResultsRow
+                        key={"session-results-row" + cat + key + i}
+                        questionHistory={questionHistory}
+                        keyOne={cat}
+                        keyTwo={key}
+                      />
+                    );
+                  }
                 })}
               </div>
             );

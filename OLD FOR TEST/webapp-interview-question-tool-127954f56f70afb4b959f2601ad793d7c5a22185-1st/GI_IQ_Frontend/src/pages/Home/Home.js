@@ -143,7 +143,9 @@ const Home = () => {
           </div>
         </Fragment>
       )}
-      <CardSecondary></CardSecondary>
+      <CardSecondary>
+        <StudyNotes />
+      </CardSecondary>
       <CardPrimary>
         <SessionResults setScrollToSessionResults={setScrollToSessionResults} />
       </CardPrimary>

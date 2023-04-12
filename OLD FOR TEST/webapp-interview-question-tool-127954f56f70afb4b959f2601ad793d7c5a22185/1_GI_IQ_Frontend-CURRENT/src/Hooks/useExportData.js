@@ -29,42 +29,31 @@ const useExportData = (props) => {
         exportSessionHistoryJSON(questionHistory, score, totalQuestions);
       }
     } else {
-      var headers = {
-        score: score,
-        totalQuestions:
-          totalCompleted + " answered of " + totalQuestions + "questions.",
-        level: "Level",
-        topic: "Topic",
-        title: "Question",
-        question: "Question Detail".replace(/,/g, ""), // remove commas to avoid errors
-        answer: "Answer",
-        time: "Time",
-      };
+      const headers = props.headers
+        ? props.headers
+        : {
+            score: score,
+            totalQuestions:
+              totalCompleted + " answered of " + totalQuestions + "questions.",
+            level: "Level",
+            topic: "Topic",
+            title: "Question",
+            question: "Question Detail".replace(/,/g, ""), // remove commas to avoid errors
+            answer: "Answer",
+            time: "Time",
+          };
 
-      const itemsReadyForCVS = formatAnObject(questionHistory["incorrect"]);
-      // format the data
-      function formatAnObject(obj) {
-        var itemsFormatted = [];
-        let count = 1;
-        for (const key in obj) {
-          const item = obj[key];
-          itemsFormatted.push({
-            score: count,
-            totalQuestions: key,
-            level: item.level || "-",
-            topic: item.topic || "-",
-            title: JSON.stringify(item.title) || "-",
-            question: item.question.replace(/,/g, "") || "-", // remove commas to avoid errors,
-            answer: JSON.stringify(item.answer.replace(/,/g, "")) || "-",
-            time: item.time,
-          });
-          count++;
-        }
+      const dataObj = props.dataObj
+        ? props.dataObj
+        : questionHistory["incorrect"];
 
-        return itemsFormatted;
-      }
+      const itemsReadyForCVS = props.exportStudyNotePad
+        ? studyNotePadFormatAnObject(dataObj)
+        : formatAnObject(dataObj);
 
-      const fileName = prompt("What would you like to name the file?");
+      const fileName = prompt(
+        "Would you like to name the file?\nClicking CANCEL will save the files with a stock name\n"
+      );
       let exportFileName = fileName || "interview_questions_list.json";
       exportCSVFile(headers, itemsReadyForCVS, exportFileName); // call the exportCSVFile() function to process the JSON and trigger the download
     }
@@ -167,4 +156,63 @@ const exportAllQuestionsJSON = function (questionSet) {
   linkElement.click();
 };
 
+// format the data
+function formatAnObject(obj) {
+  var itemsFormatted = [];
+  let count = 1;
+  for (const key in obj) {
+    const item = obj[key];
+    itemsFormatted.push({
+      score: count,
+      totalQuestions: key,
+      level: JSON.stringify(item.level || "-"),
+      topic: JSON.stringify(item.topic || "-"),
+      title: JSON.stringify(item.title) || "-",
+      question: JSON.stringify(item.question.replace(/,/g, "") || "-"), // remove commas to avoid errors,
+      answer: JSON.stringify(item.answer.replace(/,/g, "")) || "-",
+      time: JSON.stringify(item.time),
+    });
+    count++;
+  }
+
+  return itemsFormatted;
+}
+
+function studyNotePadFormatAnObject(obj) {
+  var output = [
+    {
+      score: "|",
+      Notes: JSON.stringify(
+        obj || "*** Nothing is written in your notepad ***"
+      ).replace(/\n/g, "~"),
+    },
+  ];
+  let newDataObj = JSON.stringify(obj.studyNotePadText);
+  newDataObj = newDataObj.replace(/\\n/g, "~");
+  newDataObj = JSON.parse(newDataObj);
+  const studyNotesSeparatedAtLineBreaks = [];
+  let cntr = 0;
+  for (const letter of newDataObj) {
+    if (studyNotesSeparatedAtLineBreaks.length <= 0) {
+      studyNotesSeparatedAtLineBreaks[cntr] = letter;
+    } else if (letter === "~") {
+      cntr++;
+      studyNotesSeparatedAtLineBreaks[cntr] = "";
+    } else {
+      studyNotesSeparatedAtLineBreaks[cntr] =
+        studyNotesSeparatedAtLineBreaks[cntr] + letter;
+    }
+  }
+
+  const itemsFormatted = [];
+  let count = 1;
+  for (const value of studyNotesSeparatedAtLineBreaks) {
+    itemsFormatted.push({
+      row: value,
+    });
+    count++;
+  }
+
+  return itemsFormatted;
+}
 export default useExportData;

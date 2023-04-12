@@ -2,6 +2,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import StudyTopicsTool from "./pages/StudyTopicsTool/StudyTopicsTool";
+import StudyNotesPage from "./pages/StudyNotesPage/StudyNotesPage";
 import CardPrimarySquareTop from "./UI/Cards/CardPrimary/CardPrimarySquareTop";
 import Header from "./Components/Header/Header";
 import Nav from "./Components/Nav/Nav";
@@ -59,6 +60,13 @@ function App() {
   // Login user if needed (triggers data setup on user change).
   // If no user, initiate data gathering.
   useEffect(() => {
+    console.log(
+      "%c --> %cline:63%cuserDataInit",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(56, 13, 49);padding:3px;border-radius:2px",
+      userDataInit
+    );
     userDataInit({ setLocalError, setUser });
   }, []);
 
@@ -199,7 +207,10 @@ function App() {
             <Route path="/list-of-all-questions" element={<AllQuestions />} />
           )}
           {currentState.allQuestions && (
-            <Route path="/study-topics-tool" element={<StudyTopicsTool />} />
+            <Route path="/study-topics-tool/*" element={<StudyTopicsTool />} />
+          )}
+          {currentState.allQuestions && (
+            <Route path="/study-notes-page/*" element={<StudyNotesPage />} />
           )}
           {currentState.allQuestions && <Route path="/" element={<Home />} />}
           {!currentState.allQuestions && (

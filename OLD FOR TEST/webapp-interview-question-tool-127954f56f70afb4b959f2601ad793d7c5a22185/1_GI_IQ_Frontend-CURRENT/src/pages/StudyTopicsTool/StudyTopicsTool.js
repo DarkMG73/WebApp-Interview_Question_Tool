@@ -1,7 +1,10 @@
 import styles from "./StudyTopicsTool.module.css";
-import { useState, useEffect, Fragment } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { statusUpdateActions } from "../../store/statusUpdateSlice";
+import { loadingRequestsActions } from "../../store/loadingRequestsSlice";
+import axios from "axios";
+import { useState, useEffect, useRef, Fragment } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import SessionResultsRows from "../../Components/SessionResultsRows/SessionResultsRows";
 import CollapsibleElm from "../../UI/CollapsibleElm/CollapsibleElm";
@@ -11,13 +14,60 @@ import Footer from "../../Components/Footer/Footer";
 import BottomBar from "../../Components/BottomBar/BottomBar";
 import LoginStatus from "../../Components/User/LoginStatus/LoginStatus";
 
-function AllQuestions() {
+function StudyTopicsTool() {
   const { allQuestions, questionMetadata, studyNotes } = useSelector(
     (state) => state.questionData
   );
   const user = useSelector((state) => state.auth.user);
   const [noDBErrors, setNoDBErrors] = useState(true);
   const [dBErrorMessage, setDbErrorMessage] = useState(false);
+  const params = new URLSearchParams(window.location.pathname);
+  const location = useLocation();
+  let targetIDToScrollTo = location.state;
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
+  // AXIOS REQ & RES FOR STATUS UPDATES
+  axios.interceptors.request.use(
+    (request) => {
+      dispatch(loadingRequestsActions.addToLoadRequest());
+      return request;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
+  axios.interceptors.response.use(
+    (response) => {
+      const serverRateLimitRemaining = response.headers["ratelimit-remaining"];
+      dispatch(loadingRequestsActions.removeFromLoadRequest());
+      dispatch(
+        statusUpdateActions.updateStatus({
+          status: response.status,
+          statusText: response.statusText,
+          rateLimitRemaining: serverRateLimitRemaining,
+        })
+      );
+      return response;
+    },
+    (error) => {
+      const serializedError = new Set();
+      // console.log("HOME---ERROR", error.response);
+
+      dispatch(
+        statusUpdateActions.updateStatus({
+          status: error.response.status,
+          statusText: error.response.statusText,
+        })
+      );
+      return Promise.reject(error);
+    }
+  );
+  //////////////////////////////////
+
+  if (targetIDToScrollTo && targetIDToScrollTo.hasOwnProperty("_id"))
+    targetIDToScrollTo = targetIDToScrollTo._id;
+  const scrollToElm = useRef();
 
   useEffect(() => {
     if (questionMetadata.identifier.includes("errorGettingDataFromDatabase")) {
@@ -26,19 +76,10 @@ function AllQuestions() {
     }
   }, [allQuestions]);
 
-  let navigate = useNavigate();
-
   const allQuestionsSet = { questions: {} };
   const groupSize = 10000;
   let count = 0;
   for (const id of studyNotes.studyTopicsIDs) {
-    console.log(
-      "%c --> %cline:31%cID",
-      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-      "color:#fff;background:rgb(131, 175, 155);padding:3px;border-radius:2px",
-      id
-    );
     allQuestionsSet.questions[id] = { ...allQuestions[id] };
     count++;
     if (count >= groupSize) break;
@@ -46,6 +87,11 @@ function AllQuestions() {
   const returnHomeButtonHandler = () => {
     navigate("../", { replace: false });
   };
+
+  useEffect(() => {
+    if (scrollToElm.current)
+      scrollToElm.current.scrollIntoView({ behavior: "smooth" });
+  }, [scrollToElm.current]);
 
   return (
     <div>
@@ -56,6 +102,19 @@ function AllQuestions() {
               <p className={styles["db-error-message"]}>{dBErrorMessage}</p>
             </CardSecondary>
           )}
+          {!studyNotes ||
+            (studyNotes.studyTopicsIDs.length <= 0 && (
+              <Fragment>
+                <br />
+                <h2 className="section-title">
+                  There are no Study Topics for this user.{" "}
+                </h2>
+                <p>
+                  Either login with another account or return to the interview
+                  tool to add Study Topics for this user.
+                </p>
+              </Fragment>
+            ))}
           <PushButton
             inputOrButton="button"
             id="export-json-btn"
@@ -69,7 +128,8 @@ function AllQuestions() {
             &larr; Return to Interview Mode
           </PushButton>
           <LoginStatus />
-          {noDBErrors && (
+
+          {studyNotes && studyNotes.studyTopicsIDs.length > 0 && noDBErrors && (
             <Fragment>
               <h2 className="section-title">Study Topics You Have Selected</h2>
               <CollapsibleElm
@@ -94,29 +154,30 @@ function AllQuestions() {
                 colorType="primary"
                 data=""
                 size="large"
+                open={targetIDToScrollTo}
               >
-                <div id="all-questions">
+                <div id="study-question-rows">
                   <SessionResultsRows
                     questionHistory={allQuestionsSet}
                     hideSectionTitles={true}
                     showLoader={true}
+                    refToPass={scrollToElm}
+                    scrollToID={targetIDToScrollTo}
                   />
                 </div>
               </CollapsibleElm>
             </Fragment>
           )}
         </div>
-        {noDBErrors && (
-          <Fragment>
-            <OutputControls
-              hideExportIncorrectToCSVButton={true}
-              hideExportSessionHistoryToJSONButton={true}
-              hideAllQuestionsListButton={true}
-              showExportStudyTopicsToCSV={true}
-            />
-          </Fragment>
-        )}
-      </CardSecondary>{" "}
+        <Fragment>
+          <OutputControls
+            hideExportIncorrectToCSVButton={true}
+            hideExportSessionHistoryToJSONButton={true}
+            hideAllQuestionsListButton={true}
+            showExportStudyTopicsToCSV={true}
+          />
+        </Fragment>
+      </CardSecondary>
       <CardSecondary>
         <Footer />
       </CardSecondary>
@@ -125,4 +186,4 @@ function AllQuestions() {
   );
 }
 
-export default AllQuestions;
+export default StudyTopicsTool;

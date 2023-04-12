@@ -142,8 +142,13 @@ export async function deleteUserCookie(user) {
   return output;
 }
 
-export async function getUserCookie(user) {
-  // SessionStorage used while hosting API on Heroku
+export async function getUserCookie() {
+  console.log(
+    "%c --> %cline:145%cgetUserCookie",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(130, 57, 53);padding:3px;border-radius:2px"
+  );
   const output = new Promise((resolve, reject) => {
     const cookie = StorageForSession(
       "GET",
@@ -153,6 +158,13 @@ export async function getUserCookie(user) {
 
     let status = 400;
     if (cookie) status = 202;
+    console.log(
+      "%c --> %cline:155%ccookie",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
+      cookie
+    );
 
     resolve({
       data: {

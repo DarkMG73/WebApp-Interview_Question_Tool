@@ -43,7 +43,7 @@ export default async function GatherQuestionData(user) {
     ? userQuestionData.studyNotes
     : {
         studyTopicsIDs: [],
-        studyNotes: [],
+        studyNotes: "Notes\n\n",
       };
 
   console.log(
