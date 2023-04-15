@@ -5,6 +5,7 @@ import styles from "./StudyNotes.module.css";
 import { questionDataActions } from "../../store/questionDataSlice";
 import { updateStudyNotes } from "../../storage/userDB";
 import storage from "../../storage/storage";
+import useStudyTopicIdAddToStorage from "../../Hooks/useStudyTopicIdAddToStorage";
 import { useNavigate } from "react-router-dom";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 
@@ -21,6 +22,7 @@ const StudyNotes = () => {
     "color:#fff;background:rgb(3, 38, 58);padding:3px;border-radius:2px",
     studyNotes
   );
+  const studyTopicAddToStorage = useStudyTopicIdAddToStorage();
   const allQuestions = useSelector((state) => state.questionData.allQuestions);
   const studyTopicIdentifierElm = useRef();
   const studyNotesElm = useRef();
@@ -46,28 +48,18 @@ const StudyNotes = () => {
         "That question ID does not appear in the master list. Please make sure to copy and paste the full ID."
       );
     } else {
-      const newStudyTopicsIDs = [...studyNotes.studyTopicsIDs];
-      newStudyTopicsIDs.push(questionIdentifier.toString());
-
-      const newStudyNotes = { ...studyNotes };
-      if (studyNotes.studyTopicsIDs.includes(questionIdentifier)) {
-        alert("That topic ID is already in your Study Topics list");
-        return;
-      }
+      const IdAddedToStorage = studyTopicAddToStorage({ questionIdentifier });
       console.log(
-        "%c --> %cline:43%cstudyNotes.studyTopicsIDs.includes(questionIdentifier)",
+        "%c --> %cline:51%cIdAddedToStorage",
         "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
         "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-        "color:#fff;background:rgb(153, 80, 84);padding:3px;border-radius:2px",
-        studyNotes.studyTopicsIDs
+        "color:#fff;background:rgb(229, 187, 129);padding:3px;border-radius:2px",
+        IdAddedToStorage
       );
-      newStudyNotes.studyTopicsIDs = [...newStudyTopicsIDs];
-      dispatch(questionDataActions.addStudyTopicID(questionIdentifier));
-      if (user) updateStudyNotes({ user, dataObj: newStudyNotes });
-      if (!user)
-        storage("ADD", { studyNotes: newStudyNotes, ...otherQuestionData });
+      if (!IdAddedToStorage.status) setInputError(IdAddedToStorage.message);
     }
   };
+
   const clearListButtonHandler = (e) => {
     const confirm = window.confirm(
       "Are you sure you want to delete all study topics? This can not be undone."
@@ -178,9 +170,17 @@ const StudyNotes = () => {
               size="small"
               onClick={studyTopicsPageButtonHandler}
             >
-              Launch Full Page{" "}
+              Launch Study Topics
               <span className={styles["right-arrow"]}>&#x2192;</span>
             </PushButton>
+            <Link
+              to="/study-topics-tool/"
+              target="_blank"
+              state={{ user: user }}
+            >
+              Pop Out Study Topics
+              <span className={styles["up-arrow"]}>&#x2192;</span>
+            </Link>
           </div>
           <p>
             If further study is needed on a specific question, copy and paste
@@ -198,7 +198,7 @@ const StudyNotes = () => {
             <PushButton
               inputOrButton="input"
               type="submit"
-              id="study-topic-delete-button"
+              id="study-topic-add-button"
               colorType="primary"
               value="Add the Question ID"
               size="medium"
@@ -301,13 +301,24 @@ const StudyNotes = () => {
         >
           <h3 className={styles["title"]}>Note Pad</h3>
           <div className={styles["list-full-launch"]}>
+            <PushButton
+              inputOrButton="button"
+              id="notpad-launch-full-page"
+              colorType="primary"
+              value="Open Note Pad"
+              size="small"
+              onClick={studyNotesPageButtonHandler}
+            >
+              Open Note Pad
+              <span className={styles["right-arrow"]}>&#x2192;</span>
+            </PushButton>
             <Link
-              href={`../study-notes-page/`}
+              to="/study-notes-page/"
               target="_blank"
               state={{ user: user }}
             >
-              Launch Full Page{" "}
-              <span className={styles["right-arrow"]}>&#x2192;</span>
+              Pop Out Note Pad
+              <span className={styles["up-arrow"]}>&#x2192;</span>
             </Link>
           </div>
           <p>
@@ -334,7 +345,6 @@ const StudyNotes = () => {
             <div className={styles["paper-content"]}>
               <textarea
                 onChange={textAreaAdjust}
-                autoFocus
                 value={currentStudyNotesText}
                 ref={studyNotesElm}
                 className={styles["note-pad-textarea"]}

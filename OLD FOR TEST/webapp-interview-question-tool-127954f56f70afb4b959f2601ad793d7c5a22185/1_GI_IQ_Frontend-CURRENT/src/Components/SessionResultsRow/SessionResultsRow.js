@@ -7,6 +7,7 @@ import Card from "../../UI/Cards/Card/Card";
 import CollapsibleElm from "../../UI/CollapsibleElm/CollapsibleElm";
 import { addDocToDB, deleteDocFromDb } from "../../storage/firebase.config";
 import { updateAQuestion } from "../../storage/interviewQuestionsDB";
+import useStudyTopicIdAddToStorage from "../../Hooks/useStudyTopicIdAddToStorage";
 
 function SessionResultsRow(props) {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ function SessionResultsRow(props) {
   const editedQuestions = useRef({ edits: {} });
   const { allQuestions } = useSelector((state) => state.questionData);
   const refToScrollTo = useRef();
+  const studyTopicAddToStorage = useStudyTopicIdAddToStorage();
   const shouldBeOpen = inEditMode ? inEditMode : props.open;
   // props.refToPass(refToScrollTo);
   console.log(
@@ -114,6 +116,37 @@ function SessionResultsRow(props) {
           )}`
         );
       }
+    }
+  };
+  const studyTopicIDSubmitHandler = (e) => {
+    e.preventDefault();
+
+    let questionIdentifier = Object.keys(allQuestions).filter(
+      (questionID) => allQuestions[questionID]._id == e.target.value
+    );
+    questionIdentifier = questionIdentifier.toString();
+    console.log(
+      "%c --> %cline:128%cquestionIdentifier",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(38, 157, 128);padding:3px;border-radius:2px",
+      questionIdentifier
+    );
+
+    if (questionIdentifier.length <= 0) {
+      alert(
+        "That question ID does not appear in the master list. Please make sure to copy and paste the full ID."
+      );
+    } else {
+      const IdAddedToStorage = studyTopicAddToStorage({ questionIdentifier });
+      console.log(
+        "%c --> %cline:51%cIdAddedToStorage",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(229, 187, 129);padding:3px;border-radius:2px",
+        IdAddedToStorage
+      );
+      if (!IdAddedToStorage.status) alert(IdAddedToStorage.message);
     }
   };
 
@@ -254,6 +287,18 @@ function SessionResultsRow(props) {
         >
           {AssembleInnerRow(questionHistory, k, key)}
           <div className={styles["button-container"]}>
+            <PushButton
+              inputOrButton="button"
+              type="button"
+              id="study-topic-add-button"
+              colorType="primary"
+              value={questionHistory[k][key]._id}
+              size="medium"
+              styles={{ margin: "0" }}
+              onClick={studyTopicIDSubmitHandler}
+            >
+              Add to Study Topics
+            </PushButton>
             <PushButton
               inputOrButton="button"
               styles={{

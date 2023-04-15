@@ -1,3 +1,4 @@
+import Cookies from "universal-cookie";
 const appCookieName = "gi-interview-questions-tool-local";
 
 function storage(action, data, name) {
@@ -30,16 +31,25 @@ function storage(action, data, name) {
 }
 
 export function StorageForSession(action, data, name) {
-  if (data && Object.keys(data).length > 0) data = JSON.stringify(data);
+  if (data && Object.keys(data).length > 0 && data.hasOwnProperty("token"))
+    data = JSON.stringify(data.token);
+
   const storageFileName = name ? name : appCookieName;
+
+  const cookies = new Cookies();
 
   let output = null;
   if (action === "ADD") {
-    output = sessionStorage.setItem(storageFileName, data);
+    output = cookies.set(storageFileName, data, {
+      path: "/",
+      expires: new Date(Date.now() + 2592000),
+    });
+    // output = sessionStorage.setItem(storageFileName, data);
   }
 
   if (action === "GET") {
-    output = sessionStorage.getItem(storageFileName);
+    output = cookies.get(storageFileName);
+    // output = sessionStorage.getItem(storageFileName);
     try {
       output = JSON.parse(output);
     } catch (error) {}
@@ -48,9 +58,21 @@ export function StorageForSession(action, data, name) {
   }
 
   if (action === "DELETE") {
-    output = sessionStorage.removeItem(storageFileName);
+    // Using set instead of remove to allow
+    // any page in any tab to delete cookie.
+    output = cookies.set(storageFileName, " ", {
+      path: "/",
+      expires: new Date(Date.now()),
+    });
+    // output = sessionStorage.removeItem(storageFileName);
   }
-
+  console.log(
+    "%c --> %cline:73%coutput",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(114, 83, 52);padding:3px;border-radius:2px",
+    output
+  );
   return output;
 }
 

@@ -34,7 +34,15 @@ export const useRunGatherQuestionData = (props) => {
             data
           );
         dispatch(questionDataActions.initState(data));
-        if (currentStatus.status === null) {
+        if (user) {
+          dispatch(
+            statusUpdateActions.updateStatus({
+              status: currentStatus.status,
+              statusText: "OK",
+              rateLimitRemaining: currentStatus.rateLimitRemaining,
+            })
+          );
+        } else {
           dispatch(
             statusUpdateActions.updateStatus({
               status: currentStatus.status,

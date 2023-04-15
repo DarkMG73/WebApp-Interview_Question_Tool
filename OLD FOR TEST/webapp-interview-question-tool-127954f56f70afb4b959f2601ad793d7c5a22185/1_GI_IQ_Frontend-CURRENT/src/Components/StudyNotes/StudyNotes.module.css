@@ -92,22 +92,56 @@
   margin: 0.5em auto 0;
 }
 
-.list-full-launch button {
+.list-full-launch button,
+.list-full-launch a {
   width: 20em;
 }
 
-.right-arrow {
+.list-full-launch a {
+  display: inline-block;
+  margin: 0 0.5em;
+  box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
+    inset 1px -1px 1px rgb(0 0 0 / 15%), 1px 1px 5px -3px black;
+  border: none;
+  background: inherit;
+  color: inherit;
+  border-radius: 0.25em;
+  padding: 0.5em 1em;
+  margin-top: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s all ease;
+  font: var(--iq-font-body-text);
+  font-size: 0.75em;
+  font-weight: 700;
+  background: var(--iq-color-accent);
+  color: var(--iq-color-background-warm);
+  text-decoration: none;
+}
+
+.right-arrow,
+.up-arrow {
   transform: scale(3, 2) translate(58%, -16%);
   display: inline-block;
   pointer-events: none;
 }
 
+.up-arrow {
+  transform: scale(3, 2) translate(58%, 0) rotate(-90deg);
+}
+
 .list-item-launch button,
-.list-full-launch button {
+.list-full-launch button,
+.list-full-launch a {
   margin: 0 auto;
   padding-right: 3em;
 }
 
+.list-full-launch a:hover {
+  text-shadow: 0 0 1px;
+  transform: scale(1.1);
+  transition: 0.1s all ease;
+}
 .study-list-item-inner-wrap {
   display: flex;
   justify-content: space-between;

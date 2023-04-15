@@ -22,14 +22,6 @@ function StudyNotesPage() {
   const studyNotesElm = useRef();
   const dispatch = useDispatch();
   const location = useLocation();
-  const { userFromLinkState = user } = location.state;
-  console.log(
-    "%c --> %cline:24%cuserFromLinkState",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(60, 79, 57);padding:3px;border-radius:2px",
-    userFromLinkState
-  );
   const { studyNotes, ...otherQuestionData } = useSelector(
     (state) => state.questionData
   );
@@ -50,7 +42,7 @@ function StudyNotesPage() {
   const [dBErrorMessage, setDbErrorMessage] = useState(false);
   const params = new URLSearchParams(window.location.pathname);
 
-  let { targetIDToScrollTo } = location.state;
+  let targetIDToScrollTo = location.state;
 
   const scrollToElm = useRef();
   let navigate = useNavigate();
@@ -130,10 +122,6 @@ function StudyNotesPage() {
       if (!user) storage("ADD", { newStudyNotes, ...otherQuestionData });
     }
   };
-
-  useEffect(() => {
-    if (userFromLinkState) dispatch(authActions.login(userFromLinkState));
-  }, [userFromLinkState]);
 
   useEffect(() => {
     setCurrentStudyNotesText(studyNotes.studyNotes);

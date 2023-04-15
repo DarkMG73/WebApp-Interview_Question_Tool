@@ -22,6 +22,13 @@ export const useUserDataInit = (props) => {
     );
     getUserCookie()
       .then((res) => {
+        console.log(
+          "%c --> %cline:24%cres",
+          "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+          "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+          "color:#fff;background:rgb(237, 222, 139);padding:3px;border-radius:2px",
+          res
+        );
         // if no cookie or error
         if (res.status >= 400) {
           console.log(

@@ -10,7 +10,7 @@ import {
 import PushButton from "../../../UI/Buttons/PushButton/PushButton";
 import {} from "../../../storage/userDB";
 import { authActions } from "../../../store/authSlice";
-import GatherQuestionData from "../../../Hooks/GatherQuestionData";
+import { useRunGatherQuestionData } from "../../../Hooks/useRunGatherQuestionData";
 import { questionDataActions } from "../../../store/questionDataSlice";
 import ReactCaptcha from "modern-react-captcha";
 import reloadIcon from "../../../assets/images/reloadIcon.svg";
@@ -28,6 +28,8 @@ const Register = (props) => {
   });
   const [loginError, setLoginError] = useState(false);
   const [showLoginError, setShowLoginError] = useState(true);
+  const runGatherQuestionData = useRunGatherQuestionData();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const groomedName = name.split("#")[1];
@@ -39,11 +41,11 @@ const Register = (props) => {
   const [captchaVerified, setCaptchaVerified] = useState();
   const handleCAPTCHASuccess = () => {
     setCaptchaVerified(true);
-    setLoginError("CAPTCHA test is now correct!");
+    setLoginError("*** Hooray! The CAPTCHA matches! You are not a robot! ****");
     setShowLoginError(true);
   };
   const handleCAPTCHAFailure = () => {
-    setLoginError("CAPTCHA test is not correct yet.");
+    setLoginError("Oh no! CAPTCHA test does not match yet.");
     setShowLoginError(true);
     setCaptchaVerified(false);
   };
@@ -117,7 +119,6 @@ const Register = (props) => {
 
   const completeSignInProcedures = (res) => {
     setLoginError(false);
-    // storage("add", res.data);
 
     // For Dev use
     // setUserCookie(res.data).then((res) => {
@@ -131,15 +132,7 @@ const Register = (props) => {
     // });
 
     dispatch(authActions.logIn(res.data));
-    GatherQuestionData(user).then((data) => {
-      if (process.env.NODE_ENV === "development")
-        console.log(
-          "%c Getting tool data from DB:",
-          "color:#fff;background:#028218;padding:14px;border-radius:0 25px 25px 0",
-          data
-        );
-      dispatch(questionDataActions.initState(data));
-    });
+    runGatherQuestionData({ user });
   };
 
   const egister = (e) => {
@@ -157,49 +150,42 @@ const Register = (props) => {
               `There was an error trying to complete the registration process. ${res.message}`
             );
           }
-
-          sign_inAUser(user)
-            .then((res) => {
-              if (res && res.hasOwnProperty("status")) {
-                if (res.status >= 200 && res.status < 400) {
-                  completeSignInProcedures(res);
-                } else if (res.status === 404) {
+          if (res && res.status < 400) {
+            sign_inAUser(user)
+              .then((res) => {
+                if (res && res.hasOwnProperty("status")) {
+                  if (res.status >= 200 && res.status < 400) {
+                    completeSignInProcedures(res);
+                  } else if (res.status === 404) {
+                    setLoginError(
+                      "There was a problem finding the user database. Make sure you are connected to the internet. Contact the site admin if the problem continues. Error: " +
+                        res.status +
+                        " | " +
+                        res.statusText
+                    );
+                    setShowLoginError(true);
+                  } else if (res.status >= 400) {
+                    setLoginError(
+                      res.data.message ? res.data.message : res.statusText
+                    );
+                    setShowLoginError(true);
+                  }
+                } else if (res && res.hasOwnProperty("data")) {
+                  setLoginError(false);
+                  dispatch(authActions.logIn(res.data));
+                  runGatherQuestionData({ user });
+                } else {
                   setLoginError(
-                    "There was a problem finding the user database. Make sure you are connected to the internet. Contact the site admin if the problem continues. Error: " +
-                      res.status +
-                      " | " +
-                      res.statusText
-                  );
-                  setShowLoginError(true);
-                } else if (res.status >= 400) {
-                  setLoginError(
-                    res.data.message ? res.data.message : res.statusText
+                    "Unfortunately, something went wrong and we can not figure out what happened.  Please refresh and try again."
                   );
                   setShowLoginError(true);
                 }
-              } else if (res && res.hasOwnProperty("data")) {
-                setLoginError(false);
-                dispatch(authActions.logIn(res.data));
-                GatherQuestionData(user).then((data) => {
-                  if (process.env.NODE_ENV === "development")
-                    console.log(
-                      "%c Getting tool data from DB:",
-                      "color:#fff;background:#028218;padding:14px;border-radius:0 25px 25px 0",
-                      data
-                    );
-                  dispatch(questionDataActions.initState(data));
-                });
-              } else {
-                setLoginError(
-                  "Unfortunately, something went wrong and we can not figure out what happened.  Please refresh and try again."
-                );
+              })
+              .catch((err) => {
+                setLoginError(err);
                 setShowLoginError(true);
-              }
-            })
-            .catch((err) => {
-              setLoginError(err);
-              setShowLoginError(true);
-            });
+              });
+          }
         });
       } else {
         setLoginError(inputsValidCheck.message);
@@ -318,13 +304,24 @@ const Register = (props) => {
           </div>
 
           <div className={styles["form-submit-button-wrap"]}>
-            <button
-              type="submit"
-              className={styles["form-submit-button"]}
+            <PushButton
+              inputOrButton="button"
+              id="create-entry-btn"
+              colorType="secondary"
+              value="login"
+              data=""
+              size="large"
               onClick={egister}
+              styles={{
+                borderRadius: "10px",
+                height: "2em",
+                padding: "0 2em",
+                padding: "0px 2em",
+                margin: "0 1em 2em",
+              }}
             >
-              Register
-            </button>
+              Submit Registration
+            </PushButton>
           </div>
         </form>
         {loginError && showLoginError && (

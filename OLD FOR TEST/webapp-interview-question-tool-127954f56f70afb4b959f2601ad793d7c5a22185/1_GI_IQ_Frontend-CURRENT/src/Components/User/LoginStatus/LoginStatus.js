@@ -6,7 +6,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import { authActions } from "../../../store/authSlice";
 import { deleteUserCookie } from "../../../storage/userDB";
-import GatherQuestionData from "../../../Hooks/GatherQuestionData";
+import { useRunGatherQuestionData } from "../../../Hooks/useRunGatherQuestionData";
 import { questionDataActions } from "../../../store/questionDataSlice";
 
 function LoginStatus(props) {
@@ -20,6 +20,7 @@ function LoginStatus(props) {
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
   const horizontalDisplay = props.horizontalDisplay ? "horizontal-display" : "";
+  const runGatherQuestionData = useRunGatherQuestionData();
   const toggleSignupLoginButtonHandler = () => {
     setShowLoginForm(!showLoginForm);
     setShowSignupForm(!showSignupForm);
@@ -36,15 +37,7 @@ function LoginStatus(props) {
     try {
       deleteUserCookie();
       dispatch(authActions.logOut());
-      GatherQuestionData().then((data) => {
-        if (process.env.NODE_ENV === "development")
-          console.log(
-            "%c Getting tool data from DB:",
-            "color:#fff;background:#028218;padding:14px;border-radius:0 25px 25px 0",
-            data
-          );
-        dispatch(questionDataActions.initState(data));
-      });
+      runGatherQuestionData({ user: false });
       setLoginError(false);
     } catch (error) {
       setLoginError(

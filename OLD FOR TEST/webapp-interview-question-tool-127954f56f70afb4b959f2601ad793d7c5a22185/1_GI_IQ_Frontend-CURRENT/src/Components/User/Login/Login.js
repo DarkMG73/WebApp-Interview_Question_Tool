@@ -5,7 +5,7 @@ import FormInput from "../../../UI/Form/FormInput/FormInput";
 import { sign_inAUser, setUserCookie } from "../../../storage/userDB";
 import PushButton from "../../../UI/Buttons/PushButton/PushButton";
 import { authActions } from "../../../store/authSlice";
-import GatherQuestionData from "../../../Hooks/GatherQuestionData";
+import { useRunGatherQuestionData } from "../../../Hooks/useRunGatherQuestionData";
 import { questionDataActions } from "../../../store/questionDataSlice";
 import { loadingRequestsActions } from "../../../store/loadingRequestsSlice";
 import Iframe from "react-iframe";
@@ -15,6 +15,7 @@ const Login = (props) => {
     email: "",
     password: "",
   });
+  const runGatherQuestionData = useRunGatherQuestionData();
   const [loginError, seLoginError] = useState(false);
   const [showLoginError, setShowLoginError] = useState(true);
   const [showChangePasswordHTML, setShowChangePasswordHTML] = useState(false);
@@ -96,16 +97,8 @@ const Login = (props) => {
     });
 
     dispatch(authActions.logIn(res.data));
-    GatherQuestionData(res.data).then((data) => {
-      if (process.env.NODE_ENV === "development")
-        console.log(
-          "%c Getting tool data from DB:",
-          "color:#fff;background:#028218;padding:14px;border-radius:0 25px 25px 0",
-          data
-        );
-      dispatch(questionDataActions.initState(data));
-      removeLoadingRequest();
-    });
+    runGatherQuestionData({ user: res.data });
+    removeLoadingRequest();
   };
 
   const handleChange = (e) => {

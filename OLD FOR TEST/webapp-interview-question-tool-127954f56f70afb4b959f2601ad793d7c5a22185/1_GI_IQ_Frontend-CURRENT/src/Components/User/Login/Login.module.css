@@ -72,17 +72,23 @@
 }
 
 .form-input-error {
-  padding: 0.5em 1em;
+  position: relative;
   max-width: fit-content;
-  border: 4px inset var(--iq-color-accent);
+  border: 2px solid #28709452;
   box-shadow: 3px 3px 10px -7px inset black, -3px -3px 10px -7px inset white;
   border-radius: 10px;
+  margin: 0 auto;
+  padding: 1em 4em 0em;
+  font-size: 1.25em;
+  font-weight: 700;
+  background: var(--iq-color-accent);
+  color: var(--iq-color-background-warm);
 }
 
 .form-input-error .form-input-error-close-button {
   position: absolute;
   top: 0.25em;
-  left: 0.25em;
+  right: 0.25em;
   font-weight: 700;
   margin: 0 auto;
   width: 1em;
@@ -91,7 +97,7 @@
   color: inherit;
   border: none;
   box-shadow: none;
-  text-shadow: 0 0 3px var(--iq-color-accent);
+  transition: 0.2s all ease;
 }
 
 .horizontal-display .form-input-error .form-input-error-close-button {
@@ -101,6 +107,9 @@
   font-weight: 700;
 }
 
+.form-input-error .form-input-error-close-button:hover {
+  transform: scale(1.25);
+}
 .form-input-error p {
   /* font-size: 2em; */
 }

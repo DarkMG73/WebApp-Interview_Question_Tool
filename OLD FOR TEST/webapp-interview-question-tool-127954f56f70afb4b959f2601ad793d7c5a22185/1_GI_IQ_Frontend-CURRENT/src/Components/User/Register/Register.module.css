@@ -42,6 +42,12 @@
 .form-submit-button-wrap button {
   margin: 0 auto 10px;
 }
+
+.form-submit-button-wrap button:hover {
+  transform: scale(1, 1.25);
+  background: var(--iq-color-accent);
+  color: var(--iq-color-background-warm);
+}
 .registration-in-link {
   margin-left: 1em;
 }
@@ -65,18 +71,22 @@
 
 .form-input-error {
   position: relative;
-  padding: 0.5em 2em;
   max-width: fit-content;
-  border: 4px inset var(--iq-color-accent);
+  border: 2px solid #28709452;
   box-shadow: 3px 3px 10px -7px inset black, -3px -3px 10px -7px inset white;
   border-radius: 10px;
   margin: 0 auto;
+  padding: 1em 4em 0em;
+  font-size: 1.25em;
+  font-weight: 700;
+  background: var(--iq-color-accent);
+  color: var(--iq-color-background-warm);
 }
 
 .form-input-error .form-input-error-close-button {
   position: absolute;
   top: 0.25em;
-  left: 0.25em;
+  right: 0.25em;
   font-weight: 700;
   margin: 0 auto;
   width: 1em;
@@ -85,7 +95,6 @@
   color: inherit;
   border: none;
   box-shadow: none;
-  text-shadow: 0 0 3px var(--iq-color-accent);
 }
 
 .horizontal-display .form-input-error .form-input-error-close-button {
@@ -93,6 +102,10 @@
   left: 0;
   font-size: 18px;
   font-weight: 700;
+}
+
+.form-input-error .form-input-error-close-button:hover {
+  transform: scale(1.25);
 }
 
 .inner-form-input-container {
