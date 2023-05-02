@@ -59,9 +59,10 @@ module.exports.register = asyncHandler(async (req, res) => {
 });
 
 ////////////////////////////////
-/// Sing In a User
+/// Sign In a User
 ////////////////////////////////
 module.exports.sign_in = asyncHandler(async (req, res) => {
+  console.log("sign in a user");
   User.findOne(
     {
       email: req.body.email,
@@ -80,6 +81,7 @@ module.exports.sign_in = asyncHandler(async (req, res) => {
         });
       }
       try {
+        console.log("user signed in", user);
         if (user.isAdmin) {
           console.log("user.isAdmin", user.isAdmin);
           if (process.env.SECRET && process.env.SECRET != "undefined") {
@@ -188,8 +190,10 @@ module.exports.loginRequired = asyncHandler(async (req, res, next) => {
 /// Get a User By Token
 ////////////////////////////////
 module.exports.get_user_by_token = asyncHandler(async (req, res, next) => {
+  console.log("get_user_by_token");
   if (req.user && req.user._id) {
     const user = await User.findById(req.user._id);
+    console.log("user", user);
     user.hash_password = undefined;
     res.status(200).json(user);
     next();
@@ -214,8 +218,9 @@ module.exports.getUsers = asyncHandler(async (req, res) => {
 /// Get A USER BY ID
 ////////////////////////////////
 module.exports.getUserById = asyncHandler(async (req, res) => {
+  console.log("getUserById");
   const user = await User.findById(req.params.id);
-
+  console.log("user", user);
   //if user id match param id send user else send error
   if (user) {
     user.hash_password = undefined;

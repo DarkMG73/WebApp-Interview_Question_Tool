@@ -1,0 +1,111 @@
+.study-notepad-container {
+  position: relative;
+  flex-basis: 100%;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  justify-content: center;
+  align-items: center;
+}
+.study-notepad-container > * {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.study-notepad-container textarea,
+.study-list {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  box-shadow: inset -1px -1px 7px -5px black, inset 3px 3px 7px -1px white;
+  border-radius: 3px;
+  padding: 1em;
+  border: 1px inset #14739f2e;
+}
+
+.study-notepad-container h3,
+.study-notepad-container p {
+  margin: 0;
+}
+
+.study-notepad-container p {
+  font: var(--iq-font-body-text);
+  font-size: 1rem;
+  max-width: 950px;
+}
+
+.grid-item {
+  position: relative;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font: var(--iq-font-subheading);
+  font-size: 1rem;
+}
+
+.grid-item-title {
+  margin-right: 1em;
+  opacity: 0.5;
+  font-size: 1rem;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: hsl(22.76deg 99.14% 45.31%);
+  }
+  50% {
+    background-color: hsl(23, 100%, 50%);
+  }
+  100% {
+    background-color: hsl(22.76deg 99.14% 45.31%);
+  }
+}
+
+.notes-not-saved-button {
+  background-color: hsl(22.76deg 99.14% 45.31%);
+  font-size: 3rem;
+  color: white;
+  font-weight: 700;
+  animation: pulse 1s ease infinite;
+  transform-origin: bottom;
+  cursor: pointer;
+}
+
+.notes-not-saved-button:hover {
+  transform: scale(1, 1.125) translateY(-3%);
+  background-color: hsl(23, 100%, 50%);
+}
+
+.notes-not-saved-button,
+.notes-are-saved-button {
+  width: 100%;
+  font-size: 3rem;
+  font-weight: 500;
+  border-radius: 10px 10px 0 0;
+  transition: 0.2s ease;
+  margin: 0 auto;
+  border: none;
+  z-index: 3;
+}
+
+.notes-are-saved-button {
+  background: transparent;
+  /* transform: scale(1, 0.5);
+  transform-origin: bottom; */
+}
+
+.list-item-clear-list button {
+  transform-origin: top;
+}
+
+.list-item-clear-list button:hover {
+  transform: scale(1, 1.125);
+}
+
+.paper {
+  border: none;
+}

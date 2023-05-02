@@ -1,0 +1,17 @@
+.success-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--iq-color-background-warm);
+  color: var(--iq-color-accent);
+  border-radius: 50px;
+  margin: 1em 1.5em 3em;
+  box-shadow: inset 2px 2px 7px -5px black, inset -2px -2px 7px -5px white;
+}
+.success-wrap p {
+  position: relative;
+  display: flex;
+  padding: 1em;
+  font: var(--iq--font-heading-2);
+}

@@ -1,0 +1,193 @@
+.grid-item {
+  position: relative;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font: var(--iq-font-subheading);
+  font-size: 1rem;
+}
+
+.grid-item-title {
+  margin-right: 1em;
+  opacity: 0.5;
+  font-size: 1rem;
+}
+
+.grid-item-title::first-letter {
+  text-transform: capitalize;
+}
+
+.grid-item-text {
+  font-weight: 700;
+  color: var(--iq-color-accent);
+}
+
+.grid-item-child {
+  position: relative;
+}
+
+.title-title {
+  display: none;
+}
+
+.level {
+  grid-area: level;
+  padding-bottom: 0;
+  min-width: max-content;
+}
+.topic {
+  grid-area: topic;
+  justify-content: center;
+
+  min-width: max-content;
+}
+.tags {
+  grid-area: tags;
+  padding-top: 0;
+  min-width: min-content;
+  grid-row-end: -1;
+}
+
+.tags,
+.level {
+  grid-area: levelAndTags;
+  align-self: center;
+  flex-direction: row;
+  min-width: fit-content;
+}
+
+.time {
+  grid-area: time;
+}
+
+.title {
+  grid-area: title;
+  font: var(--iq-font-subheading);
+  min-height: 100%;
+}
+
+.title-text {
+  font: var(--iq-font-subheading);
+  min-height: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.question {
+  grid-area: question;
+}
+.answer {
+  grid-area: answer;
+}
+
+._id {
+  grid-area: id;
+  transition: 0.2s all ease;
+  max-width: fit-content;
+}
+
+._id:hover {
+  transform: scale(1, 1.4);
+  transform-origin: left;
+}
+
+.identifier {
+  grid-area: identifier;
+}
+
+.createdAt {
+  grid-area: createdAt;
+}
+
+.updatedAt {
+  grid-area: updatedAt;
+}
+
+.answer > .grid-item-text,
+.question > .grid-item-text {
+  font: var(--iq-font-body-text);
+  font-weight: 500;
+  border-radius: 27px;
+  border: 1px solid var(--iq-color-accent);
+  padding: 1em 2em;
+  margin: 1em auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.question,
+.answer {
+  background: var(--iq-color-background);
+  color: var(--iq-color-background-contrast);
+}
+
+.search {
+  grid-area: search;
+}
+
+.credit {
+  grid-area: credit;
+}
+
+.link {
+  grid-area: link;
+}
+
+button.edit {
+  /* Set within prop passed to button component */
+}
+
+.button-container {
+  grid-area: buttons;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(14%);
+}
+
+.button-container p {
+  text-align: center;
+  background: white;
+  color: var(--iq-color-accent);
+}
+body .button-container button:hover {
+  background: var(--iq-color-accent-light) !important;
+  color: white;
+  border-radius: 50px;
+  transform: none;
+}
+
+body .button-container button[value="remove"]:hover,
+body .button-container button[value="edit"]:hover {
+  background: #942828 !important;
+  color: white;
+  background: transparent !important;
+  color: var(--iq-color-accent) !important;
+  border-radius: 50px;
+  transform: scale(1, 1.5);
+  text-align: center !important;
+  text-shadow: none;
+}
+
+.deleted {
+  border-radius: 3px !important;
+  font-size: 1.5em !important;
+  box-shadow: inset 1px 1px 7px -5px black, inset -4px -4px 7px -5px white !important;
+  padding: 1em !important;
+  opacity: 0.7 !important;
+}
+
+.notes-container {
+  grid-area: notepad;
+  border-radius: 27px;
+  border: 1px solid var(--iq-color-accent);
+  overflow: hidden;
+}
+
+@media screen and (max-width: 900px) {
+  .title-text {
+    justify-content: center;
+    align-items: center;
+  }
+}

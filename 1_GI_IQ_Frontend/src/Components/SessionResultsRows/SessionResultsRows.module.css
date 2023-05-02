@@ -1,0 +1,129 @@
+.session-results-container {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0;
+  flex-direction: column;
+  min-height: 28em;
+}
+
+.history-section-title {
+  text-transform: uppercase;
+  font-variant: small-caps;
+  font-weight: 700;
+  letter-spacing: var(--iq-spacing-subheading);
+  box-shadow: inset 0 8px 15px -13px rgb(0 0 0 / 30%), 0 -8px 15px -16px white;
+  margin: 1.5em 0 1em;
+  padding: 1.5em 0 0.5em;
+  border-radius: 10px 10px 0 0;
+  text-shadow: -1px -1px 1px rgb(0 0 0 / 50%),
+    1px 1px 1px rgb(255 255 255 / 50%);
+}
+
+.session-results-container > div > div {
+  min-width: 100%;
+  max-width: 100%;
+  min-height: max-content;
+  flex-basis: 25%;
+  max-width: 100%;
+  margin: 1em auto;
+  box-shadow: inset 0px 4px 4px rgba(255, 255, 255, 0.25),
+    inset 0px -4px 4px #d4d4ce;
+  border-radius: 50%;
+}
+
+.session-results-container > div > div > div {
+  box-shadow: inset 0px -4px 4px rgb(0 0 0 / 38%), inset 0px 4px 4px #e4e4e4;
+}
+
+.session-results-container > div > div > div > div {
+  display: grid;
+  grid-template:
+    auto/minmax(min-content, 5%)
+    minmax(min-content, 10%)
+    minmax(min-content, 70%)
+    minmax(min-content, 10%)
+    minmax(min-content, 5%);
+  grid-template-areas:
+    "topic levelAndTags title time buttons"
+    "topic levelAndTags title time buttons"
+    " question question question question question"
+    " answer answer answer answer answer"
+    "search search search search search"
+    "notepad notepad notepad notepad notepad"
+    "credit  link link  id id"
+    "createdAt createdAt createdAt updatedAt updatedAt"
+    "identifier identifier identifier identifier identifier";
+  text-align: left;
+  word-break: break-word;
+}
+
+.loader-wrap {
+  max-height: 200px;
+  position: relative;
+  min-height: 0;
+  display: flex;
+  width: auto;
+  overflow: visible;
+  padding: 12px;
+  border-radius: 50px;
+  margin: 0px auto;
+  z-index: 10;
+}
+
+.session-results-container .loader-wrap > * {
+  max-height: 200px;
+  min-height: 125px;
+  position: relative;
+  padding: 20px 0;
+  margin: 50px auto;
+  overflow: visible;
+  width: 100%;
+  min-width: 400px;
+  border-radius: inherit;
+}
+
+.session-results-container .loader-wrap button {
+  max-height: 200px;
+  min-height: 125px;
+  position: relative;
+  padding: 20px 0;
+  margin: 50px auto;
+  overflow: visible;
+  width: 100%;
+  min-width: 400px;
+  border-radius: 50px 50px 0 0;
+}
+
+@media screen and (max-width: 900px) {
+  .session-results-container > div > div > div > div {
+    max-height: 9em;
+    display: grid;
+    grid-template:
+      min-content/minmax(min-content, 25%)
+      minmax(min-content, 70%)
+      minmax(min-content, 25%);
+    grid-template-areas:
+      "title title title"
+      "buttons buttons buttons"
+      "topic levelAndTags time"
+      "question question question"
+      "question question question"
+      "answer answer answer"
+      "answer answer answer"
+      "search search search"
+      "notepad notepad notepad"
+      "notepad notepad notepad"
+      "credit link link"
+      "id id id"
+      "createdAt createdAt createdAt"
+      "updatedAt updatedAt updatedAt"
+      "identifier identifier identifier";
+    text-align: center;
+    word-break: break-word;
+  }
+  .button-container button {
+    font-size: 1rem;
+  }
+}

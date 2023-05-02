@@ -1,0 +1,10 @@
+.outerwrap {
+  width: 95vw;
+  min-width: min-content;
+  max-width: 1200px;
+}
+
+#add-quest-wrap p {
+  max-width: 800px;
+  margin: 2em auto;
+}
