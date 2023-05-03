@@ -1,5 +1,7 @@
-.grid-item {
+.question-result-container .grid-item {
   position: relative;
+  height: fit-content;
+  min-height: min-content;
   padding: 1em;
   display: flex;
   flex-direction: column;
@@ -129,10 +131,12 @@
 
 .credit {
   grid-area: credit;
+  width: max-content;
 }
 
 .link {
   grid-area: link;
+  width: max-content;
 }
 
 button.edit {
@@ -180,6 +184,7 @@ body .button-container button[value="edit"]:hover {
 
 .notes-container {
   grid-area: notepad;
+  height: fit-content;
   border-radius: 27px;
   border: 1px solid var(--iq-color-accent);
   overflow: hidden;

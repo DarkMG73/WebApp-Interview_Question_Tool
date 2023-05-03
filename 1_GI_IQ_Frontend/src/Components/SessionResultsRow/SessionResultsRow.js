@@ -1,5 +1,5 @@
 import styles from "./SessionResultsRow.module.css";
-import { useState, useRef, Fragment } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import { isValidHttpUrl } from "../../Hooks/utility";
@@ -10,6 +10,7 @@ import {
   deleteDocFromDb,
 } from "../../storage/interviewQuestionsDB";
 import useStudyTopicIdAddToStorage from "../../Hooks/useStudyTopicIdAddToStorage";
+
 import { questionDataActions } from "../../store/questionDataSlice";
 import { updateUserHistory } from "../../storage/userDB";
 import storage from "../../storage/storage";
@@ -37,8 +38,7 @@ function SessionResultsRow(props) {
   const editButtonDirection = inEditMode ? "" : "";
   const editButtonWidth = inEditMode ? "max-content" : "5em";
   const user = useSelector((state) => state.auth.user);
-  const width = window.innerWidth;
-  const breakpoint = 900;
+  const overBreakpoint = props.overBreakpoint;
 
   ///////////////////////////////
   ///      Handlers
@@ -396,7 +396,7 @@ function SessionResultsRow(props) {
     <div
       key={key}
       id={key}
-      className="question-result-container"
+      className={styles["question-result-container"]}
       ref={refToScrollTo}
     >
       <Card>
@@ -405,7 +405,7 @@ function SessionResultsRow(props) {
           styles={{
             position: "relative",
           }}
-          maxHeight={width > breakpoint ? "5em" : "9em"}
+          maxHeight={overBreakpoint ? "5em" : "9em"}
           inputOrButton="button"
           buttonStyles={{
             margin: "0 auto",

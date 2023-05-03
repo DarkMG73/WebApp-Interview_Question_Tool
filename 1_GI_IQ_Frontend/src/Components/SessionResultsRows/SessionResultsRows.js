@@ -1,10 +1,11 @@
-import { Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./SessionResultsRows.module.css";
 import SessionResultsRow from "../SessionResultsRow/SessionResultsRow";
 import Card from "../../UI/Cards/Card/Card";
 import BarLoader from "../../UI/Loaders/BarLoader/BarLoader";
 import { loadingRequestsActions } from "../../store/loadingRequestsSlice";
+import useViewport from "../../Hooks/useViewport";
 
 function SessionResultsRows(props) {
   const questionHistory = props.questionHistory;
@@ -15,6 +16,16 @@ function SessionResultsRows(props) {
   const questionHistoryRows = {};
   let questionHistoryCount = 0;
   const displayedCategories = ["correct", "incorrect", "unmarked", "questions"];
+  const [width, height] = useViewport();
+  const breakpoint = 900;
+  const [overBreakpoint, setOverBreakPoint] = useState(width > breakpoint);
+
+  ///////////////////////////////
+  ///      Effects
+  //////////////////////////////
+  useEffect(() => {
+    setOverBreakPoint(width > breakpoint);
+  }, [width]);
 
   for (const k in questionHistory) {
     if (displayedCategories.includes(k)) {
@@ -49,6 +60,7 @@ function SessionResultsRows(props) {
                     keyOne={cat}
                     keyTwo={key}
                     open={true}
+                    overBreakpoint={overBreakpoint}
                   />
                 </Fragment>
               );
@@ -59,6 +71,7 @@ function SessionResultsRows(props) {
                   questionHistory={questionHistory}
                   keyOne={cat}
                   keyTwo={key}
+                  overBreakpoint={overBreakpoint}
                 />
               );
             }

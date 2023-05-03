@@ -17,6 +17,7 @@
 
 .study-notes-container > *:not(.title) {
   position: relative;
+  max-width: 100%;
   flex-basis: 100%;
   margin: 0 1%;
   flex-grow: 1;
@@ -158,6 +159,8 @@
 .study-list-item-topic-title {
   flex-basis: calc(80% - 20em);
   flex-grow: 1;
+  min-width: min-content;
+  text-align: left;
 }
 .study-list-item-inner-wrap > * {
   margin: 0;
@@ -260,14 +263,14 @@
   position: relative;
   width: 90%;
   max-width: 100%;
-  min-width: 400px;
+  min-width: 100%;
   /* min-height: 30em; */
   height: 100%;
   margin: 0 auto;
   background: #fafafa;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  overflow: auto;
+  /* overflow: auto; */
   max-height: 50em;
   padding-bottom: 30px;
 }
@@ -373,25 +376,37 @@ footer a {
     flex-basis: calc(70% - 1em);
     margin-left: 1em;
   }
-  .list-item-launch button,
-  .list-full-launch button,
-  .list-full-launch a {
+
+  .list-item-launch button {
     width: 5em;
   }
 
   .study-list-item {
-    margin: 1em auto;
-    box-shadow: 1px 1px 4px -3px black inset, -1px -1px 4px -3px white inset;
+    margin: 0.25em auto;
+    /* box-shadow: 1px 1px 4px -3px black inset, -1px -1px 4px -3px white inset; */
     padding: 0 0.5em 0.5em;
-    border: 1px inset #91919163;
+    /* border: 1px inset #91919163; */
     border-radius: 10px;
+    display: grid;
+    grid-template: min-content/minmax(min-content, 10%) calc(80% - 1em) minmax(
+        min-content,
+        10%
+      );
+    text-align: left;
   }
 
   .list-item-launch {
-    flex-basis: 20%;
+    flex-basis: min-content;
   }
 
   .study-list-item-support > p {
     display: none;
+  }
+
+  .study-list-item-inner-wrap.study-list-item-support {
+    flex-basis: min-content;
+  }
+  .study-list-item-support > * {
+    width: 1em;
   }
 }

@@ -9,6 +9,7 @@ import useStudyTopicIdAddToStorage from "../../Hooks/useStudyTopicIdAddToStorage
 import { useNavigate } from "react-router-dom";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import BarLoader from "../../UI/Loaders/BarLoader/BarLoader";
+import useViewport from "../../Hooks/useViewport";
 
 const StudyNotes = () => {
   const dispatch = useDispatch();
@@ -28,15 +29,13 @@ const StudyNotes = () => {
   const [studyNoteElmHeight, setStudyNoteElmHeight] = useState("30em");
   const navigate = useNavigate();
   const [showAllQuestionPageLoader, setAllQuestionPageLoader] = useState(false);
-  const overBreakpoint = window.innerWidth > 900;
-  console.log(
-    "%c --> %cline:31%coverBreakpoint",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(95, 92, 51);padding:3px;border-radius:2px",
-    overBreakpoint
-  );
+  const [width, height] = useViewport();
+  const breakpoint = 900;
+  const [overBreakpoint, setOverBreakPoint] = useState(width > breakpoint);
 
+  ////////////////////////////////
+  /// Functionality
+  ////////////////////////////////
   const openLoaderThenLaunch = (actionToLaunch, params) => {
     setAllQuestionPageLoader(true);
     setTimeout(() => {
@@ -45,6 +44,9 @@ const StudyNotes = () => {
     }, 300);
   };
 
+  ////////////////////////////////
+  /// Handlers
+  ////////////////////////////////
   const studyTopicsPageButtonHandler = (e) => {
     e.preventDefault();
     const targetID = e.target.value;
@@ -136,6 +138,13 @@ const StudyNotes = () => {
     }
   }
 
+  ////////////////////////////////
+  /// Effects
+  ////////////////////////////////
+  useEffect(() => {
+    setOverBreakPoint(width > breakpoint);
+  }, [width]);
+
   useEffect(() => {
     if (inputError) alert(inputError);
     setInputError(false);
@@ -144,6 +153,10 @@ const StudyNotes = () => {
   useEffect(() => {
     setCurrentStudyNotesText(studyNotes.notePad);
   }, [studyNotes.notePad]);
+
+  useEffect(() => {
+    if (currentStudyNotesText) textAreaAdjust();
+  }, [currentStudyNotesText]);
 
   useEffect(() => {
     // Use to start at full height.
@@ -159,6 +172,9 @@ const StudyNotes = () => {
     // setStudyNoteElmHeight(25 + notePadElm.current.scrollHeight);
   }
 
+  ////////////////////////////////
+  /// Output
+  ////////////////////////////////
   return (
     <div className={styles["study-notes-container"]}>
       <h2 className={"section-title " + styles["title"]}>Study Plan & Notes</h2>

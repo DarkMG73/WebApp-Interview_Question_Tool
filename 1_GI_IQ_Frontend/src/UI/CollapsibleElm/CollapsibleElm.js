@@ -7,7 +7,7 @@ function CollapsibleElm(props) {
   const [overflowActive, setOverflowActive] = useState(false);
   const textRef = useRef();
 
-  // See if div is overflowing and Se More button is needed
+  // See if div is overflowing and See More button is needed
   function isOverflowActive(e) {
     return e.offsetHeight < e.scrollHeight || e.offsetWidth < e.scrollWidth;
   }
