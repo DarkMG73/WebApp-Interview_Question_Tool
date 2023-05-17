@@ -122,4 +122,7 @@
   .bottom-bar p {
     font-size: calc(6px + 1vw);
   }
+  .login-modal > div > div:last-child {
+    display: none;
+  }
 }

@@ -14,10 +14,9 @@ const BottomBar = () => {
     setToggleLoginModal(!toggleLoginModal);
   };
   const loginModalToggleStyles = toggleLoginModal
-    ? { opacity: "1", pointerEvents: "all" }
+    ? { opacity: "1", pointerEvents: "all", left: "0" }
     : {};
 
-  useEffect(() => {}, [toggleLoginModal]);
   return (
     <div className={styles["bottom-bar"]}>
       <StatusUpdate />

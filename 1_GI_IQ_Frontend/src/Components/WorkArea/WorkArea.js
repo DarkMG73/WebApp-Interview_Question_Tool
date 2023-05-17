@@ -5,6 +5,7 @@ import Iframe from "react-iframe";
 import Answer from "../Answer/Answer";
 import CollapsibleElm from "../../UI/CollapsibleElm/CollapsibleElm";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
+import { ErrorBoundary } from "../../HOC/ErrorHandling/ErrorBoundary/ErrorBoundary";
 
 function WorkArea(props) {
   const [questionCompleted, setQuestionCompleted] = useState(false);
@@ -115,48 +116,52 @@ function WorkArea(props) {
               styles["editor-tab"] + " " + (openTab === false && styles["open"])
             }
           >
-            <Iframe
-              styles={{
-                borderRadius: "25px",
-                border: "3px inset #3590bd85",
-              }}
-              height="400px"
-              width="100%"
-              scrolling="no"
-              title="Workspace for Interview Questions"
-              src="https://codepen.io/DarkMG73/embed/RwJvKjX?default-tab=js%2Cresult&editable=true&theme-id=light"
-              frameborder="no"
-              loading="lazy"
-              allowtransparency="true"
-              allowfullscreen="true"
-            >
-              See the Pen{" "}
-              <a href="https://codepen.io/DarkMG73/pen/RwJvKjX">
-                Workspace for Interview Questions
-              </a>{" "}
-              by Mike (<a href="https://codepen.io/DarkMG73">@DarkMG73</a>) on{" "}
-              <a href="https://codepen.io">CodePen</a>.
-            </Iframe>
+            <ErrorBoundary>
+              <Iframe
+                styles={{
+                  borderRadius: "25px",
+                  border: "3px inset #3590bd85",
+                }}
+                height="400px"
+                width="100%"
+                scrolling="no"
+                title="Workspace for Interview Questions"
+                src="https://codepen.io/DarkMG73/embed/RwJvKjX?default-tab=js%2Cresult&editable=true&theme-id=light"
+                frameborder="no"
+                loading="lazy"
+                allowtransparency="true"
+                allowfullscreen="true"
+              >
+                See the Pen{" "}
+                <a href="https://codepen.io/DarkMG73/pen/RwJvKjX">
+                  Workspace for Interview Questions
+                </a>{" "}
+                by Mike (<a href="https://codepen.io/DarkMG73">@DarkMG73</a>) on{" "}
+                <a href="https://codepen.io">CodePen</a>.
+              </Iframe>{" "}
+            </ErrorBoundary>
           </div>
           <div
             className={
               styles["editor-tab"] + " " + (openTab === true && styles["open"])
             }
           >
-            <Iframe
-              styles={{
-                borderRadius: "25px",
-                border: "3px inset #3590bd85",
-              }}
-              height="400px"
-              width="100%"
-              src="https://repl.it/@DarkMG73/InterviewQuestionWorkspace?embed=true"
-              scrolling="no"
-              frameborder="no"
-              allowtransparency="true"
-              allowfullscreen="true"
-              // sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"
-            ></Iframe>
+            <ErrorBoundary>
+              <Iframe
+                styles={{
+                  borderRadius: "25px",
+                  border: "3px inset #3590bd85",
+                }}
+                height="400px"
+                width="100%"
+                src="https://repl.it/@DarkMG73/InterviewQuestionWorkspace?embed=true"
+                scrolling="no"
+                frameborder="no"
+                allowtransparency="true"
+                allowfullscreen="true"
+                // sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"
+              ></Iframe>
+            </ErrorBoundary>
           </div>
           <div id="output" className="inner-wrap closed"></div>
         </div>

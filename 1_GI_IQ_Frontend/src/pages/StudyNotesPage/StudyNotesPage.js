@@ -17,6 +17,7 @@ import { questionDataActions } from "../../store/questionDataSlice";
 import { authActions } from "../../store/authSlice";
 import { updateStudyNotes } from "../../storage/userDB";
 import storage from "../../storage/storage";
+import NotePad from "../../Components/StudyNotes/NotePad/NotePad";
 
 function StudyNotesPage(props) {
   const studyNotesElm = useRef();
@@ -27,13 +28,6 @@ function StudyNotesPage(props) {
   );
   const [currentStudyNotesText, setCurrentStudyNotesText] = useState(
     studyNotes.notePad
-  );
-  console.log(
-    "%c --> %cline:25%cstudyNotes",
-    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-    "color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px",
-    studyNotes
   );
   const [studyNoteElmHeight, setStudyNoteElmHeight] = useState("30em");
   const user = useSelector((state) => state.auth.user);
@@ -145,59 +139,10 @@ function StudyNotesPage(props) {
           <LoginStatus />
 
           {studyNotes && studyNotes.hasOwnProperty("notePad") && noDBErrors && (
-            <div className={styles["study-notepad-container"]}>
-              <form
-                className={styles["form"]}
-                onSubmit={studyNotesSubmitHandler}
-                onChange={studyNotesOnChangeHandler}
-              >
-                <h3 className={styles["title"]}>Note Pad</h3>
-                <p>
-                  Jot down quick thoughts on a question or subject, or even
-                  outline ideas for a new study approach, projects ideas, etc.
-                  Anything that that helps the learning process.
-                </p>
-                {currentStudyNotesText == studyNotes.notePad && (
-                  <input
-                    type="submit"
-                    value=""
-                    className={styles["notes-are-saved-button"]}
-                    disabled
-                  />
-                )}
-                {currentStudyNotesText != studyNotes.notePad && (
-                  <input
-                    type="submit"
-                    value="Save Notes"
-                    className={styles["notes-not-saved-button"]}
-                  />
-                )}
-                <div className={styles.paper}>
-                  <div className={styles["paper-content"]}>
-                    <textarea
-                      onChange={textAreaAdjust}
-                      autoFocus
-                      value={currentStudyNotesText}
-                      ref={studyNotesElm}
-                      className={styles["note-pad-textarea"]}
-                      style={{ heights: studyNoteElmHeight + "px" }}
-                    />
-                  </div>
-                </div>
-                <div className={styles["list-item-clear-list"]}>
-                  <PushButton
-                    inputOrButton="button"
-                    id="study-topic-delete-button"
-                    colorType="secondary"
-                    value="Clear Study Notes"
-                    size="small"
-                    onClick={clearNotesButtonHandler}
-                  >
-                    Clear Study Notes
-                  </PushButton>
-                </div>
-              </form>
-            </div>
+            <NotePad
+              openLoaderThenLaunch={false}
+              doNotShowLaunchButtons={true}
+            />
           )}
         </div>
         <Fragment>

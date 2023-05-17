@@ -4,6 +4,7 @@ import PushButton from "../../UI/Buttons/PushButton/PushButton";
 
 function CollapsibleElm(props) {
   const [elmOpen, setElmOpen] = useState(props.open);
+  const [maxHeight, setMaxHeight] = useState(props.maxHeight);
   const [overflowActive, setOverflowActive] = useState(false);
   const textRef = useRef();
 
@@ -17,12 +18,21 @@ function CollapsibleElm(props) {
       setOverflowActive(true);
       return;
     }
-
     setOverflowActive(false);
   }, [isOverflowActive]);
 
+  useEffect(() => {
+    if (!isOverflowActive(textRef.current)) {
+      setMaxHeight("10000px");
+      return;
+    } else {
+      setMaxHeight(props.maxHeight);
+    }
+  }, [props.maxHeight]);
+
   const seeMoreButtonHandler = (e) => {
     setElmOpen(!elmOpen);
+    if (props.onClickCallback) props.onClickCallback();
   };
 
   // This allows the elm to be opened without a click by setting the open props
@@ -44,7 +54,7 @@ function CollapsibleElm(props) {
       </span>
     );
   } else {
-    elmOpenStyles = { maxHeight: props.maxHeight, ...props.styles };
+    elmOpenStyles = { maxHeight: maxHeight, ...props.styles };
     seeMoreButtonText = (
       <span>
         &darr; {props.buttonTextClosed ? props.buttonTextClosed : "See More"}{" "}

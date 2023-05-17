@@ -8,3 +8,8 @@
   max-width: 800px;
   margin: 2em auto;
 }
+
+body .list-item-delete button:hover {
+  background: var(--iq-color-accent) !important;
+  color: var(--iq-color-background-warm) !important;
+}

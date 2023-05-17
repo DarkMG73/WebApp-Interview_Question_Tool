@@ -106,6 +106,7 @@ pre {
 
 .more-about-this-link {
   font-size: 1.25em;
+  font-size: calc(0.8rem + 0.5vw);
   background: var(--iq-color-accent);
   color: var(--iq-color-background-warm);
   border-radius: 0 0 50px 50px;

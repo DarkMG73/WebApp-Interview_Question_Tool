@@ -13,11 +13,15 @@ import OutputControls from "../../Components/OutputControls/OutputControls";
 import Footer from "../../Components/Footer/Footer";
 import BottomBar from "../../Components/BottomBar/BottomBar";
 import LoginStatus from "../../Components/User/LoginStatus/LoginStatus";
+import { questionDataActions } from "../../store/questionDataSlice";
+import { updateStudyNotes } from "../../storage/userDB";
+import storage from "../../storage/storage";
 
 function StudyTopicsTool() {
-  const { allQuestions, questionMetadata, studyNotes } = useSelector(
+  const { studyNotes, ...otherQuestionData } = useSelector(
     (state) => state.questionData
   );
+  const { allQuestions, questionMetadata } = otherQuestionData;
   const user = useSelector((state) => state.auth.user);
   const [noDBErrors, setNoDBErrors] = useState(true);
   const [dBErrorMessage, setDbErrorMessage] = useState(false);
@@ -54,6 +58,47 @@ function StudyTopicsTool() {
     if (scrollToElm.current)
       scrollToElm.current.scrollIntoView({ behavior: "smooth" });
   }, [scrollToElm.current]);
+
+  function studyTopicDeleteButtonHandler(e) {
+    const targetID = e.target.value;
+    const newStudyNotes = { ...studyNotes };
+    newStudyNotes.studyTopicsIDs = newStudyNotes.studyTopicsIDs.filter(
+      (id) => id != targetID
+    );
+    const confirm = window.confirm(
+      "Are you sure you want to remove this item from your study topics list?"
+    );
+    if (confirm) {
+      dispatch(questionDataActions.updateStudyNotes(newStudyNotes));
+      if (user) updateStudyNotes({ user, dataObj: newStudyNotes });
+      if (!user)
+        storage("ADD", { studyNotes: newStudyNotes, ...otherQuestionData });
+    }
+  }
+
+  const rowDeleteButtonJSKFunction = (identifier) => {
+    return (
+      <div className={styles["list-item-delete"]}>
+        <PushButton
+          inputOrButton="button"
+          id="study-topic-delete-button"
+          colorType="secondary"
+          value={identifier}
+          size="medium"
+          onClick={studyTopicDeleteButtonHandler}
+          styles={{
+            borderRadius: "50px",
+            background: "transparent",
+            boxShadow: "none",
+            opacity: "0.9",
+            margin: "0.5em auto",
+          }}
+        >
+          X
+        </PushButton>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -94,40 +139,19 @@ function StudyTopicsTool() {
           {studyNotes && studyNotes.studyTopicsIDs.length > 0 && noDBErrors && (
             <Fragment>
               <h2 className="section-title">Study Topics You Have Selected</h2>
-              <CollapsibleElm
-                id={"session-results-see-more-btn"}
-                maxHeight="27em"
-                inputOrButton="button"
-                buttonStyles={{
-                  margin: "0 auto",
-                  letterSpacing: "0.25em",
-                  fontVariant: "small-caps",
-                  transform: "translateY(14%)",
-                  minWidth: "5em",
-                  textAlign: "center",
-                  display: "flex",
-                  alignItems: "center",
-                  width: "100%",
-                  justifyContent: "center",
-                  borderRadius: "0 0 50px 50px",
-                  height: "100%",
-                  padding: "2em 0",
-                }}
-                colorType="primary"
-                data=""
-                size="large"
-                open={targetIDToScrollTo}
-              >
-                <div id="study-question-rows">
-                  <SessionResultsRows
-                    questionHistory={allQuestionsSet}
-                    hideSectionTitles={true}
-                    showLoader={true}
-                    refToPass={scrollToElm}
-                    scrollToID={targetIDToScrollTo}
-                  />
-                </div>
-              </CollapsibleElm>
+
+              <div id="study-question-rows">
+                <SessionResultsRows
+                  questionHistory={allQuestionsSet}
+                  hideSectionTitles={true}
+                  showLoader={true}
+                  refToPass={scrollToElm}
+                  scrollToID={targetIDToScrollTo}
+                  hideStockRowButtons={true}
+                  customButtonJSKFunction={rowDeleteButtonJSKFunction}
+                  hideCollapsibleElm={true}
+                />
+              </div>
             </Fragment>
           )}
         </div>

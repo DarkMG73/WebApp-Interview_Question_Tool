@@ -30,7 +30,7 @@ const interviewQuestionSchema = mongoose.Schema(
       type: String,
     },
     tags: {
-      type: String,
+      type: Array,
     },
     topic: {
       type: String,

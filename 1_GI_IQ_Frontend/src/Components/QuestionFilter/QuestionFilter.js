@@ -87,22 +87,23 @@ function QuestionFilter(props) {
   }
 
   function tagsFilterButtonHandler(e) {
+    const value = e.target.value.replace(/-/g, "").replaceAll(" ", "_");
     if (e.target.checked) {
       dispatch(
         questionDataActions.addToQuestionFilters({
           type: "tags",
-          value: e.target.value.replace(/-/g, ""),
+          value: value,
         })
       );
     } else {
       dispatch(
         questionDataActions.removeFromQuestionFilters({
           type: "tags",
-          value: e.target.value.replace(/-/g, ""),
+          value: value,
         })
       );
     }
-    dispatch(questionDataActions.currentFiltersStorageNeedsUpdate(true));
+    dispatch(questionDataActions.currentFilterStorageNeedsUpdate(true));
     // FilterQuestions(allQuestionsData);
   }
 
@@ -148,16 +149,18 @@ function QuestionFilter(props) {
 
   if (currentFilters.tags.length === 1) {
     selectionsOuput =
-      selectionsOuput + " tagged with " + currentFilters.tags.toString();
+      selectionsOuput +
+      " tagged with " +
+      currentFilters.tags.toString().replaceAll("_", " ");
   } else if (currentFilters.tags.length >= 1) {
     const tempArray = [...currentFilters.tags];
     const lastTag = tempArray.pop();
     selectionsOuput =
       selectionsOuput +
       " tagged with " +
-      tempArray.toString() +
+      tempArray.toString().replaceAll("_", " ") +
       " and " +
-      lastTag;
+      lastTag.replaceAll("_", " ");
   }
 
   return (
@@ -209,7 +212,7 @@ function QuestionFilter(props) {
             return (
               <SlideButton
                 key={tag}
-                label={tag}
+                label={tag.replaceAll("_", " ")}
                 onClick={tagsFilterButtonHandler}
                 refresh={Math.random(10)}
                 checked={currentFilters.tags.includes(tag)}

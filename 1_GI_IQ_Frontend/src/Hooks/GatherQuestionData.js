@@ -115,6 +115,17 @@ export default async function GatherQuestionData(user) {
 
   allQuestionsData.questionMetadata = gatherAllMetadata(allQuestions);
 
+  // Get rid of filters that are no longer available
+  const newFiltersObject = { ...allQuestionsData.currentFilters };
+  for (const key in newFiltersObject) {
+    newFiltersObject[key] = newFiltersObject[key].filter((tag) => {
+      if (key === tag)
+        return allQuestionsData.questionMetadata.tags.includes(tag);
+      return true;
+    });
+  }
+  allQuestionsData.currentFilters = { ...newFiltersObject };
+
   if (!allQuestionsData.questionHistory.stats.hasOwnProperty("usedIds"))
     allQuestionsData.questionHistory.stats.usedIds = [];
 

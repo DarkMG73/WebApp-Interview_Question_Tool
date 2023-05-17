@@ -82,7 +82,31 @@
 
 @media screen and (max-width: 900px) {
   .status-update-container {
-    display: none;
+    transform: translate(-100%, calc(-100% + -200px));
+    position: fixed;
+    top: 100%;
+    left: 0;
+    display: flex;
+    background: #ffffff;
+    justify-content: center;
+    align-items: center;
+    color: var(--iq-color-accent);
+    font-size: 2em;
+    transition: 0.3s all ease;
+  }
+  .status-update-container div {
+    padding: 2em;
+    box-shadow: inset 3px 4px 3px -2px #dfdfdf, inset 3px 2px 7px -4px white,
+      3px 3px 7px -4px black;
+  }
+
+  .status-update-container p {
+    font-size: calc(6px + 2vw);
+  }
+
+  .loading {
+    transition-delay: 1000ms;
+    transform: translate(0%, calc(-100% + -200px));
   }
   .status-update-container.error,
   .status-update-container.warning {

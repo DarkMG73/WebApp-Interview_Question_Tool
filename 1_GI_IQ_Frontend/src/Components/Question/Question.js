@@ -32,14 +32,26 @@ function Question(props) {
       <br />
       <br />
       If you need help along the way, you can click the "About this Question"
-      button or view the answer by clicking the "Answer" button. The timer will
-      not stop for either of these actions.
+      button or view the answer by clicking the "Peek at the Answer" button. The
+      timer will not stop for either of these actions.
+      <br />
+      <br />
+      There are many features, like the ability to add questions to a study
+      list, a general notepad plus individual notepads for each question in your
+      Session History. Look around for more features and tools do make the most
+      out of this tool.
       <br />
       <br />
       <i>
         Note: If you do not mark the question "correct" or "Incorrect" it will
         still be recorded, but will show up on this list as "Unmarked", which
-        will not be helpful for you, so make sure to mark each question.
+        will not be helpful for you, so make sure to mark each question. Once
+        you move on to a new question you will not be able to change the
+        "Correct", "Incorrect" or "Unmarked" status. You can click on the button
+        to remove that question from your history. Once removed, it will be
+        added back in with the unused questions and will be asked again at a
+        later point. You will then be able to mark it "Correct", etc, at that
+        point.
         <br />
         <br />
       </i>

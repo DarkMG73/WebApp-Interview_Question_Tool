@@ -24,6 +24,7 @@ function SessionResultsRow(props) {
     setShowQuestionPersonalNotepad,
   ] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [parentOpen, setParentOpen] = useState(false);
   const editedQuestions = useRef({ edits: {} });
   const { allQuestions, currentFilters, ...otherQuestionData } = useSelector(
     (state) => state.questionData
@@ -45,6 +46,10 @@ function SessionResultsRow(props) {
   //////////////////////////////
   const rowEditButtonHandler = (e, setElmOpen) => {
     setInEditMode(!inEditMode);
+  };
+
+  const onClickCallbackHandler = () => {
+    setParentOpen(!parentOpen);
   };
 
   const rowRemoveButtonHandler = (e) => {
@@ -76,22 +81,41 @@ function SessionResultsRow(props) {
     // const tempKey = "TESTTEST";
     // updateAQuestion(key, editedQuestions.current.edits[key], user);
 
+    console.log(
+      "%c --> %cline:87%c editedQuestions.current.edits[key]",
+      "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+      "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+      "color:#fff;background:rgb(222, 125, 44);padding:3px;border-radius:2px",
+      editedQuestions.current.edits[key]
+    );
+    const newEdits = { ...editedQuestions.current.edits[key] };
+    if (newEdits.hasOwnProperty("tags")) {
+      newEdits.tags = newEdits.tags.split(",");
+      newEdits.tags = newEdits.tags.map((tag) =>
+        tag.trim().replaceAll(" ", "_")
+      );
+      console.log(
+        "%c --> %cline:93%cnewEdits",
+        "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+        "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+        "color:#fff;background:rgb(89, 61, 67);padding:3px;border-radius:2px",
+        newEdits
+      );
+    }
     if (user && user.isAdmin == true) {
-      updateAQuestion(
-        questionHistory[k][key].identifier,
-        editedQuestions.current.edits[key],
-        user
-      ).then((res) => {
-        const status = res.status ? res.status : res.response.status;
-        if (status >= 400) {
-          alert("There was an error: " + res.response.data.message);
-        } else if (status >= 200) {
-          alert("Success! The item has been updated.");
-          setInEditMode(false);
-        } else {
-          alert("there was an error: " + +res.message);
+      updateAQuestion(questionHistory[k][key].identifier, newEdits, user).then(
+        (res) => {
+          const status = res.status ? res.status : res.response.status;
+          if (status >= 400) {
+            alert("There was an error: " + res.response.data.message);
+          } else if (status >= 200) {
+            alert("Success! The item has been updated.");
+            setInEditMode(false);
+          } else {
+            alert("there was an error: " + +res.message);
+          }
         }
-      });
+      );
     } else {
       const sendEmail = window.confirm(
         'Thank you for contributing. All contributions must be reviewed before becoming public. Click "OK" to send this via email for review and, if approved, to be included. Click "Cancel" to cancel this and not send an email.'
@@ -187,13 +211,6 @@ function SessionResultsRow(props) {
     } else {
       const IdAddedToStorage = studyTopicAddToStorage({ questionIdentifier })
         .then((res) => {
-          console.log(
-            "%c --> %cline:186%cres",
-            "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
-            "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
-            "color:#fff;background:rgb(254, 67, 101);padding:3px;border-radius:2px",
-            res
-          );
           if (res.message) {
             alert(res.message);
           }
@@ -247,6 +264,10 @@ function SessionResultsRow(props) {
             {itemKey} &rarr;
           </a>
         );
+      }
+
+      if (itemKey === "tags") {
+        value = value.join(", ").replaceAll("_", " ");
       }
 
       if (itemKey === "search") {
@@ -396,7 +417,11 @@ function SessionResultsRow(props) {
     <div
       key={key}
       id={key}
-      className={styles["question-result-container"]}
+      className={
+        styles["question-result-container"] +
+        " " +
+        styles["parent-open-" + parentOpen]
+      }
       ref={refToScrollTo}
     >
       <Card>
@@ -405,89 +430,96 @@ function SessionResultsRow(props) {
           styles={{
             position: "relative",
           }}
-          maxHeight={overBreakpoint ? "5em" : "9em"}
+          maxHeight={overBreakpoint ? "4em" : "7em"}
           inputOrButton="button"
           buttonStyles={{
             margin: "0 auto",
+            padding: "0.5em 2em",
             letterSpacing: "0.25em",
             fontVariant: "small-caps",
             transform: "translateY(100%)",
-            transition: "0.7s all ease",
+            transition: "0s all ease",
             minWidth: "5em",
             textAlign: "center",
             display: "flex",
             alignItems: "center",
+            borderRadius: "50px 50px 0 0",
           }}
           colorType="primary"
           data=""
           size="small"
           open={shouldBeOpen}
+          onClickCallback={onClickCallbackHandler}
         >
           {AssembleInnerRow(questionHistory, k, key)}
           <div className={styles["button-container"]}>
-            <PushButton
-              inputOrButton="button"
-              type="button"
-              id="study-topic-add-button"
-              colorType="primary"
-              value={questionHistory[k][key]._id}
-              size="medium"
-              styles={{
-                margin: "auto",
-                width: "max-content",
-                borderRadius: "50px",
-              }}
-              onClick={studyTopicIDSubmitHandler}
-            >
-              Add to Study List
-            </PushButton>
-            <PushButton
-              inputOrButton="button"
-              styles={{
-                background: "transparent",
-                boxShadow: "none",
-                textTransformation: "uppercase",
-                transform: editButtonDirection,
-                minWidth: editButtonWidth,
-                textAlign: "center",
-                display: "flex",
-                alignItems: "flex-end",
-                margin: "auto",
-                padding: "0.75em",
-              }}
-              id={key + "edit-button"}
-              colorType="secondary"
-              value="remove"
-              data=""
-              size="small"
-              onClick={rowRemoveButtonHandler}
-            >
-              Remove from Results
-            </PushButton>
-            <PushButton
-              inputOrButton="button"
-              styles={{
-                background: "transparent",
-                boxShadow: "none",
-                letterSpacing: "0.25em",
-                fontVariant: "small-caps",
-                transform: editButtonDirection,
-                minWidth: editButtonWidth,
-                textAlign: "center",
-                display: "flex",
-                alignItems: "flex-end",
-                margin: "auto",
-                padding: "0.75em",
-              }}
-              id={key + "edit-button"}
-              colorType="secondary"
-              value="edit"
-              data=""
-              size="small"
-              onClick={rowEditButtonHandler}
-            >
-              {inEditMode ? "Cancel Edit" : "Edit"}
-            </PushButton>
+            {!props.hideStockRowButtons && (
+              <Fragment>
+                <PushButton
+                  inputOrButton="button"
+                  type="button"
+                  id="study-topic-add-button"
+                  colorType="primary"
+                  value={questionHistory[k][key]._id}
+                  size="medium"
+                  styles={{
+                    margin: "auto",
+                    width: "max-content",
+                    borderRadius: "50px",
+                  }}
+                  onClick={studyTopicIDSubmitHandler}
+                >
+                  Add to Study List
+                </PushButton>
+                <PushButton
+                  inputOrButton="button"
+                  styles={{
+                    background: "transparent",
+                    boxShadow: "none",
+                    textTransformation: "uppercase",
+                    transform: editButtonDirection,
+                    minWidth: editButtonWidth,
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "flex-end",
+                    margin: "auto",
+                    padding: "0.75em",
+                  }}
+                  id={key + "edit-button"}
+                  colorType="secondary"
+                  value="remove"
+                  data=""
+                  size="small"
+                  onClick={rowRemoveButtonHandler}
+                >
+                  Remove from Results
+                </PushButton>
+                <PushButton
+                  inputOrButton="button"
+                  styles={{
+                    background: "transparent",
+                    boxShadow: "none",
+                    letterSpacing: "0.25em",
+                    fontVariant: "small-caps",
+                    transform: editButtonDirection,
+                    minWidth: editButtonWidth,
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "flex-end",
+                    margin: "auto",
+                    padding: "0.75em",
+                  }}
+                  id={key + "edit-button"}
+                  colorType="secondary"
+                  value="edit"
+                  data=""
+                  size="small"
+                  onClick={rowEditButtonHandler}
+                >
+                  {inEditMode ? "Cancel Edit" : "Edit"}
+                </PushButton>{" "}
+              </Fragment>
+            )}
 
             {inEditMode && (
               <Fragment>
@@ -541,6 +573,9 @@ function SessionResultsRow(props) {
                 </PushButton>
               </Fragment>
             )}
+
+            {props.customButtonJSKFunction &&
+              props.customButtonJSKFunction(questionHistory[k][key].identifier)}
           </div>{" "}
           <div className={styles["notes-container"]}>
             <PushButton

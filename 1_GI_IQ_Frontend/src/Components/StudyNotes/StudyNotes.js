@@ -9,6 +9,7 @@ import useStudyTopicIdAddToStorage from "../../Hooks/useStudyTopicIdAddToStorage
 import { useNavigate } from "react-router-dom";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import BarLoader from "../../UI/Loaders/BarLoader/BarLoader";
+import NotePad from "./NotePad/NotePad";
 import useViewport from "../../Hooks/useViewport";
 
 const StudyNotes = () => {
@@ -20,13 +21,8 @@ const StudyNotes = () => {
   const studyTopicAddToStorage = useStudyTopicIdAddToStorage();
   const allQuestions = useSelector((state) => state.questionData.allQuestions);
   const studyTopicIdentifierElm = useRef();
-  const notePadElm = useRef();
-  const [questionsIDsToOutput, setQuestionsIDsToOutput] = useState(false);
   const [inputError, setInputError] = useState(false);
-  const [currentStudyNotesText, setCurrentStudyNotesText] = useState(
-    studyNotes.notePad
-  );
-  const [studyNoteElmHeight, setStudyNoteElmHeight] = useState("30em");
+
   const navigate = useNavigate();
   const [showAllQuestionPageLoader, setAllQuestionPageLoader] = useState(false);
   const [width, height] = useViewport();
@@ -57,10 +53,6 @@ const StudyNotes = () => {
         state: { _id: targetID },
       });
     }
-  };
-
-  const studyNotesPageButtonHandler = () => {
-    openLoaderThenLaunch(`../study-notes-page`);
   };
 
   const studyTopicIDSubmitHandler = (e) => {
@@ -95,31 +87,6 @@ const StudyNotes = () => {
         storage("ADD", { studyNotes: newStudyNotes, ...otherQuestionData });
     }
   };
-  const studyNotesSubmitHandler = (e) => {
-    e.preventDefault();
-    const newStudyNotes = { ...studyNotes };
-    newStudyNotes.notePad = notePadElm.current.value;
-    dispatch(questionDataActions.updateStudyNotes(newStudyNotes));
-    if (user) updateStudyNotes({ user, dataObj: newStudyNotes });
-    if (!user)
-      storage("ADD", { studyNotes: newStudyNotes, ...otherQuestionData });
-  };
-  const studyNotesOnChangeHandler = (e) => {
-    setCurrentStudyNotesText(notePadElm.current.value);
-  };
-  const clearNotesButtonHandler = (e) => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete all study topics? This can not be undone."
-    );
-    if (confirm) {
-      const newStudyNotes = { ...studyNotes };
-      newStudyNotes.notePad = "Notes\n\n";
-      dispatch(questionDataActions.updateStudyNotes(newStudyNotes));
-      setCurrentStudyNotesText(newStudyNotes.notePad);
-      if (user) updateStudyNotes({ user, dataObj: newStudyNotes });
-      if (!user) storage("ADD", { newStudyNotes, ...otherQuestionData });
-    }
-  };
 
   function studyTopicDeleteButtonHandler(e) {
     const targetID = e.target.value;
@@ -149,28 +116,6 @@ const StudyNotes = () => {
     if (inputError) alert(inputError);
     setInputError(false);
   }, [inputError]);
-
-  useEffect(() => {
-    setCurrentStudyNotesText(studyNotes.notePad);
-  }, [studyNotes.notePad]);
-
-  useEffect(() => {
-    if (currentStudyNotesText) textAreaAdjust();
-  }, [currentStudyNotesText]);
-
-  useEffect(() => {
-    // Use to start at full height.
-    notePadElm.current.style.height = "1px";
-    notePadElm.current.style.height =
-      25 + notePadElm.current.scrollHeight + "px";
-  }, [notePadElm.current]);
-
-  function textAreaAdjust() {
-    notePadElm.current.style.height = "1px";
-    notePadElm.current.style.height =
-      25 + notePadElm.current.scrollHeight + "px";
-    // setStudyNoteElmHeight(25 + notePadElm.current.scrollHeight);
-  }
 
   ////////////////////////////////
   /// Output
@@ -322,79 +267,7 @@ const StudyNotes = () => {
           <BarLoader />
         </div>
       )}
-      <div className={styles["study-notpad-container"]}>
-        <form
-          className={styles["form"]}
-          onSubmit={studyNotesSubmitHandler}
-          onChange={studyNotesOnChangeHandler}
-        >
-          <h3 className={styles["title"]}>Note Pad</h3>
-          <div className={styles["list-full-launch"]}>
-            <PushButton
-              inputOrButton="button"
-              id="notpad-launch-full-page"
-              colorType="primary"
-              value="Open Note Pad"
-              size="small"
-              onClick={studyNotesPageButtonHandler}
-            >
-              Open Note Pad
-              <span className={styles["right-arrow"]}>&#x2192;</span>
-            </PushButton>
-            <Link
-              to="/study-notes-page/"
-              target="_blank"
-              state={{ user: user }}
-            >
-              Pop Out Note Pad
-              <span className={styles["up-arrow"]}>&#x2192;</span>
-            </Link>
-          </div>
-          <p>
-            Jot down quick thoughts on a question or subject, or even outline
-            ideas for a new study approach, projects ideas, etc. Anything that
-            that helps the learning process.
-          </p>
-          {currentStudyNotesText == studyNotes.notePad && (
-            <input
-              type="submit"
-              value=""
-              className={styles["notes-are-saved-button"]}
-              disabled
-            />
-          )}
-          {currentStudyNotesText != studyNotes.notePad && (
-            <input
-              type="submit"
-              value="Save Notes"
-              className={styles["notes-not-saved-button"]}
-            />
-          )}
-          <div className={styles.paper}>
-            <div className={styles["paper-content"]}>
-              <textarea
-                onChange={textAreaAdjust}
-                value={currentStudyNotesText}
-                ref={notePadElm}
-                className={styles["note-pad-textarea"]}
-                style={{ heights: studyNoteElmHeight + "px" }}
-              />
-            </div>
-          </div>
-          <div className={styles["list-item-clear-list"]}>
-            <PushButton
-              inputOrButton="button"
-              id="study-topic-delete-button"
-              colorType="secondary"
-              value="Clear Study Notes"
-              size="small"
-              onClick={clearNotesButtonHandler}
-            >
-              Clear Study Notes
-            </PushButton>
-          </div>
-        </form>
-      </div>
+      <NotePad openLoaderThenLaunch={openLoaderThenLaunch} maxHeight="50em" />
     </div>
   );
 };

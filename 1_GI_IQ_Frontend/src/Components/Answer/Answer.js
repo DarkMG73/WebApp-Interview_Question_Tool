@@ -66,13 +66,17 @@ function Answer() {
         "That question ID does not appear in the master list. Please make sure to copy and paste the full ID."
       );
     } else {
-      const IdAddedToStorage = studyTopicAddToStorage({ questionIdentifier });
-
-      if (!IdAddedToStorage.status) {
-        alert(IdAddedToStorage.message);
-      } else {
-        alert("This question is now on the Study Topics list.");
-      }
+      studyTopicAddToStorage({ questionIdentifier })
+        .then((res) => {
+          if (!res.status) {
+            alert(res.message);
+          } else {
+            alert("This question is now on the Study Topics list.");
+          }
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
     }
   };
 
@@ -134,14 +138,13 @@ function Answer() {
               id="study-topic-add-button"
               colorType="secondary"
               value={currentQuestionData._id}
-              size="medium"
+              size="large"
               styles={{
                 margin: "auto",
                 borderRadius: "10px 50px 50px 10px",
                 letterSpacing: "0.25em",
                 fontVariant: "small-caps",
                 flexGrow: 1,
-                fontSize: "1.5em",
                 fontWight: "700 !important",
               }}
               onClick={studyTopicIDSubmitHandler}

@@ -79,7 +79,9 @@ const StatusUpdate = () => {
 
   return (
     <div
-      className={`${styles["status-update-container"]}  ${styles[errorStatus]}`}
+      className={`${styles["status-update-container"]}  ${
+        styles[errorStatus]
+      } ${styles[loadingStatus > 0 && "loading"]}`}
     >
       <CardPrimary>
         <p>Server: {statusText}</p>

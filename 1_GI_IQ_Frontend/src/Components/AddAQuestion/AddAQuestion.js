@@ -1,16 +1,9 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOn,
-  signOut,
-} from "firebase/auth";
 import styles from "./AddAQuestion.module.css";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import AddAQuestionForm from "./AddAQuestionForm";
 import LoginStatus from "../User/LoginStatus/LoginStatus";
-import { addAQuestion } from "../../storage/interviewQuestionsDB";
 
 function AddAQuestion(props) {
   const [showAddQuestionForm, setShowAddQuestionForm] = useState(false);

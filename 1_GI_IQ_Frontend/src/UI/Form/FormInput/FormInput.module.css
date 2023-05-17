@@ -102,6 +102,7 @@
 .required-input-error-text {
   color: var(--iq-color-accent) !important;
   font-size: 1.5em;
+  font-size: calc(1em + 0.5vw);
 }
 
 .required-input {

@@ -72,6 +72,11 @@ function App() {
           rateLimitRemaining: serverRateLimitRemaining,
         })
       );
+      setTimeout(() => {
+        dispatch(authActions.resetRecentLogout());
+        dispatch(authActions.resetRecentLogin());
+      }, 3000);
+
       return response;
     },
     (error) => {

@@ -1,106 +1,19 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto);
-@import url(https://fonts.googleapis.com/css?family=Handlee);
-
-.study-notes-container {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: top;
-  min-height: fit-content;
-  min-height: 400px;
-}
-
 .title {
-  flex-basis: 100%;
-}
-
-.study-notes-container > *:not(.title) {
-  position: relative;
-  max-width: 100%;
-  flex-basis: 100%;
-  margin: 0 1%;
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  box-shadow: -1px -1px 7px -5px black, 3px 3px 7px -1px white;
-  border-radius: 50px;
-  padding: 3em 1em 1em;
-}
-
-.study-notes-container {
-  margin: 2em auto;
-  max-width: 100%;
-}
-
-.study-notes-container .study-topics-container {
-  flex-direction: column;
-  margin-bottom: 3em;
-}
-
-.form {
-  overflow: hidden;
-}
-
-.study-topics-container form {
-  max-width: 700px;
-}
-.study-topics-input-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 30em;
-  margin: 0 auto;
-}
-.study-notes-container > *:not(.title) > * {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.study-notes-container > * .title {
   flex-basis: min-content;
   margin: 0;
 }
 
-.note-pad-textarea,
-.study-list {
-  flex-grow: 1;
-}
-
-.study-list {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 0;
-  padding: 0;
-}
-
-.study-list-item {
-  position: relative;
-  display: flex;
-  min-width: 100%;
-  max-width: 100%;
-  flex-wrap: wrap;
-  flex-grow: 1;
-  margin: 0.25em auto;
-  align-items: center;
-}
-
-.list-item-launch {
-  flex-basis: 10em;
-  flex-grow: 1;
+.list-full-launch button,
+.list-full-launch a {
+  width: 20em;
 }
 
 .list-full-launch {
   margin: 0.5em auto 0;
 }
 
-.list-full-launch button,
-.list-full-launch a {
-  width: 20em;
+.form {
+  overflow: hidden;
 }
 
 .list-full-launch a {
@@ -148,73 +61,6 @@
   text-shadow: 0 0 1px;
   transform: scale(1.1);
   transition: 0.1s all ease;
-}
-.study-list-item-inner-wrap {
-  display: flex;
-  justify-content: space-between;
-  flex-basis: 10em;
-  flex-grow: 1;
-  min-width: fit-content;
-}
-
-.study-list-item-topic-title {
-  flex-basis: calc(80% - 20em);
-  flex-grow: 1;
-  min-width: min-content;
-  text-align: left;
-}
-.study-list-item-inner-wrap > * {
-  margin: 0;
-}
-
-.study-list-item-support {
-  min-width: fit-content;
-}
-
-.study-list-item-support > * {
-  display: flex;
-  min-width: fit-content;
-  align-items: center;
-  margin: 0 0 0 0.5em;
-}
-
-.study-list-item-support button {
-  margin: 0 auto;
-}
-
-.study-list-item-support .list-item-delete button,
-.study-notes-container .list-item-clear-list button {
-  background-color: #94282800;
-  color: inherit;
-  font-weight: 900;
-  opacity: 0.5;
-  transition: 0.3s all ease;
-  text-transform: uppercase;
-}
-
-.study-notes-container .list-item-clear-list button {
-  padding: 0.5em 4em;
-  margin: 1em auto;
-  width: 20em;
-}
-
-.study-list-item-support .list-item-delete button {
-  transform: scale(1.5, 1.25);
-  margin: 0 0 0 0.5em;
-  box-shadow: none;
-  border-radius: 2.5px 10px 10px 2.5px;
-}
-
-.study-list-item-support .list-item-delete button:hover {
-  transform: scale(1.25, 1.25);
-  box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
-    inset 1px -1px 1px rgb(0 0 0 / 15%), 1px 1px 5px -3px black;
-}
-.study-list-item-support .list-item-delete button:hover,
-.study-notes-container .list-item-clear-list button:hover {
-  background-color: #942828;
-  color: white;
-  opacity: 1;
 }
 
 .notes-not-saved-button,
@@ -275,9 +121,18 @@
   }
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .notes-not-saved-frame {
   border: 9px solid hsl(23, 100%, 50%);
-  animation: StudyNotes_StudyNotes_pulseBorder__sfT1w__elab5 1s ease infinite;
+  animation: pulseBorder 1s ease infinite, fadeIn 1s ease forwards 1s;
   position: fixed;
   top: 0;
   left: 0;
@@ -287,6 +142,8 @@
   pointer-events: none;
   border-radius: 50px;
   z-index: 85;
+  opacity: 0;
+  transition-delay: 5s;
 }
 
 .not-saved-frame-text {
@@ -294,7 +151,7 @@
   left: 0;
   top: 50%;
   background: hsl(22.76deg 99.14% 45.31%);
-  animation: StudyNotes_pulseBorder__sfT1w 1s ease infinite;
+  animation: pulseBorder 1s ease infinite;
   padding: 1em 4em 0.25em;
   transform: rotate(-90deg) translatex(-20%);
   transform-origin: left;
@@ -429,6 +286,9 @@ footer a {
 
 /* Responsive Settings */
 @media screen and (max-width: 900px) {
+  .notes-not-saved-frame {
+    animation: pulseBorder 1s ease infinite, fadeIn 2s ease forwards 2s;
+  }
   .study-list-item-topic-title {
     flex-basis: calc(70% - 1em);
     margin-left: 1em;

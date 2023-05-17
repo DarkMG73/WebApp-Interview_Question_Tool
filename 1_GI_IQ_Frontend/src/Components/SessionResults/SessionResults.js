@@ -78,36 +78,13 @@ function SessionResults(props) {
           Clear All Study Notes
         </PushButton>
       </div>
-      <CollapsibleElm
-        id={"session-results-see-more-btn"}
-        maxHeight="27em"
-        inputOrButton="button"
-        buttonStyles={{
-          margin: "0 auto",
-          letterSpacing: "0.25em",
-          fontVariant: "small-caps",
-          transform: "translateY(14%)",
-          minWidth: "5em",
-          textAlign: "center",
-          display: "flex",
-          alignItems: "center",
-          width: "100%",
-          justifyContent: "center",
-          borderRadius: "0 0 50px 50px",
-          height: "100%",
-          padding: "2em 0",
-        }}
-        colorType="secondary"
-        data=""
-        size="large"
-      >
-        <ErrorBoundary>
-          <SessionResultsRows
-            questionHistory={questionHistory}
-            showLoader={props.showLoader}
-          />
-        </ErrorBoundary>
-      </CollapsibleElm>
+
+      <ErrorBoundary>
+        <SessionResultsRows
+          questionHistory={questionHistory}
+          showLoader={props.showLoader}
+        />
+      </ErrorBoundary>
     </div>
   );
 }
