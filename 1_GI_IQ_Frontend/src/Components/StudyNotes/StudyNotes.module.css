@@ -53,6 +53,23 @@
   max-width: 30em;
   margin: 0 auto;
 }
+
+.study-topics-input-container input[type="text"] {
+  border-radius: 50px 50px 0 0;
+  border: none;
+  padding: 0.25em 1em;
+  box-shadow: inset 2px 2px 3px -2px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 5px -2px white, 2px 2px 5px -2px white;
+}
+
+.study-topics-input-container input[type="submit"] {
+  border-radius: 0 0 50px 50px;
+}
+
+.study-topics-input-container input[type="submit"]:hover {
+  transform: scale(1, 1.125);
+}
+
 .study-notes-container > *:not(.title) > * {
   width: 100%;
   display: flex;
@@ -85,7 +102,7 @@
   max-width: 100%;
   flex-wrap: wrap;
   flex-grow: 1;
-  margin: 0.25em auto;
+  margin: auto;
   align-items: center;
 }
 
@@ -106,8 +123,8 @@
 .list-full-launch a {
   display: inline-block;
   margin: 0 0.5em;
-  box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
-    inset 1px -1px 1px rgb(0 0 0 / 15%), 1px 1px 5px -3px black;
+  /* box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
+    inset 1px -1px 1px rgb(0 0 0 / 15%), 1px 1px 5px -3px black; */
   border: none;
   background: inherit;
   color: inherit;
@@ -119,7 +136,7 @@
   transition: 0.2s all ease;
   font: var(--iq-font-body-text);
   font-size: 0.75em;
-  font-size: calc(0.5em + 0.5vw);
+  font-size: calc(0.5em + 0.2vw);
   font-weight: 700;
   background: var(--iq-color-accent);
   color: var(--iq-color-background-warm);
@@ -142,6 +159,9 @@
 .list-full-launch a {
   margin: 0 auto;
   padding-right: 3em;
+  border-radius: 50px;
+  box-shadow: 3px 3px 7px -5px white inset,
+    -3px -3px 7px -5px rgba(0, 0, 0, 0.5) inset;
 }
 
 .list-full-launch a:hover {
@@ -428,6 +448,13 @@ footer a {
 }
 
 /* Responsive Settings */
+@media screen and (min-width: 1200px) {
+  .list-item-launch button,
+  .list-full-launch button,
+  .list-full-launch a {
+    font-size: 1em !important;
+  }
+}
 @media screen and (max-width: 900px) {
   .study-list-item-topic-title {
     flex-basis: calc(70% - 1em);

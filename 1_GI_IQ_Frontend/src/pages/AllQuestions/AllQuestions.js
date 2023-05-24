@@ -6,6 +6,7 @@ import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import SessionResultsRows from "../../Components/SessionResultsRows/SessionResultsRows";
 import CollapsibleElm from "../../UI/CollapsibleElm/CollapsibleElm";
 import CardSecondary from "../../UI/Cards/CardSecondary/CardSecondary";
+import CardPrimary from "../../UI/Cards/CardPrimary/CardPrimary";
 import OutputControls from "../../Components/OutputControls/OutputControls";
 import AddAQuestion from "../../Components/AddAQuestion/AddAQuestion";
 import Footer from "../../Components/Footer/Footer";
@@ -32,7 +33,7 @@ function AllQuestions(props) {
   };
 
   return (
-    <CardSecondary>
+    <div>
       <div id="all-questions-page" className={styles.outerwrap}>
         {!noDBErrors.status && (
           <CardSecondary>
@@ -47,7 +48,15 @@ function AllQuestions(props) {
           data-value="export-json"
           size="large"
           onClick={returnHomeButtonHandler}
-          styles={{ top: 0, position: "sticky", zIndex: 90, minWidth: "33%" }}
+          styles={{
+            top: 0,
+            position: "sticky",
+            zIndex: 90,
+            minWidth: "33%",
+            borderRadius: "50px",
+            maxWidth: "max-content",
+            margin: "0 auto",
+          }}
         >
           &larr; Return to Interview Mode
         </PushButton>
@@ -55,29 +64,7 @@ function AllQuestions(props) {
           <Fragment>
             <AddAQuestion />
             <h2 className="section-title">List of All of the Questions</h2>
-            <CollapsibleElm
-              id={"session-results-see-more-btn"}
-              maxHeight="27em"
-              inputOrButton="button"
-              buttonStyles={{
-                margin: "0 auto",
-                letterSpacing: "0.25em",
-                fontVariant: "small-caps",
-                transform: "translateY(14%)",
-                minWidth: "5em",
-                textAlign: "center",
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-                justifyContent: "center",
-                borderRadius: "0 0 50px 50px",
-                height: "100%",
-                padding: "2em 0",
-              }}
-              colorType="primary"
-              data=""
-              size="large"
-            >
+            <div className={styles["list-outer-wrap"]}>
               <div id="all-questions">
                 <SessionResultsRows
                   questionHistory={allQuestionsSet}
@@ -85,25 +72,25 @@ function AllQuestions(props) {
                   showLoader={true}
                 />
               </div>
-            </CollapsibleElm>
+            </div>
           </Fragment>
         )}
       </div>
       {noDBErrors.status && (
-        <Fragment>
+        <CardPrimary>
           <OutputControls
-            hideExportIncorrectToCVSButton={true}
+            hideExportIncorrectToCSVButton={true}
             hideExportSessionHistoryToJSONButton={true}
             hideAllQuestionsListButton={true}
             showExportAllQuestions={true}
           />
-        </Fragment>
+        </CardPrimary>
       )}
       <BottomBar />
       <CardSecondary>
         <Footer />
       </CardSecondary>
-    </CardSecondary>
+    </div>
   );
 }
 

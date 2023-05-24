@@ -40,7 +40,21 @@ function SessionResultsRow(props) {
   const editButtonWidth = inEditMode ? "max-content" : "5em";
   const user = useSelector((state) => state.auth.user);
   const overBreakpoint = props.overBreakpoint;
-
+  const allowedFields = [
+    "_id",
+    "question",
+    "answer",
+    "level",
+    "topic",
+    "title",
+    "credit",
+    "link",
+    "search",
+    "identifier",
+    "createdAt",
+    "updatedAt",
+    "tags",
+  ];
   ///////////////////////////////
   ///      Handlers
   //////////////////////////////
@@ -253,12 +267,15 @@ function SessionResultsRow(props) {
         : questionHistory[k][key][itemKey];
       let itemTitle = itemKey;
 
-      // Skip if no value
-      if (value == undefined || value === "" || value == " ") continue;
+      // Skip if not allowed
+      if (!allowedFields.includes(itemTitle)) continue;
+      // Skip if not allowed or no value and not editing
+      if (!inEditMode && (value == undefined || value === "" || value === " "))
+        continue;
 
       // If link, add <a> tag
       const isValidLink = isValidHttpUrl(value);
-      if (isValidLink) {
+      if (isValidLink && !inEditMode) {
         value = (
           <a href={value} alt={itemKey} target="_blank">
             {itemKey} &rarr;
@@ -271,15 +288,17 @@ function SessionResultsRow(props) {
       }
 
       if (itemKey === "search") {
-        value = (
-          <a
-            className={styles["more-about-this-link"]}
-            href={`https://search.brave.com/search?q=${value}&source=web`}
-            target="_blank"
-          >
-            Learn more about this with a Brave Search &rarr;
-          </a>
-        );
+        if (!inEditMode) {
+          value = (
+            <a
+              className={styles["more-about-this-link"]}
+              href={`https://search.brave.com/search?q=${value}&source=web`}
+              target="_blank"
+            >
+              Learn more about this with a Brave Search &rarr;
+            </a>
+          );
+        }
       }
 
       if (itemKey === "createdAt" || itemKey === "updatedAt") {
@@ -329,13 +348,12 @@ function SessionResultsRow(props) {
         itemTitle = "Details";
       }
 
-      // Add the "Notes" area as it is not part of the core question
-
       // Create the row
       if (
         itemKey === "identifier" ||
         itemKey === "createdAt" ||
-        itemKey === "updatedAt"
+        itemKey === "updatedAt" ||
+        itemKey === "_id"
       ) {
         if (inEditMode) {
           rowHTML.push(
@@ -351,24 +369,45 @@ function SessionResultsRow(props) {
               >
                 {itemTitle}
               </div>
-              <div
-                className={`${styles[itemKey]} ${styles[itemKey + "-text"]}
+
+              {itemTitle !== "identifier" ? (
+                <div
+                  className={`${styles[itemKey]} ${styles[itemKey + "-text"]}
+${styles["grid-item-text"]} 
+${styles["grid-item-child"]}`}
+                  ref={(elm) => {
+                    //  Moving this out of processing to handle after elements added.
+                    setTimeout(() => {
+                      if (editedQuestions.current.edits[itemKey])
+                        editedQuestions.current.edits[itemKey] = elm.innerText;
+                    }, 0);
+                  }}
+                  onBlur={(e) => {
+                    onTextChangeHandler(e, key, itemKey);
+                  }}
+                >
+                  {value}
+                </div>
+              ) : (
+                <div
+                  className={`${styles[itemKey]} ${styles[itemKey + "-text"]}
             ${styles["grid-item-text"]} 
             ${styles["grid-item-child"]}`}
-                contentEditable={inEditMode}
-                ref={(elm) => {
-                  //  Moving this out of processing to handle after elements added.
-                  setTimeout(() => {
-                    if (editedQuestions.current.edits[itemKey])
-                      editedQuestions.current.edits[itemKey] = elm.innerText;
-                  }, 0);
-                }}
-                onBlur={(e) => {
-                  onTextChangeHandler(e, key, itemKey);
-                }}
-              >
-                {value}
-              </div>
+                  contentEditable={inEditMode}
+                  ref={(elm) => {
+                    //  Moving this out of processing to handle after elements added.
+                    setTimeout(() => {
+                      if (editedQuestions.current.edits[itemKey])
+                        editedQuestions.current.edits[itemKey] = elm.innerText;
+                    }, 0);
+                  }}
+                  onBlur={(e) => {
+                    onTextChangeHandler(e, key, itemKey);
+                  }}
+                >
+                  {value}
+                </div>
+              )}
             </div>
           );
         }
@@ -466,6 +505,8 @@ function SessionResultsRow(props) {
                     margin: "auto",
                     width: "max-content",
                     borderRadius: "50px",
+                    boxShadow:
+                      "3px 3px 7px -5px white inset, -3px -3px 7px -5px rgba(0, 0, 0, 0.5) inset",
                   }}
                   onClick={studyTopicIDSubmitHandler}
                 >

@@ -157,9 +157,10 @@ const StudyNotes = () => {
           <div className={styles["study-topics-input-container"]}>
             <input
               key={Math.random()}
-              name="Question ID"
+              name="Question-ID"
               ref={studyTopicIdentifierElm}
               placeholder="Paste a question ID here..."
+              type="text"
             />
             <PushButton
               inputOrButton="input"

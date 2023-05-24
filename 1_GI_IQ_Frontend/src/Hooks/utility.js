@@ -82,10 +82,19 @@ export const refreshTokenSetup = (res) => {
 };
 
 /// Convert string to title case /////////////////////////////
-export const toTitleCase = (str, spaceAtCamelCase = false) => {
+export const toTitleCase = (str, spaceAtCamelCase, dashAtCamelCase) => {
   if (spaceAtCamelCase) {
     str = [...str].map((character) => {
-      if (!isNaN(character * 1) && character == character.toUpperCase()) {
+      if (isNaN(character * 1) && character == character.toUpperCase()) {
+        return " " + character;
+      }
+
+      return character;
+    });
+  }
+  if (dashAtCamelCase) {
+    str = [...str].map((character) => {
+      if (isNaN(character * 1) && character == character.toUpperCase()) {
         return "-" + character;
       }
 

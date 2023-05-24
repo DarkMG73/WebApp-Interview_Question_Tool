@@ -1,11 +1,13 @@
 .button {
   margin: 0 0.5em;
-  box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
-    inset 1px -1px 1px rgb(0 0 0 / 15%), 1px 1px 5px -3px black;
+  /* box-shadow: inset 1px 1px 1px rgb(255 255 255 / 25%),
+    inset 1px -1px 1px rgb(0 0 0 / 15%), 1px 1px 5px -3px black; */
+  box-shadow: 3px 3px 7px -5px white inset,
+    -3px -3px 7px -5px rgba(0, 0, 0, 0.5) inset;
   border: none;
   background: inherit;
   color: inherit;
-  border-radius: 0.25em;
+  border-radius: 50px;
   padding: 0.5em 1em;
   margin-top: 1em;
   font-weight: 700;
@@ -65,7 +67,7 @@
 .button.small {
   font: var(--iq-font-body-text);
   font-size: 0.75em;
-  font-size: calc(0.5em + 0.5vw);
+  font-size: calc(0.5em + 0.2vw);
   font-weight: 700;
 }
 

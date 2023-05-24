@@ -2,6 +2,9 @@
   max-width: 100%;
 }
 
+.outerwrap button {
+  border-radius: 50px;
+}
 .loader-wrap {
   max-height: 200px;
   position: relative;

@@ -138,7 +138,13 @@ function AddAQuestionForm(props) {
         <form
           action=""
           id="add-quest-form"
-          className={styles["inner-wrap form"]}
+          className={
+            styles["inner-wrap"] +
+            " " +
+            styles["form"] +
+            " " +
+            styles["add-quest-form"]
+          }
         >
           <div className={styles["inner-wrap"]}>
             {formJSX.map((formElms) => formElms)}

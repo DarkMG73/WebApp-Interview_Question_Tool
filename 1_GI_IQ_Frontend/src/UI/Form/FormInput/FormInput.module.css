@@ -185,7 +185,7 @@
   max-width: 100%;
   min-width: 100%;
   min-height: 100%;
-  color: var(--iq-color-background);
+  color: var(--iq-color-background-warm);
   background: var(--iq-color-accent-gradient);
   text-shadow: 0 0 1px #000000, 0 0 3px #ffffff;
   transform: translateY(-50%);

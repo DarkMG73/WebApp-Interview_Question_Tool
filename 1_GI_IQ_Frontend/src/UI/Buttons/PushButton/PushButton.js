@@ -49,6 +49,7 @@ function PushButton(props) {
           type={props.type}
           name={props.name}
           value={props.value}
+          data-data={props.data}
           onClick={props.onClick}
         />
       </Fragment>

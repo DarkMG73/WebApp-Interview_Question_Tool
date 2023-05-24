@@ -1,8 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Score.module.css";
-import storage from "../../storage/storage";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
-import { updateUserHistory } from "../../storage/userDB";
 import { questionDataActions } from "../../store/questionDataSlice";
 
 function Score(props) {
@@ -12,7 +10,13 @@ function Score(props) {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const totalQuestions = filteredQuestionsIds.length;
-  const { correct, incorrect, unmarked, stats, ...otherQuestionHistory } = questionHistory;
+  const {
+    correct,
+    incorrect,
+    unmarked,
+    stats,
+    ...otherQuestionHistory
+  } = questionHistory;
 
   const correctAmount = tallyItemsInObject(correct);
   const incorrectAmount = tallyItemsInObject(incorrect);
@@ -21,7 +25,7 @@ function Score(props) {
 
   const resetSessionButtonHandler = (e) => {
     const shouldDelete = window.confirm(
-      "Are you sure you want to delete your question history? If you do, this will erase your question history from your local browser storage. This will not affect the question database."
+      'Are you sure you want to delete your question history? If you click "OK" below, your session history will be deleted and an entry will be created in the Session History Backup list with todays date and an * added. You can use this to restore your progress to where it was before the reset.\n\nClick "OK" to reset the session history or "Cancel" to return without resetting.'
     );
     const defaultUserHistory = {
       correct: {},
@@ -44,42 +48,62 @@ function Score(props) {
     return output;
   }
   return (
-    <div id="iq-session-results" className={styles["iq-session-results"]}>
+    <div
+      key="iq-session-results"
+      id="iq-session-results"
+      className={styles["iq-session-results"]}
+    >
       {props.title && <h1 className={styles["subtitle"]}>props.title</h1>}
 
-      <div id="results-controls" className={styles["inner-wrap"]}>
+      <div
+        key="results-controls"
+        id="results-controls"
+        className={styles["inner-wrap"]}
+      >
         <div
+          key="correct-incorrect-unmarked"
           id="correct-incorrect-unmarked"
           className={styles["correct-incorrect-unmarked"]}
         >
           {props.showCorrect && (
-            <p id="correct" className={styles["score-item"]}>
+            <p
+              key="correctAmount"
+              id="correct"
+              className={styles["score-item"]}
+            >
               {correctAmount}
               <span> Correct </span>
             </p>
           )}
           {props.showIncorrect && (
-            <p id="correct" className={styles["score-item"]}>
+            <p key="Incorrect" id="correct" className={styles["score-item"]}>
               {incorrectAmount}
               <span> Incorrect </span>
             </p>
           )}
           {props.showUnmarked && (
-            <p id="correct" className={styles["score-item"]}>
+            <p
+              key="unmarkedAmount"
+              id="correct"
+              className={styles["score-item"]}
+            >
               {unmarkedAmount}
               <span> Unmarked </span>
             </p>
           )}
         </div>
         {props.showCount && (
-          <div id="count" className={styles["score-item"]}>
+          <div key="count" id="count" className={styles["score-item"]}>
             {totalCompleted}
             <span> questions completed of </span>
             {totalQuestions}
           </div>
         )}
         {props.showResetBtn && (
-          <div className={styles["reset-history-button-wrap"]}>
+          <div
+            key="reset-history-button-wrap"
+            className={styles["reset-history-button-wrap"]}
+          >
             <PushButton
               label={false}
               colorType="secondary"

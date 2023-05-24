@@ -36,41 +36,9 @@
   word-break: break-word;
 }
 
-@media screen and (max-width: 900px) {
-  .question-result-container > div > div {
-    max-height: 6em;
-    display: grid;
-    grid-template:
-      min-content/minmax(min-content, 25%)
-      minmax(min-content, 70%)
-      minmax(min-content, 25%);
-    grid-template-areas:
-      "title title title"
-      "buttons buttons buttons"
-      "topic level tags"
-      "topic time tags"
-      "question question question"
-      "question question question"
-      "answer answer answer"
-      "answer answer answer"
-      "search search search"
-      "notepad notepad notepad"
-      "notepad notepad notepad"
-      "credit link link"
-      "id id id"
-      "createdAt createdAt createdAt"
-      "updatedAt updatedAt updatedAt"
-      "identifier identifier identifier";
-    text-align: center;
-    word-break: break-word;
-  }
-  .button-container button {
-    font-size: 1rem;
-  }
-}
-
 .question-result-container .grid-item {
   position: relative;
+  width: 100%;
   height: fit-content;
   min-height: min-content;
   padding: 1em;
@@ -297,6 +265,11 @@ body .button-container button[value="edit"]:hover {
   -webkit-box-orient: vertical;
 }
 
+[contenteditable="true"] {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 @media screen and (max-width: 900px) {
   .title-text {
     justify-content: center;
@@ -305,5 +278,40 @@ body .button-container button[value="edit"]:hover {
 
   .button-container {
     transform: translateY(-4%);
+  }
+
+  .question-result-container .grid-item {
+    flex-direction: column;
+  }
+
+  .question-result-container > div > div {
+    max-height: 6em;
+    display: grid;
+    grid-template:
+      min-content/minmax(min-content, 25%)
+      minmax(min-content, 70%)
+      minmax(min-content, 25%);
+    grid-template-areas:
+      "title title title"
+      "buttons buttons buttons"
+      "topic level tags"
+      "topic time tags"
+      "question question question"
+      "question question question"
+      "answer answer answer"
+      "answer answer answer"
+      "search search search"
+      "notepad notepad notepad"
+      "notepad notepad notepad"
+      "credit link link"
+      "id id id"
+      "createdAt createdAt createdAt"
+      "updatedAt updatedAt updatedAt"
+      "identifier identifier identifier";
+    text-align: center;
+    word-break: break-word;
+  }
+  .button-container button {
+    font-size: 1rem;
   }
 }

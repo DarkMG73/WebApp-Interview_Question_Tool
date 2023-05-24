@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+
 import styles from "./AddAQuestion.module.css";
 import PushButton from "../../UI/Buttons/PushButton/PushButton";
 import AddAQuestionForm from "./AddAQuestionForm";
@@ -7,18 +7,13 @@ import LoginStatus from "../User/LoginStatus/LoginStatus";
 
 function AddAQuestion(props) {
   const [showAddQuestionForm, setShowAddQuestionForm] = useState(false);
-  const [showLoginForm, setShowLoginForm] = useState(false);
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [loginError, setLoginError] = useState(false);
-  const dispatch = useDispatch();
 
   function showNewQuestionFormButtonHandler() {
     setShowAddQuestionForm(!showAddQuestionForm);
   }
 
   return (
-    <div id="output-controls" className={styles.outerwrap}>
+    <div id="add-a-question-controls" className={styles.outerwrap}>
       <LoginStatus />
       <div id="add-quest-wrap" className={styles["add-quest-wrap"]}>
         <h2 className="section-title">Add Questions Here</h2>
@@ -33,11 +28,10 @@ function AddAQuestion(props) {
         </p>
         <p>Thanks for contributing!</p>
         <div
-          id="db-login-wrap"
-          className={`${styles["inner-wrap "]}  ${styles["db-login"]}`}
+          id="add-question-container"
+          className={`${styles["inner-wrap"]}  ${styles["add-question-container"]}`}
         >
           <div className={styles["button-container"]}>
-            {loginError && <p>{loginError}</p>}
             <PushButton
               inputOrButton="button"
               id="create-entry-btn"

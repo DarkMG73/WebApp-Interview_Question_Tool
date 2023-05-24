@@ -14,6 +14,7 @@ import AddAQuestion from "../../Components/AddAQuestion/AddAQuestion";
 import Footer from "../../Components/Footer/Footer";
 import BottomBar from "../../Components/BottomBar/BottomBar";
 import StudyNotes from "../../Components/StudyNotes/StudyNotes";
+import SessionHistoryBackup from "../../Components/SessionHistoryBackup/SessionHistoryBackup";
 import LoginStatus from "../../Components/User/LoginStatus/LoginStatus";
 import Timer from "../../Components/Timer/Timer";
 import { ErrorBoundary } from "../../HOC/ErrorHandling/ErrorBoundary/ErrorBoundary";
@@ -98,6 +99,11 @@ const Home = (props) => {
               <OutputControls />
             </ErrorBoundary>
           </CardSecondary>
+          <CardPrimary>
+            <ErrorBoundary>
+              <SessionHistoryBackup />
+            </ErrorBoundary>
+          </CardPrimary>
           <CardPrimary>
             <ErrorBoundary>
               <AddAQuestion />

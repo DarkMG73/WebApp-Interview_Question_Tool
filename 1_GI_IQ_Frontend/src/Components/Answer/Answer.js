@@ -113,7 +113,12 @@ function Answer() {
                 name="answer-correct"
                 value="Yes"
                 onClick={answerCorrectBtnHandler}
-                styles={{ margin: "auto", flexGrow: "1" }}
+                styles={{
+                  margin: "auto",
+                  flexGrow: "1",
+                  boxShadow:
+                    "3px 3px 7px -5px white inset, -3px -3px 7px -5px rgba(0, 0, 0, 0.5) inset",
+                }}
                 selected={correctSelected}
               />
               <PushButton
@@ -125,7 +130,12 @@ function Answer() {
                 name="answer-not-correct"
                 value="No"
                 onClick={answerNotCorrectBtnHandler}
-                styles={{ margin: "auto", flexGrow: "1" }}
+                styles={{
+                  margin: "auto",
+                  flexGrow: "1",
+                  boxShadow:
+                    "3px 3px 7px -5px white inset, -3px -3px 7px -5px rgba(0, 0, 0, 0.5) inset",
+                }}
                 selected={incorrectSelected}
               />
             </div>
@@ -141,11 +151,13 @@ function Answer() {
               size="large"
               styles={{
                 margin: "auto",
-                borderRadius: "10px 50px 50px 10px",
+                borderRadius: "20px 50px 50px 20px",
                 letterSpacing: "0.25em",
                 fontVariant: "small-caps",
                 flexGrow: 1,
                 fontWight: "700 !important",
+                boxShadow:
+                  "3px 3px 7px -5px white inset, -3px -3px 7px -5px rgba(0, 0, 0, 0.5) inset",
               }}
               onClick={studyTopicIDSubmitHandler}
             >
