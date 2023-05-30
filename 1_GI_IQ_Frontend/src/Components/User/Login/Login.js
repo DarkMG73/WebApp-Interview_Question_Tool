@@ -227,9 +227,11 @@ const Login = (props) => {
     <div
       className={styles["login-container"] + " " + styles[horizontalDisplay]}
     >
-      <div className={styles["login-title-wrap"]}>
-        <h3 className={styles["login-title"]}>Login</h3>
-      </div>
+      {!props.hideTitles && (
+        <div className={styles["login-title-wrap"]}>
+          <h3 className={styles["login-title"]}>Login</h3>
+        </div>
+      )}
       <span className={styles["login-question"]}>
         Need to register?
         <PushButton

@@ -2,6 +2,12 @@
   font-size: 1.6rem;
 }
 
+.inner-wrap button:hover {
+  transform: none;
+  background: var(--iq-color-accent);
+  color: var(--iq-color-background-warm);
+}
+
 .inner-wrap pre {
   position: relative;
   text-align: left;

@@ -52,14 +52,14 @@ function LoginStatus(props) {
       id="db-login-container"
       className={`${styles["inner-wrap "]}  ${styles["db-login-container"]} ${styles[horizontalDisplay]}`}
     >
-      <h4>Database login status:</h4>
+      {!props.hideTitles && <h4>Database login status:</h4>}
 
       <p className={styles["db-login-status-container"]}>
         <span id="db-login-status" className={styles["db-login-status"]}>
           {user ? (
             <span className={styles["login-text"]}>
               {" "}
-              {user.email} is logged in.{" "}
+              {user.email} is Logged In{" "}
             </span>
           ) : (
             <span
@@ -68,7 +68,7 @@ function LoginStatus(props) {
               }
             >
               {" "}
-              No one is currently logged in.
+              No one is logged in. Progress will save to the browser.
             </span>
           )}
         </span>
@@ -84,6 +84,7 @@ function LoginStatus(props) {
                   }
                   horizontalDisplay={props.horizontalDisplay}
                   signUpButtonStyles={props.signUpButtonStyles}
+                  hideTitles={props.hideTitles}
                 />
               )}
               {showSignupForm && (
@@ -102,19 +103,19 @@ function LoginStatus(props) {
           <PushButton
             inputOrButton="button"
             id="logout-from-db"
-            colorType="primary"
+            colorType="secondary"
             value="logout from db"
             data=""
             size="medium"
             onClick={logOutButtonHandler}
-            styles={{ margin: "1em auto 1em" }}
+            styles={{ margin: "1em auto", textTransform: "uppercase" }}
           >
-            LogOut
+            Log Out
           </PushButton>
         )}
         {loginError && <p>{loginError}</p>}
       </div>
-      {props.showAddAToolButton && (
+      {props.showAddAQuestionButton && (
         <PushButton
           inputOrButton="button"
           id="create-entry-btn"
@@ -136,7 +137,7 @@ function LoginStatus(props) {
             borderRadius: "50px",
           }}
         >
-          <span>Add a Plugin or Tool</span>
+          <span>Add a Question</span>
         </PushButton>
       )}
     </div>

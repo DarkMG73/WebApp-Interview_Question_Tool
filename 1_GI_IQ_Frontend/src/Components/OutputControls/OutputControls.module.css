@@ -2,9 +2,6 @@
   max-width: 100%;
 }
 
-.outerwrap button {
-  border-radius: 50px;
-}
 .loader-wrap {
   max-height: 200px;
   position: relative;
@@ -16,8 +13,17 @@
   border-radius: 50px;
   margin: 0px auto;
   z-index: 10;
+  transition: 0.2s all ease;
 }
 
+.outerwrap button {
+  border-radius: 50px;
+}
+.outerwrap button:hover {
+  background: var(--iq-color-accent);
+  color: var(--iq-color-background-warm);
+  transform: none;
+}
 body .loader-wrap > * {
   max-height: 200px;
   min-height: 125px;

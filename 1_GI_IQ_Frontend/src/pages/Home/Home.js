@@ -41,7 +41,7 @@ const Home = (props) => {
         <Fragment>
           <CardSecondary>
             <ErrorBoundary>
-              <LoginStatus />
+              <LoginStatus hideTitles={true} />
             </ErrorBoundary>
           </CardSecondary>
           <CardPrimary>
@@ -104,11 +104,11 @@ const Home = (props) => {
               <SessionHistoryBackup />
             </ErrorBoundary>
           </CardPrimary>
-          <CardPrimary>
+          <CardSecondary>
             <ErrorBoundary>
               <AddAQuestion />
             </ErrorBoundary>
-          </CardPrimary>
+          </CardSecondary>
 
           <ErrorBoundary>
             <BottomBar />

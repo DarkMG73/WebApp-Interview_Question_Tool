@@ -30,7 +30,7 @@ export const timerSlice = createSlice({
       state.peekTimer = state.peekTimer - 1;
     },
     clearPeekTimer: (state) => {
-      return initState;
+      state.peekTimer = 20;
     },
   },
 });

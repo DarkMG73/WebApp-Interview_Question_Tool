@@ -70,7 +70,7 @@ function NewQuestionButton(props) {
   }
 
   return (
-    <Fragment>
+    <div className={styles["new-question-button-wrap"]}>
       {!timerRunning && (
         <PushButton
           inputOrButton="button"
@@ -105,7 +105,7 @@ function NewQuestionButton(props) {
           <h1 className="iq-header">Click When Finished</h1>
         </PushButton>
       )}
-    </Fragment>
+    </div>
   );
 }
 

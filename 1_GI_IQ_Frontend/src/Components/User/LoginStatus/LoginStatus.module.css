@@ -18,7 +18,8 @@
   align-items: center;
   text-align: center;
   width: 100%;
-  margin: 0 0 1em;
+  margin: 0 auto;
+  padding: 0;
 }
 
 .button-container > * {
@@ -38,6 +39,8 @@
 .db-login-container p {
   margin: 0 auto 1em;
   padding: 0;
+  width: 100%;
+  max-width: 39em;
 }
 
 .db-login-container button {
@@ -57,28 +60,37 @@
   padding: 0.25em 2em;
   font-weight: 700;
   width: 100%;
-  box-shadow: inset 1px 1px 3px -2px black, inset -1px -1px 3px -2px white;
+  box-shadow: inset 1px 1px 3px -2px black, inset -1px -1px 3px -2px white,
+    2px 2px 3px -2px #ffffff99;
   /* border: 1px inset var(--iq-color-background-warm); */
   background: var(--iq-color-background-warm);
   color: var(--iq-color-accent);
   border-radius: 50px;
+  text-transform: uppercase;
 }
 
 .not-logged-in-text {
   background-color: var(--iq-color-accent);
   color: var(--iq-color-background-warm);
-  font-size: 1.25em;
+  font-size: 1em;
+  font-size: calc(0.7em + 0.25vw);
   font-weight: 700;
   /* border: 2px inset var(--iq-color-accent); */
   padding: 0.5em 1em;
-  margin-top: 1em;
+}
+
+@media (min-width: 1400px) {
+  .not-logged-in-text {
+    font-size: 1em;
+  }
 }
 
 .form-container {
-  box-shadow: 3px 3px 10px -7px inset black, -3px -3px 10px -7px inset white;
+  box-shadow: 3px 3px 10px -7px inset black, -3px -3px 10px -7px inset white,
+    2px 2px 3px -2px #ffffff99;
   width: 100%;
   max-width: none;
-  border-radius: 10px;
+  border-radius: 50px;
   margin: 0px auto;
 }
 
@@ -116,6 +128,11 @@ body .form-container input[type="password"] {
   font-weight: 700;
 }
 
+.button-container button:hover {
+  background: var(--iq-color-accent);
+  color: var(--iq-color-background-warm);
+  transform: none;
+}
 /* HORIZONTAL DISPLAY */
 .db-login-container.horizontal-display {
   display: flex;

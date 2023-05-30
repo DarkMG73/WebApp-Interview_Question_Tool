@@ -27,7 +27,7 @@
   flex-basis: 100%;
 }
 
-.close-question-form-button {
+.form-group-wrap .close-question-form-button {
   position: absolute;
   top: 1em;
   right: 1em;
@@ -36,6 +36,10 @@
   border: none;
   font-size: 1.6rem;
   font-weight: 700;
+  max-width: min-content;
+  min-width: 0;
+  padding: 0 0.5em;
+  box-shadow: none;
 }
 
 .close-question-form-button:after {

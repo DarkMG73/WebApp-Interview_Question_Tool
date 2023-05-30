@@ -44,7 +44,7 @@ function WorkArea(props) {
             margin: "0 auto",
             letterSpacing: "0.25em",
             fontVariant: "small-caps",
-            transition: "0.7s all ease",
+            transition: "0.2s all ease",
             minWidth: "5em",
             textAlign: "center",
             display: "flex",

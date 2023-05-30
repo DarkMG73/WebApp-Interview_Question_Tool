@@ -30,3 +30,9 @@
   color: var(--iq-color-accent);
   background: var(--iq-color-background-warm);
 }
+
+.add-quest-form input[type="submit"]:hover {
+  background: var(--iq-color-accent-light);
+  color: var(--iq-color-background-warm);
+  transform: none;
+}

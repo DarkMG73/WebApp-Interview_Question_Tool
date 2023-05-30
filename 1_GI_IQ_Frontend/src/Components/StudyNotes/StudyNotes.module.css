@@ -57,7 +57,7 @@
 .study-topics-input-container input[type="text"] {
   border-radius: 50px 50px 0 0;
   border: none;
-  padding: 0.25em 1em;
+  padding: 0.5em 1em 0.25em 2em;
   box-shadow: inset 2px 2px 3px -2px rgba(0, 0, 0, 0.5),
     inset -2px -2px 5px -2px white, 2px 2px 5px -2px white;
 }
@@ -115,9 +115,10 @@
   margin: 0.5em auto 0;
 }
 
-.list-full-launch button,
+.form .list-full-launch button,
 .list-full-launch a {
   width: 20em;
+  font-variant: small-caps;
 }
 
 .list-full-launch a {
@@ -141,6 +142,7 @@
   background: var(--iq-color-accent);
   color: var(--iq-color-background-warm);
   text-decoration: none;
+  font-variant: small-caps;
 }
 
 .right-arrow,
@@ -169,6 +171,14 @@
   transform: scale(1.1);
   transition: 0.1s all ease;
 }
+
+.study-topics-container button:hover,
+.study-topics-container a:hover,
+.study-topics-container input[type="submit"]:hover {
+  background: var(--iq-color-accent-light);
+  transform: none;
+}
+
 .study-list-item-inner-wrap {
   display: flex;
   justify-content: space-between;
@@ -357,13 +367,14 @@
   border: 1px solid var(--iq-color-accent);
   border-radius: 10px;
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 0;
   width: 100%;
   content: "";
   height: 100%;
   color: white;
   pointer-events: none;
+  transform: translateY(-50%);
 }
 
 /* .paper:before {

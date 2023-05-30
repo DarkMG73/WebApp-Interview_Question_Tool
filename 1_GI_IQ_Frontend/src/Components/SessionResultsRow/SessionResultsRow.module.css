@@ -112,6 +112,10 @@
   border: 1px inset yellow;
 }
 
+.credit[contenteditable="true"] {
+  min-width: 200px;
+}
+
 .time {
   grid-area: time;
 }

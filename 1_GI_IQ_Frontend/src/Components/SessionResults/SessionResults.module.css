@@ -30,9 +30,13 @@
 }
 
 .list-item-clear-list button:hover {
+  background-color: #942828;
+  color: #fff;
   opacity: 1;
+  transform: none;
 }
 
 .list-item-clear-list button {
   opacity: 0.5;
+  text-transform: uppercase;
 }

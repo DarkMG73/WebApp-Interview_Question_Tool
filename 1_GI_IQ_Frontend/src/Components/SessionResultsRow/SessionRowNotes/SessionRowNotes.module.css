@@ -23,7 +23,7 @@
   box-shadow: inset -1px -1px 7px -5px black, inset 3px 3px 7px -1px white;
   border-radius: 3px;
   padding: 1em;
-  border: 1px inset #14739f2e;
+  border: 1px inset var(--iq-color-accent);
 }
 
 .study-notepad-container h3,
@@ -73,6 +73,7 @@
   animation: pulse 1s ease infinite;
   transform-origin: bottom;
   cursor: pointer;
+  text-transform: uppercase;
 }
 
 .notes-not-saved-button:hover {

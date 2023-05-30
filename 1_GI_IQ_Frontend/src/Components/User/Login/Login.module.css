@@ -3,11 +3,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 3em;
 }
 .login-container h3 {
   padding: 0;
   margin-bottom: 0;
   font: var(--iq-font-subheading);
+}
+
+.login-container .login-question button {
+  font-variant: small-caps;
 }
 
 .form {
@@ -49,7 +54,7 @@
   flex-direction: column;
   position: relative;
   align-items: center;
-  margin: 1em;
+  margin: 1em auto 0;
 }
 .form-submit-button-wrap {
   display: flex;
@@ -83,6 +88,8 @@
   font-weight: 700;
   background: var(--iq-color-accent);
   color: var(--iq-color-background-warm);
+  margin-top: 1em;
+  min-width: 100%;
 }
 
 .form-input-error .form-input-error-close-button {

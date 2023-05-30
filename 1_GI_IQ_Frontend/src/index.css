@@ -21,13 +21,30 @@
   --iq-font-body-text: normal 500 1.2rem "Kodchasan", sans-serif;
 } */
 
-/* blue & gray 2 */
-:root {
+/* blue & cream 1 */
+/* :root {
   --iq-color-accent: #14739f;
   --iq-color-accent-light: #42b2ed;
   --iq-color-accent-dark: #005570;
   --iq-color-background: white;
   --iq-color-background-warm: #f6eee4;
+  --iq-color-background-cool: #c7cfd1;
+  --iq-color-background-contrast: #123040;
+  --iq--font-heading: small-caps normal 700 3.2rem "Kodchasan", sans-serif;
+  --iq--font-heading-2: small-caps normal 700 2.4rem "Kodchasan", sans-serif;
+  --iq-spacing-heading: 0.25em;
+  --iq-spacing-subheading: 0.375em;
+  --iq-font-subheading: small-caps normal 700 1.6rem "Kodchasan", sans-serif;
+  --iq-font-body-text: normal 500 1.2rem "Kodchasan", sans-serif;
+} */
+
+/* blue & cream 2 */
+:root {
+  --iq-color-accent: #14649f;
+  --iq-color-accent-light: hsl(205 78% 50% / 1);
+  --iq-color-accent-dark: hsl(205 78% 22% / 1);
+  --iq-color-background: #fff;
+  --iq-color-background-warm: hsl(33 100% 96% / 1);
   --iq-color-background-cool: #c7cfd1;
   --iq-color-background-contrast: #123040;
   --iq--font-heading: small-caps normal 700 3.2rem "Kodchasan", sans-serif;
@@ -93,12 +110,13 @@ html {
   box-sizing: border-box;
 }
 body {
-  background-color: #f6eee4;
-  background-image: url(https://www.transparenttextures.com/patterns/buried.png);
-  background-image: url("https://www.transparenttextures.com/patterns/solid.png");
+  background-color: #14649f;
+  background-color: var(--iq-color-accent);
+  /* background-image: url(https://www.transparenttextures.com/patterns/buried.png);
+  background-image: url("https://www.transparenttextures.com/patterns/solid.png"); */
   background-image: url("https://www.transparenttextures.com/patterns/subtle-stripes.png");
   /* background-blend-mode: overlay; */
-  color: #003647;
+  color: hsl(33 100% 96% / 1);
   font: normal 500 1.6rem "Kodchasan", sans-serif;
   font: var(--iq-font-body-text);
   margin: 0;

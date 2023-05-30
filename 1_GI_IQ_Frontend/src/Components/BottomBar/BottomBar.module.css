@@ -97,6 +97,11 @@
   font-weight: 700;
   letter-spacing: 0.25em;
   text-transform: uppercase;
+  border: none;
+  box-shadow: 3px 3px 7px -5px white inset,
+    -3px -3px 7px -5px rgba(0, 0, 0, 0.5) inset;
+  cursor: pointer;
+  font-variant: small-caps;
 }
 
 .login-bar-button {

@@ -20,4 +20,11 @@
     -3px -3px 7px -5px rgba(0, 0, 0, 0.5) inset;
   color: var(--iq-color-accent);
   background: var(--iq-color-background-warm);
+  font-variant: small-caps;
+}
+
+.add-question-container .button-container button:hover {
+  background: var(--iq-color-accent);
+  color: var(--iq-color-background-warm);
+  transform: none;
 }

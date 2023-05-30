@@ -188,7 +188,7 @@ const NotePad = (props) => {
             }
           />
         )}
-        <div className={styles["list-item-clear-list"]}>
+        <div className={styles["clear-notes-button-wrap"]}>
           <PushButton
             inputOrButton="button"
             id="study-topic-delete-button"
