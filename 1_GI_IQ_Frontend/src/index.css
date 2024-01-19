@@ -148,6 +148,9 @@ h2 {
   letter-spacing: var(--iq-spacing-subheading);
 }
 
+pre {
+      white-space: break-spaces;
+}
 .section-title {
   font: var(--iq--font-heading-2);
   letter-spacing: var(--iq-spacing-heading);
