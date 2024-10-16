@@ -127,24 +127,25 @@ const Login = (props) => {
   };
   const requestNewPasswordButtonHandler = (e) => {
     e.preventDefault();
-    const myRequest = new Request(
-      "http://localhost:8000/api/users/auth/forgot_password"
-    );
+      window.open(forgotPasswordURL, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");
+    // const myRequest = new Request(
+    //  forgotPasswordURL
+    // );
 
-    fetch(myRequest)
-      .then(function (response) {
-        setServerActiveError(false);
-      })
-      .catch(function (error) {
-        console.log(
-          "%cERROR:",
-          "color:#f0f0ef;background:#ff0000;padding:32px;border-radius:0 25px 25px 0",
-          error
-        );
-        setServerActiveError(true);
-      });
+    // fetch(myRequest)
+    //   .then(function (response) {
+    //     setServerActiveError(false);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(
+    //       "%cERROR:",
+    //       "color:#f0f0ef;background:#ff0000;padding:32px;border-radius:0 25px 25px 0",
+    //       error
+    //     );
+    //     setServerActiveError(true);
+    //   });
 
-    setShowChangePasswordHTML(!showChangePasswordHTML);
+    // setShowChangePasswordHTML(!showChangePasswordHTML);
   };
 
   //register function
